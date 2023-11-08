@@ -15,7 +15,7 @@ import {
   Switch,
   Text,
   XStack,
-  YStack
+  YStack,
 } from "tamagui";
 import { iProduct } from "../../interfaces";
 
@@ -28,7 +28,7 @@ export default function ProductsListItem({ item }: props) {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
 
   const handleOnPressEdit = () => {
-    console.log(1)
+    console.log(1);
     setIsAdaptedDialogOpen((prev) => !prev);
   };
 
@@ -41,7 +41,7 @@ export default function ProductsListItem({ item }: props) {
       <Accordion type="multiple" overflow="hidden">
         <Accordion.Item value={item.title}>
           <Accordion.Trigger flexDirection="row" justifyContent="space-between">
-            {({ open }) => (
+            {({ open }: { open: boolean }) => (
               <>
                 <XStack space="$3" alignItems="center" justifyContent="center">
                   <Avatar circular size="$6">
