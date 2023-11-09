@@ -28,7 +28,7 @@ export default function BottomTabNavigation() {
             />
           ),
         }}
-        name="order"
+        name="Pedido"
         component={OrderScreen}
       />
       <BottomTab.Screen
@@ -42,7 +42,7 @@ export default function BottomTabNavigation() {
             />
           ),
         }}
-        name="products"
+        name="Produtos"
         component={ProductsScreen}
       />
       <BottomTab.Screen
@@ -50,7 +50,7 @@ export default function BottomTabNavigation() {
           tabBarIcon: () => <History />,
           headerTitle: "Histórico",
         }}
-        name="history"
+        name="Histórico"
         component={HistoryScreen}
       />
     </BottomTab.Navigator>
