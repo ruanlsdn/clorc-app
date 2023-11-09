@@ -1,10 +1,4 @@
-import {
-  Box,
-  ChevronDown,
-  List,
-  Pencil,
-  Trash
-} from "@tamagui/lucide-icons";
+import { Box, ChevronDown, List, Pencil, Trash } from "@tamagui/lucide-icons";
 import React, { useState } from "react";
 import {
   Accordion,
@@ -44,7 +38,7 @@ export default function ProductsListItem({ item }: props) {
             {({ open }: { open: boolean }) => (
               <>
                 <XStack space="$3" alignItems="center" justifyContent="center">
-                  <Avatar circular size="$6">
+                  <Avatar circular size="$5">
                     <Avatar.Image
                       asChild
                       children={
@@ -53,14 +47,16 @@ export default function ProductsListItem({ item }: props) {
                           alignItems="center"
                           justifyContent="center"
                         >
-                          <List size="$2.5" />
+                          <List size="$1.5" />
                         </YStack>
                       }
                     />
                   </Avatar>
                   <YStack>
-                    <H4>{item.title}</H4>
-                    <Text fontSize="$5">{`R$ ${item.price.toFixed(2)}`}</Text>
+                    <Text fontWeight="bold" fontSize="$6">
+                      {item.title}
+                    </Text>
+                    <Text fontSize="$4">{`R$ ${item.price.toFixed(2)}`}</Text>
                   </YStack>
                 </XStack>
                 <Square animation="quick" rotate={open ? "180deg" : "0deg"}>
@@ -72,8 +68,8 @@ export default function ProductsListItem({ item }: props) {
           <Accordion.Content>
             <YStack space marginTop="$3">
               <XStack justifyContent="space-between" alignItems="center">
-                <Text fontSize="$7">Contabilizar</Text>
-                <Switch size="$3.5">
+                <Text fontSize="$6">Contabilizar</Text>
+                <Switch size="$3">
                   <Switch.Thumb animation={"100ms"} />
                 </Switch>
               </XStack>

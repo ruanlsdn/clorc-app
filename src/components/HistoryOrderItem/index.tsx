@@ -22,14 +22,17 @@ export default function HistoryOrderItem({ item }: props) {
                   alignItems="center"
                   justifyContent="center"
                 >
-                  <Clipboard size="$2.5" />
+                  <Clipboard size="$2" />
                 </YStack>
               }
             />
           </Avatar>
-          <YStack alignItems="center" justifyContent="center">
-            <H4>{item.clientName}</H4>
-            <Text fontSize="$5">{item.createdAt}</Text>
+          <YStack space="$1.5" alignItems="center" justifyContent="center">
+            <Text fontWeight="bold" fontSize="$6">
+              {item.clientName}
+            </Text>
+            <Text fontSize="$4">{item.createdAt}</Text>
+            <Text fontSize="$3">Não confirmado</Text>
           </YStack>
         </YStack>
       </TouchableOpacity>
@@ -49,6 +52,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     marginTop: 10,
     height: 175,
-    elevation: 5
+    elevation: 5,
   },
 });
