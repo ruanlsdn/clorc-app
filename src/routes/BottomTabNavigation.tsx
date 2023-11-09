@@ -1,9 +1,8 @@
-import { View, Text } from "react-native";
-import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { HistoryScreen, OrderScreen, ProductsScreen } from "../pages";
-import { ButtonHeaderRight } from "../components";
 import { Plus } from "@tamagui/lucide-icons";
+import React from "react";
+import { ButtonHeaderRight } from "../components";
+import { HistoryScreen, OrderScreen, ProductsScreen } from "../pages";
 
 const BottomTab = createBottomTabNavigator();
 
@@ -20,7 +19,7 @@ export default function BottomTabNavigation() {
           headerTitle: "Produtos",
           headerRight: () => (
             <ButtonHeaderRight
-              icon={<Plus size="$2"/>}
+              icon={<Plus size="$2" />}
               handleFunction={handleProductsButton}
             />
           ),
@@ -28,7 +27,13 @@ export default function BottomTabNavigation() {
         name="products"
         component={ProductsScreen}
       />
-      <BottomTab.Screen name="history" component={HistoryScreen} />
+      <BottomTab.Screen
+        options={{
+          headerTitle: "Histórico",
+        }}
+        name="history"
+        component={HistoryScreen}
+      />
     </BottomTab.Navigator>
   );
 }
