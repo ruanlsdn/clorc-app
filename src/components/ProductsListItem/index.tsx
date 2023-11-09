@@ -1,9 +1,9 @@
 import {
+  Box,
   ChevronDown,
-  ClipboardPaste,
   List,
   Pencil,
-  Trash,
+  Trash
 } from "@tamagui/lucide-icons";
 import React, { useState } from "react";
 import {
@@ -70,16 +70,19 @@ export default function ProductsListItem({ item }: props) {
             )}
           </Accordion.Trigger>
           <Accordion.Content>
-            <YStack space>
+            <YStack space marginTop="$3">
               <XStack justifyContent="space-between" alignItems="center">
                 <Text fontSize="$7">Contabilizar</Text>
                 <Switch size="$3.5">
                   <Switch.Thumb animation={"100ms"} />
                 </Switch>
               </XStack>
-              <XStack space marginTop="$5" justifyContent="space-between">
+              <XStack space marginTop="$3" justifyContent="space-between">
                 <Button onPress={handleOnPressEdit} bordered flex={1}>
                   <Pencil />
+                </Button>
+                <Button onPress={handleOnPressEdit} bordered flex={1}>
+                  <Box />
                 </Button>
                 <Button onPress={handleOnPressDelete} bordered flex={1}>
                   <Trash />
