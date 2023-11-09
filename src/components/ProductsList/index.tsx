@@ -10,21 +10,10 @@ type props = {
 
 export default function ProductsList({ list }: props) {
   return (
-    <>
-      <XStack
-        margin="$3"
-        height="$5"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Input placeholder="Pesquisar..." fontSize="$5" width="90%" />
-        <Button icon={Search} bordered />
-      </XStack>
-      <ScrollView>
-        {list.map((item, idx) => (
-          <ProductsListItem key={idx} item={item} />
-        ))}
-      </ScrollView>
-    </>
+    <ScrollView>
+      {list.map((item, idx) => (
+        <ProductsListItem key={idx} item={item} />
+      ))}
+    </ScrollView>
   );
 }
