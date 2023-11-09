@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Plus } from "@tamagui/lucide-icons";
+import { Clipboard, History, List, Plus } from "@tamagui/lucide-icons";
 import React from "react";
 import { ButtonHeaderRight } from "../components";
 import { HistoryScreen, OrderScreen, ProductsScreen } from "../pages";
@@ -13,9 +13,16 @@ export default function BottomTabNavigation() {
 
   return (
     <BottomTab.Navigator>
-      <BottomTab.Screen name="order" component={OrderScreen} />
       <BottomTab.Screen
         options={{
+          tabBarIcon: () => <Clipboard />,
+        }}
+        name="order"
+        component={OrderScreen}
+      />
+      <BottomTab.Screen
+        options={{
+          tabBarIcon: () => <List />,
           headerTitle: "Produtos",
           headerRight: () => (
             <ButtonHeaderRight
@@ -29,6 +36,7 @@ export default function BottomTabNavigation() {
       />
       <BottomTab.Screen
         options={{
+          tabBarIcon: () => <History />,
           headerTitle: "Histórico",
         }}
         name="history"
