@@ -1,5 +1,5 @@
 import React from "react";
-import { ProductsList } from "../../components";
+import { ProductsList, Searchbar } from "../../components";
 import { iProduct } from "../../interfaces";
 
 const dummy: iProduct[] = [
@@ -40,6 +40,7 @@ const dummy: iProduct[] = [
 export default function ProductsScreen() {
   return (
     <>
+      <Searchbar />
       <ProductsList list={dummy} />
     </>
   );

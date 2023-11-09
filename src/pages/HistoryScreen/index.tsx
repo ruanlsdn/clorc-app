@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 import React from "react";
-import { HistoryList } from "../../components";
+import { HistoryList, Searchbar } from "../../components";
 import { iHistoryOrder } from "../../interfaces";
 
 const dummy: iHistoryOrder[] = [
@@ -35,5 +35,10 @@ const dummy: iHistoryOrder[] = [
 ];
 
 export default function HistoryScreen() {
-  return <HistoryList list={dummy} />;
+  return (
+    <>
+      <Searchbar />
+      <HistoryList list={dummy} />
+    </>
+  );
 }
