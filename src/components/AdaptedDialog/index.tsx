@@ -1,13 +1,6 @@
-import { X } from "@tamagui/lucide-icons";
 import React from "react";
 import { View } from "react-native";
-import {
-  Adapt,
-  Button,
-  Dialog,
-  Sheet,
-  Unspaced
-} from "tamagui";
+import { Adapt, Dialog, Sheet, XStack } from "tamagui";
 
 type props = {
   title?: string;
@@ -71,27 +64,20 @@ export default function AdaptedDialog({
           exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
           gap="$4"
         >
-          <Dialog.Title>{title}</Dialog.Title>
+          <XStack
+            alignSelf="center"
+            bc="$color.gray10Light"
+            width="$5"
+            height="$0.5"
+          />
+          
+          <Dialog.Title alignSelf="center">{title}</Dialog.Title>
 
-          <Dialog.Description>
+          <Dialog.Description textAlign="center">
             {description}
           </Dialog.Description>
 
           <View>{children}</View>
-
-          <Unspaced>
-            <Dialog.Close asChild>
-              <Button
-                position="absolute"
-                top="$-6"
-                right="$6"
-                size="$5"
-                circular
-                icon={X}
-                bc={"red"}
-              />
-            </Dialog.Close>
-          </Unspaced>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
