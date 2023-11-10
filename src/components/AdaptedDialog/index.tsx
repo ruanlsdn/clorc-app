@@ -38,7 +38,7 @@ export default function AdaptedDialog({
             <Adapt.Contents />
           </Sheet.Frame>
           <Sheet.Overlay
-            animation="lazy"
+            animation="100ms"
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
@@ -48,7 +48,7 @@ export default function AdaptedDialog({
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          animation="quick"
+          animation="100ms"
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -60,7 +60,7 @@ export default function AdaptedDialog({
           key="content"
           animateOnly={["transform", "opacity"]}
           animation={[
-            "quick",
+            "100ms",
             {
               opacity: {
                 overshootClamping: true,
@@ -83,11 +83,12 @@ export default function AdaptedDialog({
             <Dialog.Close asChild>
               <Button
                 position="absolute"
-                top="$5"
+                top="$-6"
                 right="$6"
                 size="$5"
                 circular
                 icon={X}
+                bc={"red"}
               />
             </Dialog.Close>
           </Unspaced>
