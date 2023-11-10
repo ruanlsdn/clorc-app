@@ -1,10 +1,11 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { useFonts } from 'expo-font';
+import { useFonts } from "expo-font";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { TamaguiProvider } from "tamagui";
 import NativeStackNavigation from "./src/routes/NativeStackNavigation";
 import tamaguiConfig from "./tamagui.config";
 import { useEffect } from "react";
+import { ApplicationControlProvider } from "./src/contexts/ApplicationControlContext";
 
 export default function App() {
   const [loaded] = useFonts({
@@ -15,12 +16,14 @@ export default function App() {
   if (!loaded) {
     return null;
   }
-  
+
   return (
     <TamaguiProvider config={tamaguiConfig}>
       <SafeAreaProvider>
         <NavigationContainer>
-          <NativeStackNavigation />
+          <ApplicationControlProvider>
+            <NativeStackNavigation />
+          </ApplicationControlProvider>
         </NavigationContainer>
       </SafeAreaProvider>
     </TamaguiProvider>
