@@ -1,6 +1,5 @@
-import { Search } from "@tamagui/lucide-icons";
 import React from "react";
-import { Button, Input, ScrollView, XStack } from "tamagui";
+import { ScrollView } from "tamagui";
 import { iProduct } from "../../interfaces";
 import ProductsListItem from "../ProductsListItem";
 
