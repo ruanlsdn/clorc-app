@@ -1,16 +1,17 @@
-import { Box, ChevronDown, List, Pencil, Trash } from "@tamagui/lucide-icons";
-import React, { useState } from "react";
+import { ChevronDown, List, Pencil, Trash } from "@tamagui/lucide-icons";
+import React from "react";
 import {
   Accordion,
   Avatar,
   Button,
-  H4,
   Square,
   Switch,
   Text,
   XStack,
-  YStack,
+  YStack
 } from "tamagui";
+import { useApplicationControlContext } from "../../contexts";
+import { ActionEnum } from "../../enums/ActionEnum";
 import { iProduct } from "../../interfaces";
 
 type props = {
@@ -18,16 +19,16 @@ type props = {
 };
 
 export default function ProductsListItem({ item }: props) {
-  const [isAdaptedDialogOpen, setIsAdaptedDialogOpen] = useState(false);
-  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const { setIsAdaptedDialogOpen, setIsAlertOpen, setAction } =
+    useApplicationControlContext();
 
   const handleOnPressEdit = () => {
-    console.log(1);
-    setIsAdaptedDialogOpen((prev) => !prev);
+    setAction(ActionEnum.UPDATE);
+    setIsAdaptedDialogOpen(true);
   };
 
   const handleOnPressDelete = () => {
-    setIsAlertOpen((prev) => !prev);
+    setIsAlertOpen(true);
   };
 
   return (
@@ -76,9 +77,6 @@ export default function ProductsListItem({ item }: props) {
               <XStack space marginTop="$3" justifyContent="space-between">
                 <Button onPress={handleOnPressEdit} bordered flex={1}>
                   <Pencil />
-                </Button>
-                <Button onPress={handleOnPressEdit} bordered flex={1}>
-                  <Box />
                 </Button>
                 <Button onPress={handleOnPressDelete} bordered flex={1}>
                   <Trash />
