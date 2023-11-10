@@ -1,18 +1,28 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Clipboard, History, List, Plus, ShoppingCart } from "@tamagui/lucide-icons";
+import {
+  Clipboard,
+  History,
+  List,
+  Plus,
+  ShoppingCart,
+} from "@tamagui/lucide-icons";
 import React from "react";
 import { ButtonHeaderRight } from "../components";
 import { HistoryScreen, OrderScreen, ProductsScreen } from "../pages";
+import { useApplicationControlContext } from "../contexts";
+import { ActionEnum } from "../enums/ActionEnum";
 
 const BottomTab = createBottomTabNavigator();
 
 export default function BottomTabNavigation() {
+  const { setAction, setIsAdaptedDialogOpen } = useApplicationControlContext();
   const handleOrderButton = () => {
     console.log(1);
   };
 
   const handleProductsButton = () => {
-    console.log(1);
+    setAction(ActionEnum.CREATE);
+    setIsAdaptedDialogOpen(true);
   };
 
   return (
