@@ -10,7 +10,7 @@ type props = {
 
 export default function OrderList({ list }: props) {
   return (
-    <ScrollView>
+    <ScrollView bc="#202123">
       {list.map((item, idx) => (
         <OrderItem key={idx} item={item} />
       ))}

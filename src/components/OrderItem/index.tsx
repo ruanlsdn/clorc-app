@@ -1,8 +1,9 @@
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { BaggageClaim, List, Plus, X } from "@tamagui/lucide-icons";
 import React from "react";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { Text, XStack, YStack } from "tamagui";
 import { iProduct } from "../../interfaces";
-import { List, Plus, X } from "@tamagui/lucide-icons";
-import { XStack, Avatar, YStack, H4, Text, Button } from "tamagui";
+import AvatarIcon from "../AvatarIcon";
 
 type props = {
   item: iProduct;
@@ -14,41 +15,29 @@ export default function OrderItem({ item }: props) {
       flexDirection="row"
       alignItems="center"
       justifyContent="space-between"
-      marginTop="$2"
-      marginHorizontal="$3"
+      marginBottom="$2"
+      marginHorizontal="$2"
       height="$8"
-      padding="$3"
-      bc="white"
-      elevationAndroid={2}
+      padding="$4"
+      bc="#343541"
+      elevationAndroid={5}
+      borderRadius="$5"
     >
       <XStack space="$3" alignItems="center" justifyContent="center">
-        <Avatar elevationAndroid={1} circular size="$5">
-          <Avatar.Image
-            asChild
-            children={
-              <YStack
-                bc="$color.gray6Light"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <List size="$1.5" />
-              </YStack>
-            }
-          />
-        </Avatar>
+        <AvatarIcon icon={<BaggageClaim color="#ffffff" />} />
         <YStack>
-          <Text fontWeight="bold" fontSize="$6">
+          <Text fontWeight="bold" fontSize="$6" color="#ffffff">
             {item.title}
           </Text>
-          <Text fontSize="$4">{`x${item.price}`}</Text>
+          <Text color="#D9D9E3" fontSize="$5">{`x${item.price}`}</Text>
         </YStack>
       </XStack>
       <XStack space="$3">
         <TouchableOpacity style={styles.buttonContainer}>
-          <Plus />
+          <Plus color="#19C37D" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonContainer}>
-          <X />
+          <X color="red" />
         </TouchableOpacity>
       </XStack>
     </XStack>
@@ -62,7 +51,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: 30,
     width: 30,
-    backgroundColor: "lightgray",
-    borderRadius: 100
+    backgroundColor: "#565869",
+    borderRadius: 100,
+    elevation: 5,
   },
 });
