@@ -27,11 +27,8 @@ export default function Alert({
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
-
         <AlertDialog.Content
           key="content"
-          bordered
-          elevate
           animation={[
             "quick",
             {
@@ -46,22 +43,49 @@ export default function Alert({
           scale={1}
           opacity={1}
           y={0}
+          bc="#202123"
         >
           <YStack space>
-            <AlertDialog.Title alignSelf="center">{title}</AlertDialog.Title>
+            <AlertDialog.Title color="#ffffff" alignSelf="center">
+              {title}
+            </AlertDialog.Title>
 
-            <AlertDialog.Description alignSelf="center">
+            <AlertDialog.Description
+              fontSize="$5"
+              color="#D9D9E3"
+              alignSelf="center"
+            >
               {description}
             </AlertDialog.Description>
 
             <View>{children}</View>
 
             <XStack space="$3" justifyContent="center">
-              <AlertDialog.Cancel asChild>
-                <Button>Cancelar</Button>
+              <AlertDialog.Cancel bc="#565869" asChild>
+                <Button
+                  pressStyle={{
+                    opacity: 0.5,
+                    borderColor: "#565869",
+                    backgroundColor: "#565869",
+                  }}
+                  elevationAndroid={5}
+                  color="$red11Light"
+                >
+                  Cancelar
+                </Button>
               </AlertDialog.Cancel>
-              <AlertDialog.Action asChild>
-                <Button>Confirmar</Button>
+              <AlertDialog.Action bc="#565869" asChild>
+                <Button
+                  pressStyle={{
+                    opacity: 0.5,
+                    borderColor: "#565869",
+                    backgroundColor: "#565869",
+                  }}
+                  elevationAndroid={5}
+                  color="#19C37D"
+                >
+                  Confirmar
+                </Button>
               </AlertDialog.Action>
             </XStack>
           </YStack>
