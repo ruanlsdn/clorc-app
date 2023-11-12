@@ -26,14 +26,22 @@ export default function BottomTabNavigation() {
   };
 
   return (
-    <BottomTab.Navigator>
+    <BottomTab.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: "#202123" },
+        headerTitleStyle: { color: "#ffffff" },
+        tabBarStyle: { backgroundColor: "#202123", borderColor: "#202123"},
+        tabBarActiveTintColor: "#19C37D",
+        tabBarInactiveTintColor: "#ffffff"
+      }}
+    >
       <BottomTab.Screen
         options={{
-          tabBarIcon: () => <Clipboard />,
+          tabBarIcon: () => <Clipboard color="#ffffff" />,
           headerTitle: "Pedido",
           headerRight: () => (
             <ButtonHeaderRight
-              icon={<ShoppingCart size="$2" />}
+              icon={<ShoppingCart size="$2" color="#ffffff" />}
               handleFunction={handleOrderButton}
             />
           ),
@@ -43,11 +51,11 @@ export default function BottomTabNavigation() {
       />
       <BottomTab.Screen
         options={{
-          tabBarIcon: () => <List />,
+          tabBarIcon: () => <List color="#ffffff" />,
           headerTitle: "Produtos",
           headerRight: () => (
             <ButtonHeaderRight
-              icon={<Plus size="$2" />}
+              icon={<Plus size="$2" color="#ffffff"/>}
               handleFunction={handleProductsButton}
             />
           ),
@@ -57,7 +65,7 @@ export default function BottomTabNavigation() {
       />
       <BottomTab.Screen
         options={{
-          tabBarIcon: () => <History />,
+          tabBarIcon: () => <History color="#ffffff" />,
           headerTitle: "Histórico",
         }}
         name="Histórico"
