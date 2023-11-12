@@ -27,7 +27,7 @@ export default function AdaptedDialog({
     >
       <Adapt when="sm" platform="touch">
         <Sheet animation="medium" zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame padding="$4" gap="$4">
+          <Sheet.Frame bc="#202123" padding="$4" gap="$4">
             <Adapt.Contents />
           </Sheet.Frame>
           <Sheet.Overlay
@@ -64,16 +64,13 @@ export default function AdaptedDialog({
           exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
           gap="$4"
         >
-          <XStack
-            alignSelf="center"
-            bc="$color.gray10Light"
-            width="$5"
-            height="$0.5"
-          />
-          
-          <Dialog.Title alignSelf="center">{title}</Dialog.Title>
+          <XStack alignSelf="center" bc="#19C37D" width="$5" height="$0.5" />
 
-          <Dialog.Description textAlign="center">
+          <Dialog.Title color="#ffffff" alignSelf="center">
+            {title}
+          </Dialog.Title>
+
+          <Dialog.Description fontSize="$4" color="#D9D9E3" textAlign="center">
             {description}
           </Dialog.Description>
 
