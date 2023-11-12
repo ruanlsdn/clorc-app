@@ -9,17 +9,10 @@ type props = {
 
 export default function HistoryOrderList({ list }: props) {
   return (
-    <ScrollView flex={1}>
-      <XStack
-        paddingHorizontal="$1"
-        flexWrap="wrap"
-        alignItems="center"
-        justifyContent="center"
-      >
-        {list.map((item, idx) => (
-          <HistoryOrderItem key={idx} item={item} />
-        ))}
-      </XStack>
+    <ScrollView flex={1} bc="#202123">
+      {list.map((item, idx) => (
+        <HistoryOrderItem key={idx} item={item} />
+      ))}
     </ScrollView>
   );
 }
