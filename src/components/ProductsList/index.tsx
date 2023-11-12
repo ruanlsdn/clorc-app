@@ -9,7 +9,7 @@ type props = {
 
 export default function ProductsList({ list }: props) {
   return (
-    <ScrollView>
+    <ScrollView paddingHorizontal="$2" space="$2" bc="#202123">
       {list.map((item, idx) => (
         <ProductsListItem key={idx} item={item} />
       ))}

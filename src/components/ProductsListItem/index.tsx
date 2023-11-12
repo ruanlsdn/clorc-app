@@ -1,8 +1,7 @@
-import { ChevronDown, List, Pencil, Trash } from "@tamagui/lucide-icons";
+import { ChevronDown, List, Pencil, ShoppingBag, Trash } from "@tamagui/lucide-icons";
 import React from "react";
 import {
   Accordion,
-  Avatar,
   Button,
   Square,
   Switch,
@@ -13,6 +12,7 @@ import {
 import { useApplicationControlContext } from "../../contexts";
 import { ActionEnum } from "../../enums/ActionEnum";
 import { iProduct } from "../../interfaces";
+import AvatarIcon from "../AvatarIcon";
 
 type props = {
   item: iProduct;
@@ -33,53 +33,75 @@ export default function ProductsListItem({ item }: props) {
 
   return (
     <>
-      <Accordion type="multiple" overflow="hidden">
+      <Accordion type="multiple" overflow="hidden" borderRadius="$5">
         <Accordion.Item value={item.title}>
-          <Accordion.Trigger flexDirection="row" justifyContent="space-between">
+          <Accordion.Trigger
+            flexDirection="row"
+            justifyContent="space-between"
+            bc="#343541"
+            borderColor="#343541"
+            height="$8"
+            pressStyle={{
+              opacity: 0.8,
+              backgroundColor: "#343541",
+            }}
+          >
             {({ open }: { open: boolean }) => (
               <>
                 <XStack space="$3" alignItems="center" justifyContent="center">
-                  <Avatar circular size="$5">
-                    <Avatar.Image
-                      asChild
-                      children={
-                        <YStack
-                          bc="$color.gray6Light"
-                          alignItems="center"
-                          justifyContent="center"
-                        >
-                          <List size="$1.5" />
-                        </YStack>
-                      }
-                    />
-                  </Avatar>
+                  <AvatarIcon icon={<ShoppingBag color="#ffffff" />} />
                   <YStack>
-                    <Text fontWeight="bold" fontSize="$6">
+                    <Text fontWeight="bold" fontSize="$6" color="#ffffff">
                       {item.title}
                     </Text>
-                    <Text fontSize="$4">{`R$ ${item.price.toFixed(2)}`}</Text>
+                    <Text
+                      color="#D9D9E3"
+                      fontSize="$5"
+                    >{`R$ ${item.price.toFixed(2)}`}</Text>
                   </YStack>
                 </XStack>
                 <Square animation="quick" rotate={open ? "180deg" : "0deg"}>
-                  <ChevronDown size="$1" />
+                  <ChevronDown color="#ffffff" size="$1" />
                 </Square>
               </>
             )}
           </Accordion.Trigger>
-          <Accordion.Content>
+          <Accordion.Content bc="#565869">
             <YStack space marginTop="$3">
               <XStack justifyContent="space-between" alignItems="center">
-                <Text fontSize="$6">Contabilizar</Text>
-                <Switch size="$3">
-                  <Switch.Thumb animation={"100ms"} />
+                <Text color="#ffffff" fontSize="$6">
+                  Contabilizar
+                </Text>
+                <Switch size="$3" bc="#343541" borderColor="#40414F">
+                  <Switch.Thumb bc="#D9D9E3" animation={"100ms"} />
                 </Switch>
               </XStack>
               <XStack space marginTop="$3" justifyContent="space-between">
-                <Button onPress={handleOnPressEdit} bordered flex={1}>
-                  <Pencil />
+                <Button
+                  elevationAndroid={5}
+                  pressStyle={{
+                    opacity: 0.5,
+                    borderColor: "#343541",
+                    backgroundColor: "#343541",
+                  }}
+                  bc="#343541"
+                  onPress={handleOnPressEdit}
+                  flex={1}
+                >
+                  <Pencil color="#D9D9E3" />
                 </Button>
-                <Button onPress={handleOnPressDelete} bordered flex={1}>
-                  <Trash />
+                <Button
+                  elevationAndroid={5}
+                  pressStyle={{
+                    opacity: 0.5,
+                    borderColor: "#343541",
+                    backgroundColor: "#343541",
+                  }}
+                  bc="#343541"
+                  onPress={handleOnPressDelete}
+                  flex={1}
+                >
+                  <Trash color="#D9D9E3" />
                 </Button>
               </XStack>
             </YStack>
