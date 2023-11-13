@@ -15,7 +15,7 @@ const BottomTab = createBottomTabNavigator();
 
 export default function BottomTabNavigation() {
   const { setIsCreateProductDialogOpen } = useApplicationControlContext();
-  
+
   const handleOrderButton = () => {
     console.log(1);
   };
@@ -36,7 +36,9 @@ export default function BottomTabNavigation() {
     >
       <BottomTab.Screen
         options={{
-          tabBarIcon: () => <Clipboard color="#ffffff" />,
+          tabBarIcon: ({ focused }) => (
+            <Clipboard color={focused ? "#19C37D" : "#ffffff"} />
+          ),
           headerTitle: "Pedido",
           headerRight: () => (
             <ButtonHeaderRight
@@ -50,7 +52,9 @@ export default function BottomTabNavigation() {
       />
       <BottomTab.Screen
         options={{
-          tabBarIcon: () => <List color="#ffffff" />,
+          tabBarIcon: ({ focused }) => (
+            <List color={focused ? "#19C37D" : "#ffffff"} />
+          ),
           headerTitle: "Produtos",
           headerRight: () => (
             <ButtonHeaderRight
@@ -64,7 +68,9 @@ export default function BottomTabNavigation() {
       />
       <BottomTab.Screen
         options={{
-          tabBarIcon: () => <History color="#ffffff" />,
+          tabBarIcon: ({ focused }) => (
+            <History color={focused ? "#19C37D" : "#ffffff"} />
+          ),
           headerTitle: "Histórico",
         }}
         name="Histórico"
