@@ -46,9 +46,11 @@ export default function OrderItem({ item }: props) {
         >
           <Plus color="#19C37D" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonContainer}>
-          <X color="red" />
-        </TouchableOpacity>
+        {false && (
+          <TouchableOpacity style={styles.buttonContainer}>
+            <X color="red" />
+          </TouchableOpacity>
+        )}
       </XStack>
     </XStack>
   );
