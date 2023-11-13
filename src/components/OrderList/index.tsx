@@ -2,7 +2,7 @@ import { View, Text } from "react-native";
 import React from "react";
 import { iProduct } from "../../interfaces";
 import { ScrollView } from "tamagui";
-import OrderItem from "../OrderItem";
+import OrderItem from "../OrderListItem";
 
 type props = {
   list: iProduct[];
