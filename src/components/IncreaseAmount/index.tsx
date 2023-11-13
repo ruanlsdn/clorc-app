@@ -5,7 +5,7 @@ import { Label, Input } from "tamagui";
 export default function IncreaseAmount() {
   return (
     <View style={styles.container}>
-      <Label fontSize="$4" color="#ffffff" width={90} htmlFor="name">
+      <Label fontSize="$4" color="#D9D9E3" width={90} htmlFor="name">
         Quantidade:
       </Label>
       <Input
@@ -15,6 +15,7 @@ export default function IncreaseAmount() {
         textAlign="center"
         maxWidth={100}
         id="name"
+        bc="#D9D9E3"
       />
     </View>
   );
