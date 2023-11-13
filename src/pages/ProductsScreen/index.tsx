@@ -46,35 +46,13 @@ const dummy: iProduct[] = [
 
 export default function ProductsScreen() {
   const {
-    action,
-    isAdaptedDialogOpen,
-    setIsAdaptedDialogOpen,
-    isAlertOpen,
-    setIsAlertOpen,
+    isCreateProductDialogOpen,
+    setIsCreateProductDialogOpen,
+    isEditProductDialogOpen,
+    setIsEditProductDialogOpen,
+    isDeleteProductAlertOpen,
+    setIsDeleteProductAlertOpen,
   } = useApplicationControlContext();
-
-  const showAdaptedDialog = (action: ActionEnum) => {
-    switch (action) {
-      case ActionEnum.CREATE:
-        return (
-          <AdaptedDialog
-            title="Cadastrar"
-            description="Preencha os campos abaixo e confirme para salvar o produto:"
-            isOpen={isAdaptedDialogOpen}
-            setIsOpen={setIsAdaptedDialogOpen}
-          />
-        );
-      case ActionEnum.UPDATE:
-        return (
-          <AdaptedDialog
-            title="Editar"
-            description="Atualize os campos abaixo e confirme para salvar suas alterações:"
-            isOpen={isAdaptedDialogOpen}
-            setIsOpen={setIsAdaptedDialogOpen}
-          />
-        );
-    }
-  };
 
   return (
     <>
@@ -83,10 +61,21 @@ export default function ProductsScreen() {
       <Alert
         title="Excluir"
         description="Tem certeza que deseja excluir o produto?"
-        isOpen={isAlertOpen}
-        setIsOpen={setIsAlertOpen}
-        />
-        {showAdaptedDialog(action)}
+        isOpen={isDeleteProductAlertOpen}
+        setIsOpen={setIsDeleteProductAlertOpen}
+      />
+      <AdaptedDialog
+        title="Cadastrar"
+        description="Preencha os campos abaixo e confirme para salvar o produto:"
+        isOpen={isCreateProductDialogOpen}
+        setIsOpen={setIsCreateProductDialogOpen}
+      />
+      <AdaptedDialog
+        title="Editar"
+        description="Atualize os campos abaixo e confirme para salvar suas alterações:"
+        isOpen={isEditProductDialogOpen}
+        setIsOpen={setIsEditProductDialogOpen}
+      />
     </>
   );
 }

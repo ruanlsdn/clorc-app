@@ -1,7 +1,8 @@
 import { View, Text } from "react-native";
 import React from "react";
-import { OrderList, Searchbar } from "../../components";
+import { Alert, OrderList, Searchbar } from "../../components";
 import { iProduct } from "../../interfaces";
+import { useApplicationControlContext } from "../../contexts";
 
 const dummy: iProduct[] = [
   {
@@ -39,10 +40,17 @@ const dummy: iProduct[] = [
 ];
 
 export default function OrderScreen() {
+  const { isIncreaseAmountAlertOpen, setIsIncreaseAmountAlertOpen } = useApplicationControlContext();
   return (
     <>
       <Searchbar />
       <OrderList list={dummy} />
+      <Alert
+        isOpen={isIncreaseAmountAlertOpen}
+        setIsOpen={setIsIncreaseAmountAlertOpen}
+        title="Inserir no carrinho"
+        description="Informe a quantidade desejada e confirme para inserir no carrinho: "
+      />
     </>
   );
 }

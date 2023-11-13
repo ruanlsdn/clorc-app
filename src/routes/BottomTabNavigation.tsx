@@ -8,21 +8,20 @@ import {
 } from "@tamagui/lucide-icons";
 import React from "react";
 import { ButtonHeaderRight } from "../components";
-import { HistoryScreen, OrderScreen, ProductsScreen } from "../pages";
 import { useApplicationControlContext } from "../contexts";
-import { ActionEnum } from "../enums/ActionEnum";
+import { HistoryScreen, OrderScreen, ProductsScreen } from "../pages";
 
 const BottomTab = createBottomTabNavigator();
 
 export default function BottomTabNavigation() {
-  const { setAction, setIsAdaptedDialogOpen } = useApplicationControlContext();
+  const { setIsCreateProductDialogOpen } = useApplicationControlContext();
+  
   const handleOrderButton = () => {
     console.log(1);
   };
 
   const handleProductsButton = () => {
-    setAction(ActionEnum.CREATE);
-    setIsAdaptedDialogOpen(true);
+    setIsCreateProductDialogOpen(true);
   };
 
   return (
@@ -30,9 +29,9 @@ export default function BottomTabNavigation() {
       screenOptions={{
         headerStyle: { backgroundColor: "#202123" },
         headerTitleStyle: { color: "#ffffff" },
-        tabBarStyle: { backgroundColor: "#202123", borderColor: "#202123"},
+        tabBarStyle: { backgroundColor: "#202123", borderColor: "#202123" },
         tabBarActiveTintColor: "#19C37D",
-        tabBarInactiveTintColor: "#ffffff"
+        tabBarInactiveTintColor: "#ffffff",
       }}
     >
       <BottomTab.Screen
@@ -55,7 +54,7 @@ export default function BottomTabNavigation() {
           headerTitle: "Produtos",
           headerRight: () => (
             <ButtonHeaderRight
-              icon={<Plus size="$2" color="#ffffff"/>}
+              icon={<Plus size="$2" color="#ffffff" />}
               handleFunction={handleProductsButton}
             />
           ),

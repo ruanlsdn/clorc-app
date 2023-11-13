@@ -18,7 +18,7 @@ export default function Alert({
   setIsOpen,
 }: props) {
   return (
-    <AlertDialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
+    <AlertDialog open={isOpen}>
       <AlertDialog.Portal>
         <AlertDialog.Overlay
           key="overlay"
@@ -54,6 +54,7 @@ export default function Alert({
               fontSize="$5"
               color="#D9D9E3"
               alignSelf="center"
+              textAlign="center"
             >
               {description}
             </AlertDialog.Description>
@@ -61,7 +62,7 @@ export default function Alert({
             <View>{children}</View>
 
             <XStack space="$3" justifyContent="center">
-              <AlertDialog.Cancel bc="#565869" asChild>
+              <AlertDialog.Action bc="#565869" asChild>
                 <Button
                   pressStyle={{
                     opacity: 0.5,
@@ -70,10 +71,11 @@ export default function Alert({
                   }}
                   elevationAndroid={5}
                   color="$red11Light"
+                  onPress={() => setIsOpen(false)}
                 >
                   Cancelar
                 </Button>
-              </AlertDialog.Cancel>
+              </AlertDialog.Action>
               <AlertDialog.Action bc="#565869" asChild>
                 <Button
                   pressStyle={{
@@ -83,6 +85,7 @@ export default function Alert({
                   }}
                   elevationAndroid={5}
                   color="#19C37D"
+                  onPress={() => setIsOpen(false)}
                 >
                   Confirmar
                 </Button>

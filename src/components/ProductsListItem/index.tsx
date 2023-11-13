@@ -1,4 +1,4 @@
-import { ChevronDown, List, Pencil, ShoppingBag, Trash } from "@tamagui/lucide-icons";
+import { ChevronDown, Pencil, ShoppingBag, Trash } from "@tamagui/lucide-icons";
 import React from "react";
 import {
   Accordion,
@@ -10,7 +10,6 @@ import {
   YStack
 } from "tamagui";
 import { useApplicationControlContext } from "../../contexts";
-import { ActionEnum } from "../../enums/ActionEnum";
 import { iProduct } from "../../interfaces";
 import AvatarIcon from "../AvatarIcon";
 
@@ -19,16 +18,14 @@ type props = {
 };
 
 export default function ProductsListItem({ item }: props) {
-  const { setIsAdaptedDialogOpen, setIsAlertOpen, setAction } =
-    useApplicationControlContext();
+  const { setIsEditProductDialogOpen, setIsDeleteProductAlertOpen } = useApplicationControlContext();
 
   const handleOnPressEdit = () => {
-    setAction(ActionEnum.UPDATE);
-    setIsAdaptedDialogOpen(true);
+    setIsEditProductDialogOpen(true);
   };
 
   const handleOnPressDelete = () => {
-    setIsAlertOpen(true);
+    setIsDeleteProductAlertOpen(true);
   };
 
   return (

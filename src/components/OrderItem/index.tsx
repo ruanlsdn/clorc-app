@@ -4,12 +4,19 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import { Text, XStack, YStack } from "tamagui";
 import { iProduct } from "../../interfaces";
 import AvatarIcon from "../AvatarIcon";
+import { useApplicationControlContext } from "../../contexts";
 
 type props = {
   item: iProduct;
 };
 
 export default function OrderItem({ item }: props) {
+  const { setIsIncreaseAmountAlertOpen } = useApplicationControlContext();
+
+  const handlePlusButton = () => {
+    setIsIncreaseAmountAlertOpen(true);
+  };
+
   return (
     <XStack
       flexDirection="row"
@@ -33,7 +40,10 @@ export default function OrderItem({ item }: props) {
         </YStack>
       </XStack>
       <XStack space="$3">
-        <TouchableOpacity style={styles.buttonContainer}>
+        <TouchableOpacity
+          onPress={handlePlusButton}
+          style={styles.buttonContainer}
+        >
           <Plus color="#19C37D" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonContainer}>
