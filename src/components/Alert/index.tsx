@@ -22,15 +22,15 @@ export default function Alert({
       <AlertDialog.Portal>
         <AlertDialog.Overlay
           key="overlay"
-          animation="quick"
+          animation="100ms"
           opacity={0.5}
-          enterStyle={{ opacity: 0 }}
+          enterStyle={{ opacity: 1 }}
           exitStyle={{ opacity: 0 }}
         />
         <AlertDialog.Content
           key="content"
           animation={[
-            "quick",
+            "100ms",
             {
               opacity: {
                 overshootClamping: true,

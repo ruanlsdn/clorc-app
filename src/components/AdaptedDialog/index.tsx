@@ -26,7 +26,7 @@ export default function AdaptedDialog({
       }}
     >
       <Adapt when="sm" platform="touch">
-        <Sheet animation="medium" zIndex={200000} modal dismissOnSnapToBottom>
+        <Sheet animation="quick" zIndex={200000} modal dismissOnSnapToBottom>
           <Sheet.Frame bc="#202123" padding="$4" gap="$4">
             <Adapt.Contents />
           </Sheet.Frame>
