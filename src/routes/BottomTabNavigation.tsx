@@ -16,10 +16,10 @@ const BottomTab = createBottomTabNavigator();
 
 export default function BottomTabNavigation() {
   const { setIsCreateProductDialogOpen } = useApplicationControlContext();
-  const navigation = useNavigation();
+  const { navigate } = useNavigation();
 
   const handleOrderButton = () => {
-    navigation.navigate("cart");
+    navigate("cart" as never);
   };
 
   const handleProductsButton = () => {

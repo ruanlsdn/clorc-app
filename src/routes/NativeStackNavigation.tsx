@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { CartScreen, LoginScreen } from "../pages";
+import { CartScreen, HistoryCartScreen, LoginScreen } from "../pages";
 import BottomTabNavigation from "./BottomTabNavigation";
 
 const NativeStack = createNativeStackNavigator();
@@ -18,6 +18,16 @@ export default function NativeStackNavigation() {
         }}
         name="cart"
         component={CartScreen}
+      />
+      <NativeStack.Screen
+        options={{
+          headerShown: true,
+          headerStyle: { backgroundColor: "#202123" },
+          headerTintColor: "#ffffff",
+          title: "Resumo",
+        }}
+        name="historyCart"
+        component={HistoryCartScreen}
       />
     </NativeStack.Navigator>
   );
