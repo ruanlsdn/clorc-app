@@ -10,3 +10,4 @@ export { default as OrderList } from "./OrderList";
 export { default as ProductsList } from "./ProductsList";
 export { default as ProductsListItem } from "./ProductsListItem";
 export { default as Searchbar } from "./Searchbar";
+export { default as UpsertProduct } from "./UpsertProduct";

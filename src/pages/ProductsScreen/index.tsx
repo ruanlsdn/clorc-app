@@ -4,10 +4,10 @@ import {
   Alert,
   ProductsList,
   Searchbar,
+  UpsertProduct,
 } from "../../components";
-import { iProduct } from "../../interfaces";
 import { useApplicationControlContext } from "../../contexts";
-import { ActionEnum } from "../../enums/ActionEnum";
+import { iProduct } from "../../interfaces";
 
 const dummy: iProduct[] = [
   {
@@ -69,12 +69,14 @@ export default function ProductsScreen() {
         description="Preencha os campos abaixo e confirme para salvar o produto:"
         isOpen={isCreateProductDialogOpen}
         setIsOpen={setIsCreateProductDialogOpen}
+        children={<UpsertProduct />}
       />
       <AdaptedDialog
         title="Editar"
         description="Atualize os campos abaixo e confirme para salvar suas alterações:"
         isOpen={isEditProductDialogOpen}
         setIsOpen={setIsEditProductDialogOpen}
+        children={<UpsertProduct />}
       />
     </>
   );
