@@ -10,14 +10,16 @@ import React from "react";
 import { ButtonHeaderRight } from "../components";
 import { useApplicationControlContext } from "../contexts";
 import { HistoryScreen, OrderScreen, ProductsScreen } from "../pages";
+import { useNavigation } from "@react-navigation/native";
 
 const BottomTab = createBottomTabNavigator();
 
 export default function BottomTabNavigation() {
   const { setIsCreateProductDialogOpen } = useApplicationControlContext();
+  const navigation = useNavigation();
 
   const handleOrderButton = () => {
-    console.log(1);
+    navigation.navigate("cart");
   };
 
   const handleProductsButton = () => {
