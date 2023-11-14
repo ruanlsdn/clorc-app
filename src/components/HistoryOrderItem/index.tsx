@@ -4,12 +4,19 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text, XStack, YStack } from "tamagui";
 import { iHistoryOrder } from "../../interfaces";
 import AvatarIcon from "../AvatarIcon";
+import { useNavigation } from "@react-navigation/native";
 
 type props = {
   item: iHistoryOrder;
 };
 
 export default function HistoryOrderItem({ item }: props) {
+  const { navigate } = useNavigation();
+
+  const handleEyeButton = () => {
+    navigate("historyCart" as never);
+  };
+
   return (
     <>
       <View style={styles.container}>
@@ -24,7 +31,10 @@ export default function HistoryOrderItem({ item }: props) {
             </Text>
           </YStack>
         </XStack>
-        <TouchableOpacity style={styles.buttonContainer}>
+        <TouchableOpacity
+          onPress={handleEyeButton}
+          style={styles.buttonContainer}
+        >
           <Eye color="#ffffff" />
         </TouchableOpacity>
       </View>
