@@ -49,6 +49,78 @@ const dummyArray: iCartProduct[] = [
     amount: 1,
     price: 25.5,
   },
+  {
+    id: "1",
+    name: "Hamburguer Artesanal Sabor Frango",
+    amount: 2,
+    price: 10.99,
+  },
+  {
+    id: "2",
+    name: "Produto 2",
+    amount: 1,
+    price: 19.99,
+  },
+  {
+    id: "3",
+    name: "Produto 3",
+    amount: 3,
+    price: 7.49,
+  },
+  {
+    id: "4",
+    name: "Produto 4",
+    amount: 1,
+    price: 14.95,
+  },
+  {
+    id: "5",
+    name: "Produto 5",
+    amount: 2,
+    price: 8.99,
+  },
+  {
+    id: "6",
+    name: "Produto 6",
+    amount: 1,
+    price: 25.5,
+  },
+  {
+    id: "1",
+    name: "Hamburguer Artesanal Sabor Frango",
+    amount: 2,
+    price: 10.99,
+  },
+  {
+    id: "2",
+    name: "Produto 2",
+    amount: 1,
+    price: 19.99,
+  },
+  {
+    id: "3",
+    name: "Produto 3",
+    amount: 3,
+    price: 7.49,
+  },
+  {
+    id: "4",
+    name: "Produto 4",
+    amount: 1,
+    price: 14.95,
+  },
+  {
+    id: "5",
+    name: "Produto 5",
+    amount: 2,
+    price: 8.99,
+  },
+  {
+    id: "6",
+    name: "Produto 6",
+    amount: 1,
+    price: 25.5,
+  },
 ];
 
 export default function HistoryCartScreen() {
@@ -85,19 +157,6 @@ export default function HistoryCartScreen() {
         </XStack>
         <XStack space justifyContent="space-between">
           <Button
-            circular
-            bc="#343541"
-            flex={1}
-            elevationAndroid={5}
-            pressStyle={{
-              opacity: 0.5,
-              borderColor: "#343541",
-              backgroundColor: "#343541",
-            }}
-          >
-            <ClipboardPaste color="#D9D9E3" />
-          </Button>
-          <Button
             bc="#343541"
             flex={1}
             elevationAndroid={5}
@@ -120,6 +179,19 @@ export default function HistoryCartScreen() {
             }}
           >
             <Check color="#D9D9E3" />
+          </Button>
+          <Button
+            circular
+            bc="#343541"
+            flex={1}
+            elevationAndroid={5}
+            pressStyle={{
+              opacity: 0.5,
+              borderColor: "#343541",
+              backgroundColor: "#343541",
+            }}
+          >
+            <ClipboardPaste color="#D9D9E3" />
           </Button>
         </XStack>
       </View>
