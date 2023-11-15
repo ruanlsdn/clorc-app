@@ -1,8 +1,11 @@
+import {
+  ClipboardPaste,
+  RefreshCcw
+} from "@tamagui/lucide-icons";
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import { Button, Text, XStack } from "tamagui";
 import { CartList } from "../../components";
-import { XStack, Text, Button } from "tamagui";
-import { Printer, RefreshCcw, Send } from "@tamagui/lucide-icons";
 import { iCartProduct } from "../../interfaces";
 
 const dummyArray: iCartProduct[] = [
@@ -91,7 +94,7 @@ export default function CartScreen() {
               backgroundColor: "#343541",
             }}
           >
-            <Send color="#D9D9E3" />
+            <ClipboardPaste color="#D9D9E3" />
           </Button>
         </XStack>
       </View>
