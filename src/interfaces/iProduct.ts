@@ -1,4 +1,10 @@
 export default interface iProduct {
-  title: string;
-  price: number;
+  id?: string;
+  description?: string;
+  price?: number;
+  countable?: boolean;
+  number?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  userId?: string
 }
