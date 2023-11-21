@@ -203,6 +203,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#202123",
+    elevation: 5
   },
   clientInfoContainer: {
     alignItems: "center",
