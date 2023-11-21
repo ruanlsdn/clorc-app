@@ -4,7 +4,10 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import { Text, XStack, YStack } from "tamagui";
 import { iProduct } from "../../interfaces";
 import AvatarIcon from "../AvatarIcon";
-import { useApplicationControlContext } from "../../contexts";
+import {
+  useApplicationControlContext,
+  useCartControlContext,
+} from "../../contexts";
 
 type props = {
   item: iProduct;
@@ -12,9 +15,21 @@ type props = {
 
 export default function OrderItem({ item }: props) {
   const { setIsIncreaseAmountAlertOpen } = useApplicationControlContext();
+  const {
+    setSelectedProduct,
+    getProductQuantityOnCart,
+    removeProductFromCart,
+  } = useCartControlContext();
+
+  const quantity = getProductQuantityOnCart(item.id!);
 
   const handlePlusButton = () => {
+    setSelectedProduct(item);
     setIsIncreaseAmountAlertOpen(true);
+  };
+
+  const handleXButton = () => {
+    removeProductFromCart(item.id!);
   };
 
   return (
@@ -34,9 +49,9 @@ export default function OrderItem({ item }: props) {
         <AvatarIcon icon={<BaggageClaim color="#ffffff" />} />
         <YStack>
           <Text fontWeight="bold" fontSize="$6" color="#ffffff">
-            {item.title}
+            {item.description}
           </Text>
-          <Text color="#D9D9E3" fontSize="$5">{`x${item.price}`}</Text>
+          <Text color="#D9D9E3" fontSize="$5">{`x${quantity}`}</Text>
         </YStack>
       </XStack>
       <XStack space="$3">
@@ -46,8 +61,11 @@ export default function OrderItem({ item }: props) {
         >
           <Plus color="#19C37D" />
         </TouchableOpacity>
-        {false && (
-          <TouchableOpacity style={styles.buttonContainer}>
+        {quantity > 0 && (
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={handleXButton}
+          >
             <X color="red" />
           </TouchableOpacity>
         )}
