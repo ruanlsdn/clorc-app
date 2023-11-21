@@ -1,6 +1,5 @@
-export default interface iCartProduct {
-  id: string;
-  name: string;
-  amount: number;
-  price: number;
+import iProduct from "./iProduct";
+
+export default interface iCartProduct extends iProduct {
+  quantity: number;
 }
