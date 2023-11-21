@@ -17,7 +17,7 @@ const useAxios = <T,>() => {
 
   const fetchData = async (
     { axiosInstance, method, url, config }: args,
-    body: T
+    body?: T
   ) => {
     try {
       setLoading(true);
