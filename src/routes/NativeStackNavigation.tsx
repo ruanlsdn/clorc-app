@@ -1,10 +1,40 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { CartScreen, HistoryCartScreen, LoginScreen } from "../pages";
+import { useEffect } from "react";
+import { useDataControlContext } from "../contexts";
+import { useAxios } from "../hooks";
+import { iProduct } from "../interfaces";
+import { CartScreen, HistoryCartScreen } from "../pages";
+import { axiosProductService } from "../services";
 import BottomTabNavigation from "./BottomTabNavigation";
 
 const NativeStack = createNativeStackNavigator();
 
 export default function NativeStackNavigation() {
+  const { setProducts } = useDataControlContext();
+  const {
+    data: productData,
+    status: productStatus,
+    error: productError,
+    loading: productLoading,
+    fetchData: fetchProductData,
+  } = useAxios<iProduct[]>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchProductData({
+        axiosInstance: axiosProductService,
+        method: "get",
+        url: `/439b0584-35b7-4486-b8a1-1165c19a26e1`,
+      });
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    productData && setProducts(productData);
+  }, [productData]);
+
   return (
     <NativeStack.Navigator screenOptions={{ headerShown: false }}>
       {/* <NativeStack.Screen options={{headerShown: false}} name='login' component={LoginScreen}/> */}
