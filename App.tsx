@@ -18,15 +18,15 @@ export default function App() {
   }
 
   return (
-    <TamaguiProvider config={tamaguiConfig}>
-      <SafeAreaProvider>
-        <NavigationContainer>
-          <ApplicationControlProvider>
+    <ApplicationControlProvider>
+      <TamaguiProvider config={tamaguiConfig}>
+        <SafeAreaProvider>
+          <NavigationContainer>
             <StatusBar style="light" />
             <NativeStackNavigation />
-          </ApplicationControlProvider>
-        </NavigationContainer>
-      </SafeAreaProvider>
-    </TamaguiProvider>
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </TamaguiProvider>
+    </ApplicationControlProvider>
   );
 }
