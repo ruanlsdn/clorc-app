@@ -1,57 +1,29 @@
-import {
-  ClipboardPaste,
-  RefreshCcw
-} from "@tamagui/lucide-icons";
+import { ClipboardPaste, RefreshCcw } from "@tamagui/lucide-icons";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, Text, XStack } from "tamagui";
 import { CartList } from "../../components";
-import { iCartProduct } from "../../interfaces";
-
-const dummyArray: iCartProduct[] = [
-  {
-    id: "1",
-    name: "Hamburguer Artesanal Sabor Frango",
-    amount: 2,
-    price: 10.99,
-  },
-  {
-    id: "2",
-    name: "Produto 2",
-    amount: 1,
-    price: 19.99,
-  },
-  {
-    id: "3",
-    name: "Produto 3",
-    amount: 3,
-    price: 7.49,
-  },
-  {
-    id: "4",
-    name: "Produto 4",
-    amount: 1,
-    price: 14.95,
-  },
-  {
-    id: "5",
-    name: "Produto 5",
-    amount: 2,
-    price: 8.99,
-  },
-  {
-    id: "6",
-    name: "Produto 6",
-    amount: 1,
-    price: 25.5,
-  },
-];
+import { useCartControlContext } from "../../contexts";
+import { useNavigation } from "@react-navigation/native";
 
 export default function CartScreen() {
+  const {
+    cartProducts,
+    getTotalPriceOnCart,
+    getTotalQuantityOnCart,
+    removeAllProductsFromCart,
+  } = useCartControlContext();
+  const { goBack } = useNavigation();
+
+  const handleRefreshButton = () => {
+    removeAllProductsFromCart();
+    goBack();
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.cartContainer}>
-        <CartList list={dummyArray} />
+        <CartList list={cartProducts} />
       </View>
       <View style={styles.div} />
       <View style={styles.summaryContainer}>
@@ -60,7 +32,7 @@ export default function CartScreen() {
             Itens incluídos:
           </Text>
           <Text fontSize="$6" fontWeight="bold" color="#ffffff">
-            x5
+            x{getTotalQuantityOnCart()}
           </Text>
         </XStack>
         <XStack space="$2" alignSelf="flex-end" marginBottom="$4">
@@ -68,7 +40,7 @@ export default function CartScreen() {
             Somatório:
           </Text>
           <Text fontSize="$6" fontWeight="bold" color="#ffffff">
-            R$ 20,00
+            R$ {getTotalPriceOnCart()}
           </Text>
         </XStack>
         <XStack space justifyContent="space-between">
@@ -81,6 +53,7 @@ export default function CartScreen() {
               borderColor: "#343541",
               backgroundColor: "#343541",
             }}
+            onPress={handleRefreshButton}
           >
             <RefreshCcw color="#D9D9E3" />
           </Button>
