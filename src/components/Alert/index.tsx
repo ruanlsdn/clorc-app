@@ -60,37 +60,6 @@ export default function Alert({
             </AlertDialog.Description>
 
             <View>{children}</View>
-
-            <XStack space="$3" justifyContent="center">
-              <AlertDialog.Action bc="#565869" asChild>
-                <Button
-                  pressStyle={{
-                    opacity: 0.5,
-                    borderColor: "#565869",
-                    backgroundColor: "#565869",
-                  }}
-                  elevationAndroid={5}
-                  color="$red11Light"
-                  onPress={() => setIsOpen(false)}
-                >
-                  Cancelar
-                </Button>
-              </AlertDialog.Action>
-              <AlertDialog.Action bc="#565869" asChild>
-                <Button
-                  pressStyle={{
-                    opacity: 0.5,
-                    borderColor: "#565869",
-                    backgroundColor: "#565869",
-                  }}
-                  elevationAndroid={5}
-                  color="#19C37D"
-                  onPress={() => setIsOpen(false)}
-                >
-                  Confirmar
-                </Button>
-              </AlertDialog.Action>
-            </XStack>
           </YStack>
         </AlertDialog.Content>
       </AlertDialog.Portal>
