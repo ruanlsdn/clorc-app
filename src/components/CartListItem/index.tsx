@@ -11,24 +11,29 @@ export default function CartListItem({ item }: props) {
   return (
     <XStack
       flexDirection="row"
-      alignItems="center"
-      justifyContent="flex-start"
       marginBottom="$2"
       marginHorizontal="$2"
       height="$5"
       bc="#343541"
       borderRadius="$5"
       padding="$2"
+      space="$2.5"
     >
-      <Text fontSize="$5" color="#D9D9E3" width="55%">
-        {item.description}
-      </Text>
-      <Text fontSize="$5" color="#D9D9E3" width={"20%"}>
-        x{item.quantity}
-      </Text>
-      <Text fontWeight="bold" fontSize="$5" color="#ffffff" width={"30%"}>
-        R$ {(item.quantity * item.price!).toFixed(2)}
-      </Text>
+      <XStack width="50%" alignItems="center" justifyContent="flex-start">
+        <Text fontSize="$5" color="#D9D9E3">
+          {item.description}
+        </Text>
+      </XStack>
+      <XStack width={"15%"} alignItems="center" justifyContent="center">
+        <Text fontSize="$5" color="#D9D9E3">
+          x{item.quantity}
+        </Text>
+      </XStack>
+      <XStack width={"30%"} alignItems="center" justifyContent="flex-end">
+        <Text fontWeight="bold" fontSize="$5" color="#ffffff">
+          R$ {(item.quantity * item.price!).toFixed(2)}
+        </Text>
+      </XStack>
     </XStack>
   );
 }
