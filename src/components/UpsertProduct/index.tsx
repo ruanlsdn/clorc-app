@@ -1,9 +1,12 @@
-import React, { useState } from "react";
-import { StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Keyboard, StyleSheet } from "react-native";
 import { Button, Input, Label, XStack, YStack } from "tamagui";
+import {
+  useApplicationControlContext,
+  useDataControlContext,
+} from "../../contexts";
 import { useAxios } from "../../hooks";
 import { iProduct } from "../../interfaces";
-import { useApplicationControlContext } from "../../contexts";
 import { axiosProductService } from "../../services";
 
 type props = {
@@ -11,13 +14,37 @@ type props = {
 };
 
 export default function UpsertProduct({ isUpdate }: props) {
+  const { setIsCreateProductDialogOpen, setIsEditProductDialogOpen } = useApplicationControlContext();
+  const { selectedProduct, setRefreshProducts } = useDataControlContext();
+  const { fetchData } = useAxios<iProduct>();
+
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
-  const { data, status, error, loading, fetchData } = useAxios<iProduct>();
-  const { setIsCreateProductDialogOpen } = useApplicationControlContext();
 
-  const handleSubmit = async () => {
+  useEffect(() => {
+    if (isUpdate) {
+      setDescription(selectedProduct?.description!);
+      setPrice(selectedProduct?.price?.toString()!);
+      setStock(selectedProduct?.number?.toString()!);
+    }
+  }, [isUpdate]);
+
+  const handleSubmit = () => {
+    Keyboard.dismiss();
+
+    if (isUpdate) {
+      handleSubmitUpdate();
+      setIsEditProductDialogOpen(false);
+    } else {
+      handleSubmitCreate();
+      setIsCreateProductDialogOpen(false);
+    }
+
+    setRefreshProducts((prev) => !prev);
+  };
+
+  const handleSubmitCreate = async () => {
     await fetchData(
       {
         axiosInstance: axiosProductService,
@@ -27,13 +54,23 @@ export default function UpsertProduct({ isUpdate }: props) {
       {
         description,
         price: Number(price),
-        userId: "439b0584-35b7-4486-b8a1-1165c19a26e1",
+        userId: "0cc46bb7-d3f7-4904-b543-4916ee2136c1",
       }
     );
+  };
 
-    if (status === 201) {
-      setIsCreateProductDialogOpen(false);
-    }
+  const handleSubmitUpdate = async () => {
+    await fetchData(
+      {
+        axiosInstance: axiosProductService,
+        method: "patch",
+        url: `/${selectedProduct?.id}`,
+      },
+      {
+        description,
+        price: Number(price),
+      }
+    );
   };
 
   return (
@@ -43,7 +80,11 @@ export default function UpsertProduct({ isUpdate }: props) {
           <Label disabled color="#D9D9E3">
             Descrição:
           </Label>
-          <Input onChangeText={(text) => setDescription(text)} bc="#D9D9E3" />
+          <Input
+            onChangeText={(text) => setDescription(text)}
+            bc="#D9D9E3"
+            value={description}
+          />
         </YStack>
         <XStack space>
           <YStack flex={1}>
@@ -54,9 +95,10 @@ export default function UpsertProduct({ isUpdate }: props) {
               onChangeText={(text) => setPrice(text)}
               keyboardType="numeric"
               bc="#D9D9E3"
+              value={price}
             />
           </YStack>
-          {isUpdate && (
+          {isUpdate && selectedProduct?.countable && (
             <YStack flex={1}>
               <Label disabled color="#D9D9E3">
                 Estoque:
@@ -65,6 +107,7 @@ export default function UpsertProduct({ isUpdate }: props) {
                 onChangeText={(text) => setStock(text)}
                 keyboardType="numeric"
                 bc="#D9D9E3"
+                value={stock}
               />
             </YStack>
           )}
