@@ -15,3 +15,4 @@ export { default as CartList } from "./CartList";
 export { default as CartListItem } from "./CartListItem";
 export { default as HistoryCartList } from "./HistoryCartList";
 export { default as HistoryCartListItem } from "./HistoryCartListItem";
+export { default as AlertButtons } from "./AlertButtons";
