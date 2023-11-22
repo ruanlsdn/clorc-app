@@ -2,49 +2,22 @@ import React from "react";
 import {
   AdaptedDialog,
   Alert,
+  AlertButtons,
   ProductsList,
   Searchbar,
   UpsertProduct,
 } from "../../components";
-import { useApplicationControlContext } from "../../contexts";
-import { iProduct } from "../../interfaces";
-
-const dummy: iProduct[] = [
-  {
-    title: "Item 1",
-    price: 3.0,
-  },
-  {
-    title: "Item 2",
-    price: 3.0,
-  },
-  {
-    title: "Item 3",
-    price: 3.0,
-  },
-  {
-    title: "Item 4",
-    price: 3.0,
-  },
-  {
-    title: "Item 5",
-    price: 3.0,
-  },
-  {
-    title: "Item 6",
-    price: 3.0,
-  },
-  {
-    title: "Item 7",
-    price: 3.0,
-  },
-  {
-    title: "Item 8",
-    price: 3.0,
-  },
-];
+import {
+  useApplicationControlContext,
+  useDataControlContext,
+} from "../../contexts";
+import { useAxios } from "../../hooks";
+import { axiosProductService } from "../../services";
 
 export default function ProductsScreen() {
+  const { fetchData } = useAxios();
+  const { products, selectedProduct, setRefreshProducts } =
+    useDataControlContext();
   const {
     isCreateProductDialogOpen,
     setIsCreateProductDialogOpen,
@@ -54,29 +27,49 @@ export default function ProductsScreen() {
     setIsDeleteProductAlertOpen,
   } = useApplicationControlContext();
 
+  const handleCancelButton = () => {
+    setIsDeleteProductAlertOpen(false);
+  };
+
+  const handleConfirmButton = () => {
+    fetchData({
+      axiosInstance: axiosProductService,
+      method: "delete",
+      url: `/${selectedProduct?.id}`,
+    });
+    setIsDeleteProductAlertOpen(false);
+    setRefreshProducts((prev) => !prev);
+  };
+
   return (
     <>
       <Searchbar />
-      <ProductsList list={dummy} />
+      <ProductsList list={products} />
       <Alert
         title="Excluir"
         description="Tem certeza que deseja excluir o produto?"
         isOpen={isDeleteProductAlertOpen}
         setIsOpen={setIsDeleteProductAlertOpen}
+        children={
+          <AlertButtons
+            handleCancelButton={handleCancelButton}
+            handleConfirmButton={handleConfirmButton}
+          />
+        }
       />
       <AdaptedDialog
         title="Cadastrar"
         description="Preencha os campos abaixo e confirme para salvar o produto:"
         isOpen={isCreateProductDialogOpen}
         setIsOpen={setIsCreateProductDialogOpen}
-        children={<UpsertProduct />}
+        children={<UpsertProduct isUpdate={false} />}
       />
       <AdaptedDialog
         title="Editar"
         description="Atualize os campos abaixo e confirme para salvar suas alterações:"
         isOpen={isEditProductDialogOpen}
         setIsOpen={setIsEditProductDialogOpen}
-        children={<UpsertProduct />}
+        children={<UpsertProduct isUpdate={true} />}
       />
     </>
   );
