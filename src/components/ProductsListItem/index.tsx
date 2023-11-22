@@ -7,31 +7,53 @@ import {
   Switch,
   Text,
   XStack,
-  YStack
+  YStack,
 } from "tamagui";
-import { useApplicationControlContext } from "../../contexts";
+import {
+  useApplicationControlContext,
+  useDataControlContext,
+} from "../../contexts";
 import { iProduct } from "../../interfaces";
 import AvatarIcon from "../AvatarIcon";
+import { useAxios } from "../../hooks";
+import { axiosProductService } from "../../services";
 
 type props = {
   item: iProduct;
 };
 
 export default function ProductsListItem({ item }: props) {
+  const { fetchData, status } = useAxios<iProduct>();
   const { setIsEditProductDialogOpen, setIsDeleteProductAlertOpen } = useApplicationControlContext();
+  const { setSelectedProduct, setRefreshProducts } = useDataControlContext();
 
   const handleOnPressEdit = () => {
+    setSelectedProduct(item);
     setIsEditProductDialogOpen(true);
   };
 
   const handleOnPressDelete = () => {
+    setSelectedProduct(item);
     setIsDeleteProductAlertOpen(true);
+  };
+
+  const handleSwitchChange = (checked: boolean) => {
+    fetchData(
+      {
+        axiosInstance: axiosProductService,
+        method: "patch",
+        url: `/${item.id}`,
+      },
+      { countable: checked }
+    );
+
+    setRefreshProducts((prev) => !prev);
   };
 
   return (
     <>
       <Accordion type="multiple" overflow="hidden" borderRadius="$5">
-        <Accordion.Item value={item.title}>
+        <Accordion.Item value={item.description!}>
           <Accordion.Trigger
             flexDirection="row"
             justifyContent="space-between"
@@ -49,12 +71,12 @@ export default function ProductsListItem({ item }: props) {
                   <AvatarIcon icon={<ShoppingBag color="#ffffff" />} />
                   <YStack>
                     <Text fontWeight="bold" fontSize="$6" color="#ffffff">
-                      {item.title}
+                      {item.description}
                     </Text>
                     <Text
                       color="#D9D9E3"
                       fontSize="$5"
-                    >{`R$ ${item.price.toFixed(2)}`}</Text>
+                    >{`R$ ${item.price?.toFixed(2)}`}</Text>
                   </YStack>
                 </XStack>
                 <Square animation="quick" rotate={open ? "180deg" : "0deg"}>
@@ -69,8 +91,14 @@ export default function ProductsListItem({ item }: props) {
                 <Text color="#ffffff" fontSize="$6">
                   Contabilizar
                 </Text>
-                <Switch size="$3" bc="#343541" borderColor="#40414F">
-                  <Switch.Thumb bc="#D9D9E3" animation={"100ms"} />
+                <Switch
+                  size="$3"
+                  bc="#343541"
+                  borderColor="#40414F"
+                  checked={item.countable}
+                  onCheckedChange={() => handleSwitchChange(!item.countable)}
+                >
+                  <Switch.Thumb bc={item.countable ? "#19C37D" : "#D9D9E3"} animation={"100ms"} />
                 </Switch>
               </XStack>
               <XStack space marginTop="$3" justifyContent="space-between">
