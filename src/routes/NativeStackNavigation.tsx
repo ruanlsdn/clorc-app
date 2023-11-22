@@ -10,7 +10,7 @@ import BottomTabNavigation from "./BottomTabNavigation";
 const NativeStack = createNativeStackNavigator();
 
 export default function NativeStackNavigation() {
-  const { setProducts } = useDataControlContext();
+  const { setProducts, refreshProducts } = useDataControlContext();
   const {
     data: productData,
     status: productStatus,
@@ -22,14 +22,14 @@ export default function NativeStackNavigation() {
   useEffect(() => {
     const fetchData = async () => {
       await fetchProductData({
-        axiosInstance: axiosProductService,
+      axiosInstance: axiosProductService,
         method: "get",
-        url: `/439b0584-35b7-4486-b8a1-1165c19a26e1`,
+        url: `/0cc46bb7-d3f7-4904-b543-4916ee2136c1`,
       });
     };
 
     fetchData();
-  }, []);
+  }, [refreshProducts]);
 
   useEffect(() => {
     productData && setProducts(productData);
