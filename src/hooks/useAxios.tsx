@@ -8,8 +8,8 @@ type args = {
   config?: AxiosRequestConfig;
 };
 
-const useAxios = <T,>() => {
-  const [data, setData] = useState<T | null>(null);
+const useAxios = <T, X>() => {
+  const [data, setData] = useState<X | null>(null);
   const [status, setStatus] = useState<number | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(false);

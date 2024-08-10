@@ -6,5 +6,5 @@ export default interface iProduct {
   quantity?: number;
   createdAt?: Date;
   updatedAt?: Date;
-  userId?: string
+  userId?: string;
 }

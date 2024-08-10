@@ -23,7 +23,7 @@ type props = {
 };
 
 export default function ProductsListItem({ item }: props) {
-  const { fetchData, status } = useAxios<iProduct>();
+  const { fetchData, status } = useAxios<iProduct, iProduct>();
   const { setIsEditProductDialogOpen, setIsDeleteProductAlertOpen } = useApplicationControlContext();
   const { setSelectedProduct, setRefreshProducts } = useDataControlContext();
 

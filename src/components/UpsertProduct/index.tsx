@@ -16,7 +16,7 @@ type props = {
 export default function UpsertProduct({ isUpdate }: props) {
   const { setIsCreateProductDialogOpen, setIsEditProductDialogOpen } = useApplicationControlContext();
   const { selectedProduct, setRefreshProducts } = useDataControlContext();
-  const { fetchData } = useAxios<iProduct>();
+  const { fetchData } = useAxios<iProduct, iProduct>();
 
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");

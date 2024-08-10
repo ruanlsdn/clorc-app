@@ -1,11 +1,11 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useEffect } from "react";
-import { useDataControlContext } from "../contexts";
-import { useAxios } from "../hooks";
-import { iProduct } from "../interfaces";
-import { CartScreen, HistoryCartScreen } from "../pages";
-import { axiosProductService } from "../services";
-import BottomTabNavigation from "./BottomTabNavigation";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useEffect } from 'react';
+import { useDataControlContext } from '../contexts';
+import { useAxios } from '../hooks';
+import { iProduct } from '../interfaces';
+import { CardScreen, CartScreen } from '../pages';
+import { axiosProductService } from '../services';
+import BottomTabNavigation from './BottomTabNavigation';
 
 const NativeStack = createNativeStackNavigator();
 
@@ -17,14 +17,14 @@ export default function NativeStackNavigation() {
     error: productError,
     loading: productLoading,
     fetchData: fetchProductData,
-  } = useAxios<iProduct[]>();
+  } = useAxios<iProduct[], iProduct[]>();
 
   useEffect(() => {
     const fetchData = async () => {
       await fetchProductData({
-      axiosInstance: axiosProductService,
-        method: "get",
-        url: `/a892f1d0-2b2a-49a7-a05b-02bd09aa8704`,
+        axiosInstance: axiosProductService,
+        method: 'get',
+        url: `/3961175a-382a-462d-b669-9978329276a3`,
       });
     };
 
@@ -38,26 +38,26 @@ export default function NativeStackNavigation() {
   return (
     <NativeStack.Navigator screenOptions={{ headerShown: false }}>
       {/* <NativeStack.Screen options={{headerShown: false}} name='login' component={LoginScreen}/> */}
-      <NativeStack.Screen name="menu" component={BottomTabNavigation} />
+      <NativeStack.Screen name='menu' component={BottomTabNavigation} />
       <NativeStack.Screen
         options={{
           headerShown: true,
-          headerStyle: { backgroundColor: "#343541" },
-          headerTintColor: "#ffffff",
-          title: "Carrinho",
+          headerStyle: { backgroundColor: '#343541' },
+          headerTintColor: '#ffffff',
+          title: 'Carrinho',
         }}
-        name="cart"
+        name='cart'
         component={CartScreen}
       />
       <NativeStack.Screen
         options={{
           headerShown: true,
-          headerStyle: { backgroundColor: "#343541" },
-          headerTintColor: "#ffffff",
-          title: "Resumo",
+          headerStyle: { backgroundColor: '#343541' },
+          headerTintColor: '#ffffff',
+          title: 'Resumo',
         }}
-        name="historyCart"
-        component={HistoryCartScreen}
+        name='historyCart'
+        component={CardScreen}
       />
     </NativeStack.Navigator>
   );

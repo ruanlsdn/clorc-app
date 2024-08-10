@@ -1,13 +1,17 @@
-import React, { createContext, useContext, useState } from "react";
-import { iProduct } from "../interfaces";
+import React, { createContext, useContext, useState } from 'react';
+import { iCard, iProduct } from '../interfaces';
 
 type DataControlContextProps = {
   selectedProduct: iProduct | null;
   setSelectedProduct: React.Dispatch<React.SetStateAction<iProduct | null>>;
   products: iProduct[];
   setProducts: React.Dispatch<React.SetStateAction<iProduct[]>>;
-  refreshProducts: boolean
+  refreshProducts: boolean;
   setRefreshProducts: React.Dispatch<React.SetStateAction<boolean>>;
+  refreshHistory: boolean;
+  setRefreshHistory: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedCard: iCard | null;
+  setSelectedCard: React.Dispatch<React.SetStateAction<iCard | null>>;
 };
 
 type props = {
@@ -20,6 +24,8 @@ export const DataControlProvider = ({ children }: props) => {
   const [selectedProduct, setSelectedProduct] = useState<iProduct | null>(null!);
   const [products, setProducts] = useState<iProduct[]>([]);
   const [refreshProducts, setRefreshProducts] = useState<boolean>(null!);
+  const [refreshHistory, setRefreshHistory] = useState<boolean>(null!);
+  const [selectedCard, setSelectedCard] = useState<iCard | null>(null!);
 
   return (
     <DataControlContext.Provider
@@ -28,8 +34,12 @@ export const DataControlProvider = ({ children }: props) => {
         setSelectedProduct,
         products,
         setProducts,
-        refreshProducts, 
-        setRefreshProducts
+        refreshProducts,
+        setRefreshProducts,
+        refreshHistory,
+        setRefreshHistory,
+        selectedCard,
+        setSelectedCard,
       }}
     >
       {children}
