@@ -24,7 +24,7 @@ export default function NativeStackNavigation() {
       await fetchProductData({
       axiosInstance: axiosProductService,
         method: "get",
-        url: `/0cc46bb7-d3f7-4904-b543-4916ee2136c1`,
+        url: `/a892f1d0-2b2a-49a7-a05b-02bd09aa8704`,
       });
     };
 
@@ -42,7 +42,7 @@ export default function NativeStackNavigation() {
       <NativeStack.Screen
         options={{
           headerShown: true,
-          headerStyle: { backgroundColor: "#202123" },
+          headerStyle: { backgroundColor: "#343541" },
           headerTintColor: "#ffffff",
           title: "Carrinho",
         }}
@@ -52,7 +52,7 @@ export default function NativeStackNavigation() {
       <NativeStack.Screen
         options={{
           headerShown: true,
-          headerStyle: { backgroundColor: "#202123" },
+          headerStyle: { backgroundColor: "#343541" },
           headerTintColor: "#ffffff",
           title: "Resumo",
         }}
