@@ -3,7 +3,7 @@ export default interface iProduct {
   description?: string;
   price?: number;
   countable?: boolean;
-  number?: number;
+  quantity?: number;
   createdAt?: Date;
   updatedAt?: Date;
   userId?: string

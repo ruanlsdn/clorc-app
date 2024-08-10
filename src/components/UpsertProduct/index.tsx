@@ -26,7 +26,7 @@ export default function UpsertProduct({ isUpdate }: props) {
     if (isUpdate) {
       setDescription(selectedProduct?.description!);
       setPrice(selectedProduct?.price?.toString()!);
-      setStock(selectedProduct?.number?.toString()!);
+      setStock(selectedProduct?.quantity?.toString()!);
     }
   }, [isUpdate]);
 
@@ -54,7 +54,7 @@ export default function UpsertProduct({ isUpdate }: props) {
       {
         description,
         price: Number(price),
-        userId: "0cc46bb7-d3f7-4904-b543-4916ee2136c1",
+        userId: "92b921e2-e479-4c50-947c-f7d98fcc5c82",
       }
     );
   };
