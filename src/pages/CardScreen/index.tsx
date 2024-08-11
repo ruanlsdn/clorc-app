@@ -27,14 +27,15 @@ export default function CardScreen() {
 
     return price.toFixed(2);
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.clientInfoContainer}>
         <Text fontSize='$6' fontWeight='bold' color='#ffffff'>
-          {selectedCard?.clientName}
+          {selectedCard?.clientName?.toUpperCase()}
         </Text>
         <Text fontSize='$4' color='#D9D9E3'>
-          {(selectedCard?.createdAt)}
+          {new Date(selectedCard?.createdAt!).toLocaleString('pt-br')}
         </Text>
       </View>
       <View style={styles.ordersContainer}>

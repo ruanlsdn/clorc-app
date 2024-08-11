@@ -27,10 +27,10 @@ export default function HistoryListItem({ item }: props) {
           <AvatarIcon icon={<Clipboard color='#ffffff' />} />
           <YStack space='$1.5' alignItems='flex-start' justifyContent='center'>
             <Text color='#ffffff' fontWeight='bold' fontSize='$6'>
-              {item.clientName}
+              {item.clientName.toUpperCase()}
             </Text>
             <Text color='#D9D9E3' fontSize='$4'>
-              {item.createdAt}
+              {new Date(item.createdAt).toLocaleString('pt-br')}
             </Text>
           </YStack>
         </XStack>
