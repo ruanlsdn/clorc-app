@@ -66,7 +66,7 @@ export default function OrderItem({ item }: props) {
             style={styles.buttonContainer}
             onPress={handleXButton}
           >
-            <X color="red" />
+            <X color="red11Light" />
           </TouchableOpacity>
         )}
       </XStack>
