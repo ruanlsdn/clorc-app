@@ -85,7 +85,7 @@ export default function ProductsListItem({ item }: props) {
               </>
             )}
           </Accordion.Trigger>
-          <Accordion.Content bc="#565869">
+          <Accordion.Content bc="#343541">
             <YStack space marginTop="$3">
               <XStack justifyContent="space-between" alignItems="center">
                 <Text color="#ffffff" fontSize="$6">
@@ -93,7 +93,7 @@ export default function ProductsListItem({ item }: props) {
                 </Text>
                 <Switch
                   size="$3"
-                  bc="#343541"
+                  bc="#565869"
                   borderColor="#40414F"
                   checked={item.countable}
                   onCheckedChange={() => handleSwitchChange(!item.countable)}
@@ -106,10 +106,10 @@ export default function ProductsListItem({ item }: props) {
                   elevationAndroid={5}
                   pressStyle={{
                     opacity: 0.5,
-                    borderColor: "#343541",
-                    backgroundColor: "#343541",
+                    borderColor: "#565869",
+                    backgroundColor: "#565869",
                   }}
-                  bc="#343541"
+                  bc="#565869"
                   onPress={handleOnPressEdit}
                   flex={1}
                 >
@@ -119,10 +119,10 @@ export default function ProductsListItem({ item }: props) {
                   elevationAndroid={5}
                   pressStyle={{
                     opacity: 0.5,
-                    borderColor: "#343541",
-                    backgroundColor: "#343541",
+                    borderColor: "#565869",
+                    backgroundColor: "#565869",
                   }}
-                  bc="#343541"
+                  bc="#565869"
                   onPress={handleOnPressDelete}
                   flex={1}
                 >
