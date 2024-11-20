@@ -1,4 +1,4 @@
-import { Check, ClipboardPaste, X } from '@tamagui/lucide-icons';
+import { Check, ClipboardPaste, ListRestart, X } from '@tamagui/lucide-icons';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, XStack } from 'tamagui';
@@ -6,6 +6,7 @@ import { CardOrderList } from '../../components';
 import { useDataControlContext } from '../../contexts';
 import { useAxios } from '../../hooks';
 import { axiosCardService } from '../../services';
+import { CardProductDto, CreateCardDto } from '../../interfaces';
 
 interface UpdateCardStatusDto {
   checked: boolean;
@@ -13,7 +14,8 @@ interface UpdateCardStatusDto {
 
 export default function CardScreen() {
   const { selectedCard, setRefreshHistory, setRefreshProducts } = useDataControlContext();
-  const { fetchData } = useAxios<UpdateCardStatusDto, any>();
+  const { fetchData: fetchDataCardStatus } = useAxios<UpdateCardStatusDto, any>();
+  const { fetchData: fetchDataNewCard } = useAxios<CreateCardDto, any>();
 
   const getTotalQuantityOnCard = () => {
     let quantity = 0;
@@ -34,41 +36,70 @@ export default function CardScreen() {
 
     return price.toFixed(2);
   };
-  
+
   const handleDenyButton = async () => {
-    await fetchData(
+    await fetchDataCardStatus(
       {
         axiosInstance: axiosCardService,
-        method: "patch",
+        method: 'patch',
         url: String(selectedCard?.id),
       },
       {
         checked: false,
-      }
+      },
     );
 
     setRefreshHistory((prev) => !prev);
-  }
+  };
 
-  const handleConfirmButton = async () => {    
-    await fetchData(
+  const handleConfirmButton = async () => {
+    await fetchDataCardStatus(
       {
         axiosInstance: axiosCardService,
-        method: "patch",
+        method: 'patch',
         url: String(selectedCard?.id),
       },
       {
         checked: true,
-      }
+      },
     );
 
     setRefreshHistory((prev) => !prev);
     setRefreshProducts((prev) => !prev);
-  }
+  };
+
+  const handleRemakeButton = async () => {
+    if (selectedCard?.orders?.length! > 0) {
+      const products: CardProductDto[] = [];
+
+      selectedCard?.orders?.forEach((order) => {
+        products.push({
+          productId: order.product.id,
+          productPrice: order.productPrice,
+          productQuantity: order.productQuantity,
+        });
+      });
+
+      await fetchDataNewCard(
+        {
+          axiosInstance: axiosCardService,
+          method: 'post',
+          url: '',
+        },
+        {
+          clientName: selectedCard?.clientName!,
+          products: products,
+          userId: 'b1c4d99f-ba57-44c7-bb0e-3d76b7792a4b',
+        },
+      );
+
+      setRefreshHistory((prev) => !prev);
+    }
+  };
 
   const handleClipboardButton = () => {
-    console.log('Button clipboard')
-  }
+    console.log('Button clipboard');
+  };
 
   return (
     <View style={styles.container}>
@@ -101,48 +132,80 @@ export default function CardScreen() {
             R$ {getTotalPriceOnCard()}
           </Text>
         </XStack>
-        <XStack space justifyContent='space-between'>
-          <Button
-            bc='#343541'
-            flex={1}
-            elevationAndroid={5}
-            pressStyle={{
-              opacity: 0.5,
-              borderColor: '#343541',
-              backgroundColor: '#343541',
-            }}
-            onPress={handleDenyButton}
-          >
-            <X color='#D9D9E3' />
-          </Button>
-          <Button
-            bc='#343541'
-            flex={1}
-            elevationAndroid={5}
-            pressStyle={{
-              opacity: 0.5,
-              borderColor: '#343541',
-              backgroundColor: '#343541',
-            }}
-            onPress={handleConfirmButton}
-          >
-            <Check color='#D9D9E3' />
-          </Button>
-          <Button
-            circular
-            bc='#343541'
-            flex={1}
-            elevationAndroid={5}
-            pressStyle={{
-              opacity: 0.5,
-              borderColor: '#343541',
-              backgroundColor: '#343541',
-            }}
-            onPress={handleClipboardButton}
-          >
-            <ClipboardPaste color='#D9D9E3' />
-          </Button>
-        </XStack>
+        {selectedCard?.checked !== null && (
+          <XStack space justifyContent='space-between'>
+            <Button
+              bc='#343541'
+              flex={1}
+              elevationAndroid={5}
+              pressStyle={{
+                opacity: 0.5,
+                borderColor: '#343541',
+                backgroundColor: '#343541',
+              }}
+              onPress={handleRemakeButton}
+            >
+              <ListRestart color='#D9D9E3' />
+            </Button>
+            <Button
+              bc='#343541'
+              flex={1}
+              elevationAndroid={5}
+              pressStyle={{
+                opacity: 0.5,
+                borderColor: '#343541',
+                backgroundColor: '#343541',
+              }}
+              onPress={handleClipboardButton}
+            >
+              <ClipboardPaste color='#D9D9E3' />
+            </Button>
+          </XStack>
+        )}
+        {selectedCard?.checked === null && (
+          <XStack space justifyContent='space-between'>
+            <Button
+              bc='#343541'
+              flex={1}
+              elevationAndroid={5}
+              pressStyle={{
+                opacity: 0.5,
+                borderColor: '#343541',
+                backgroundColor: '#343541',
+              }}
+              onPress={handleDenyButton}
+            >
+              <X color='#D9D9E3' />
+            </Button>
+            <Button
+              bc='#343541'
+              flex={1}
+              elevationAndroid={5}
+              pressStyle={{
+                opacity: 0.5,
+                borderColor: '#343541',
+                backgroundColor: '#343541',
+              }}
+              onPress={handleConfirmButton}
+            >
+              <Check color='#D9D9E3' />
+            </Button>
+            <Button
+              circular
+              bc='#343541'
+              flex={1}
+              elevationAndroid={5}
+              pressStyle={{
+                opacity: 0.5,
+                borderColor: '#343541',
+                backgroundColor: '#343541',
+              }}
+              onPress={handleClipboardButton}
+            >
+              <ClipboardPaste color='#D9D9E3' />
+            </Button>
+          </XStack>
+        )}
       </View>
     </View>
   );
