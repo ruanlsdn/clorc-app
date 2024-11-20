@@ -4,9 +4,16 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Text, XStack } from 'tamagui';
 import { CardOrderList } from '../../components';
 import { useDataControlContext } from '../../contexts';
+import { useAxios } from '../../hooks';
+import { axiosCardService } from '../../services';
+
+interface UpdateCardStatusDto {
+  checked: boolean;
+}
 
 export default function CardScreen() {
-  const { selectedCard } = useDataControlContext();
+  const { selectedCard, setRefreshHistory, setRefreshProducts } = useDataControlContext();
+  const { fetchData } = useAxios<UpdateCardStatusDto, any>();
 
   const getTotalQuantityOnCard = () => {
     let quantity = 0;
@@ -27,6 +34,41 @@ export default function CardScreen() {
 
     return price.toFixed(2);
   };
+  
+  const handleDenyButton = async () => {
+    await fetchData(
+      {
+        axiosInstance: axiosCardService,
+        method: "patch",
+        url: String(selectedCard?.id),
+      },
+      {
+        checked: false,
+      }
+    );
+
+    setRefreshHistory((prev) => !prev);
+  }
+
+  const handleConfirmButton = async () => {    
+    await fetchData(
+      {
+        axiosInstance: axiosCardService,
+        method: "patch",
+        url: String(selectedCard?.id),
+      },
+      {
+        checked: true,
+      }
+    );
+
+    setRefreshHistory((prev) => !prev);
+    setRefreshProducts((prev) => !prev);
+  }
+
+  const handleClipboardButton = () => {
+    console.log('Button clipboard')
+  }
 
   return (
     <View style={styles.container}>
@@ -69,6 +111,7 @@ export default function CardScreen() {
               borderColor: '#343541',
               backgroundColor: '#343541',
             }}
+            onPress={handleDenyButton}
           >
             <X color='#D9D9E3' />
           </Button>
@@ -81,6 +124,7 @@ export default function CardScreen() {
               borderColor: '#343541',
               backgroundColor: '#343541',
             }}
+            onPress={handleConfirmButton}
           >
             <Check color='#D9D9E3' />
           </Button>
@@ -94,6 +138,7 @@ export default function CardScreen() {
               borderColor: '#343541',
               backgroundColor: '#343541',
             }}
+            onPress={handleClipboardButton}
           >
             <ClipboardPaste color='#D9D9E3' />
           </Button>
