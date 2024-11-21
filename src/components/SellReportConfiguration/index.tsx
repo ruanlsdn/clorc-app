@@ -1,13 +1,18 @@
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { Calendar } from '@tamagui/lucide-icons';
+import moment from 'moment';
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { Button, Label, XStack, YStack } from 'tamagui';
+import { userId } from '../../../userId';
 import { useApplicationControlContext } from '../../contexts';
-import moment from 'moment';
+import { useAxios } from '../../hooks';
+import { iCard } from '../../interfaces';
+import { axiosCardService } from '../../services';
 
 export default function IncreaseAmount() {
   const { setIsSellReportSettingsDialogOpen } = useApplicationControlContext();
+  const { data: ordersPerPeriod, fetchData } = useAxios<iCard, iCard[]>();
   const [initialDate, setInitialDate] = useState(new Date());
   const [finalDate, setFinalDate] = useState(new Date());
 
@@ -50,8 +55,12 @@ export default function IncreaseAmount() {
     setIsSellReportSettingsDialogOpen(false);
   };
 
-  const handleConfirmButton = () => {
-    setIsSellReportSettingsDialogOpen(false);
+  const handleConfirmButton = async () => {
+    await fetchData({
+      axiosInstance: axiosCardService,
+      method: 'get',
+      url: `/user/${userId}/period?initialDate=${initialDate}&finalDate=${finalDate}`,
+    });
   };
 
   return (
