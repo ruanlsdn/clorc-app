@@ -6,6 +6,7 @@ import { iProduct } from '../interfaces';
 import { CardScreen, CartScreen } from '../pages';
 import { axiosProductService } from '../services';
 import BottomTabNavigation from './BottomTabNavigation';
+import { userId } from '../../userId';
 
 const NativeStack = createNativeStackNavigator();
 
@@ -24,7 +25,7 @@ export default function NativeStackNavigation() {
       await fetchProductData({
         axiosInstance: axiosProductService,
         method: 'get',
-        url: `/3961175a-382a-462d-b669-9978329276a3`,
+        url: `/${userId}`,
       });
     };
 

@@ -5,6 +5,7 @@ import { useCartControlContext, useDataControlContext } from '../../contexts';
 import { useAxios } from '../../hooks';
 import { axiosCardService } from '../../services';
 import { CardProductDto, CreateCardDto, iCard } from '../../interfaces';
+import { userId } from '../../../userId';
 
 export default function CartOrderInfo() {
   const { setRefreshHistory } = useDataControlContext();
@@ -31,7 +32,7 @@ export default function CartOrderInfo() {
         {
           clientName: name,
           products: products,
-          userId: '3961175a-382a-462d-b669-9978329276a3',
+          userId: userId,
         },
       );
 

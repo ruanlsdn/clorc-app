@@ -5,6 +5,7 @@ import { iCard, iHistoryOrder } from '../../interfaces';
 import { axiosCardService } from '../../services';
 import { useAxios } from '../../hooks';
 import { useDataControlContext } from '../../contexts';
+import { userId } from '../../../userId';
 
 export default function HistoryScreen() {
   const { refreshHistory } = useDataControlContext();
@@ -14,7 +15,7 @@ export default function HistoryScreen() {
     fetchData({
       axiosInstance: axiosCardService,
       method: 'get',
-      url: `user/3961175a-382a-462d-b669-9978329276a3`,
+      url: `user/${userId}`,
     });
   }, [refreshHistory]);
 
