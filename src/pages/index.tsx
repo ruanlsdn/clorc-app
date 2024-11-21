@@ -4,3 +4,4 @@ export { default as HistoryScreen } from './HistoryScreen';
 export { default as LoginScreen } from './LoginScreen';
 export { default as CartScreen } from './CartScreen';
 export { default as CardScreen } from './CardScreen';
+export { default as ReportsScreen } from './ReportsScreen';

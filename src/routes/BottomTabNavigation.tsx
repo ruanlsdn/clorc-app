@@ -1,9 +1,9 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Clipboard, History, List, Plus, ShoppingCart } from '@tamagui/lucide-icons';
+import { Clipboard, History, List, Newspaper, Plus, ShoppingCart } from '@tamagui/lucide-icons';
 import React from 'react';
 import { ButtonHeaderRight } from '../components';
 import { useApplicationControlContext } from '../contexts';
-import { HistoryScreen, OrderScreen, ProductsScreen } from '../pages';
+import { HistoryScreen, OrderScreen, ProductsScreen, ReportsScreen } from '../pages';
 import { useNavigation } from '@react-navigation/native';
 
 const BottomTab = createBottomTabNavigator();
@@ -59,6 +59,14 @@ export default function BottomTabNavigation() {
         }}
         name='Histórico'
         component={HistoryScreen}
+      />
+      <BottomTab.Screen
+        options={{
+          tabBarIcon: ({ focused }) => <Newspaper color={focused ? '#19C37D' : '#ffffff'} />,
+          headerTitle: 'Relatórios',
+        }}
+        name='Relatórios'
+        component={ReportsScreen}
       />
     </BottomTab.Navigator>
   );

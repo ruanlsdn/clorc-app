@@ -19,3 +19,5 @@ export { default as AlertButtons } from './AlertButtons';
 export { default as CartOrderInfo } from './CartOrderInfo';
 export { default as CardOrderList } from './CardOrderList';
 export { default as CardOrderListItem } from './CardOrderListItem';
+export { default as ReportList } from './ReportList';
+export { default as ReportListItem } from './ReportListItem';
