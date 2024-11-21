@@ -21,3 +21,4 @@ export { default as CardOrderList } from './CardOrderList';
 export { default as CardOrderListItem } from './CardOrderListItem';
 export { default as ReportList } from './ReportList';
 export { default as ReportListItem } from './ReportListItem';
+export { default as SellReportConfiguration } from './SellReportConfiguration';

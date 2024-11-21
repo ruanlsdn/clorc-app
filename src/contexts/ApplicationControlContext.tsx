@@ -11,6 +11,8 @@ type ApplicationControlContextProps = {
   setIsIncreaseAmountAlertOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isOrderInfoAlertOpen: boolean;
   setIsOrderInfoAlertOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isSellReportSettingsDialogOpen: boolean;
+  setIsSellReportSettingsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type props = {
@@ -27,6 +29,7 @@ export const ApplicationControlProvider = ({ children }: props) => {
   const [isDeleteProductAlertOpen, setIsDeleteProductAlertOpen] = useState(false);
   const [isIncreaseAmountAlertOpen, setIsIncreaseAmountAlertOpen] = useState(false);
   const [isOrderInfoAlertOpen, setIsOrderInfoAlertOpen] = useState(false);
+  const [isSellReportSettingsDialogOpen, setIsSellReportSettingsDialogOpen] = useState(false);
 
   return (
     <ApplicationControlContext.Provider
@@ -41,6 +44,8 @@ export const ApplicationControlProvider = ({ children }: props) => {
         setIsIncreaseAmountAlertOpen,
         isOrderInfoAlertOpen,
         setIsOrderInfoAlertOpen,
+        isSellReportSettingsDialogOpen,
+        setIsSellReportSettingsDialogOpen
       }}
     >
       {children}

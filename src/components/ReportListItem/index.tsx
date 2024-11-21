@@ -4,12 +4,19 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text, XStack, YStack } from 'tamagui';
 import { Report } from '../../pages/ReportsScreen';
 import AvatarIcon from '../AvatarIcon';
+import { useApplicationControlContext } from '../../contexts';
 
 type props = {
   item: Report;
 };
 
 export default function ReportListItem({ item }: props) {
+  const { setIsSellReportSettingsDialogOpen } = useApplicationControlContext();
+
+  const handleOnPressSettingsButton = () => {
+    setIsSellReportSettingsDialogOpen(true);
+  };
+
   return (
     <>
       <View style={styles.container}>
@@ -22,7 +29,7 @@ export default function ReportListItem({ item }: props) {
           </YStack>
         </XStack>
         {item.hasOptions && (
-          <TouchableOpacity onPress={() => console.log(1)} style={styles.buttonContainer}>
+          <TouchableOpacity onPress={handleOnPressSettingsButton} style={styles.buttonContainer}>
             <Settings color='#ffffff' />
           </TouchableOpacity>
         )}
