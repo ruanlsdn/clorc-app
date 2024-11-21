@@ -9,10 +9,21 @@ import { useApplicationControlContext } from '../../contexts';
 import { useAxios } from '../../hooks';
 import { iCard } from '../../interfaces';
 import { axiosCardService } from '../../services';
+import * as Print from 'expo-print';
+import * as FileSystem from 'expo-file-system';
+import { shareAsync } from 'expo-sharing';
+import { generateHtml } from '../../helpers/reports/generate-html';
+import { generateBodyHtml } from '../../helpers/reports/generate-sell-report-body-html';
+
+export interface ProductMap {
+  description?: string;
+  quantity?: number;
+  total?: number;
+}
 
 export default function IncreaseAmount() {
   const { setIsSellReportSettingsDialogOpen } = useApplicationControlContext();
-  const { data: ordersPerPeriod, fetchData } = useAxios<iCard, iCard[]>();
+  const { data: cardsPerPeriod, fetchData } = useAxios<iCard, iCard[]>();
   const [initialDate, setInitialDate] = useState(new Date());
   const [finalDate, setFinalDate] = useState(new Date());
 
@@ -61,6 +72,41 @@ export default function IncreaseAmount() {
       method: 'get',
       url: `/user/${userId}/period?initialDate=${initialDate}&finalDate=${finalDate}`,
     });
+
+    if (cardsPerPeriod && cardsPerPeriod.length > 0) {
+      const productsMap = new Map<string, ProductMap>();
+
+      for (const card of cardsPerPeriod) {
+        card.orders.forEach((order) => {
+          if (productsMap.has(order.product.id)) {
+            const current = productsMap.get(order.product.id);
+            productsMap.set(order.product.id, {
+              ...current,
+              quantity: current?.quantity! + order.productQuantity,
+              total: current?.total! + order.productQuantity * order.productPrice,
+            });
+          } else {
+            productsMap.set(order.product.id, {
+              description: order.product.description,
+              quantity: order.productQuantity,
+              total: order.productPrice * order.productQuantity,
+            });
+          }
+        });
+      }
+
+      const response = await Print.printToFileAsync({ html: generateHtml(generateBodyHtml(initialDate, finalDate, productsMap)) });
+      const pdfName = `${response.uri.slice(0, response.uri.lastIndexOf('/') + 1)}relatorio_vendas_${moment().toDate().toLocaleDateString('pt-br').replaceAll('/', '-')}.pdf`;
+
+      await FileSystem.moveAsync({
+        from: response.uri,
+        to: pdfName,
+      });
+
+      await shareAsync(pdfName);
+
+      setIsSellReportSettingsDialogOpen(false);
+    }
   };
 
   return (
