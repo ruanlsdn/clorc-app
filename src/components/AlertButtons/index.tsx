@@ -21,7 +21,7 @@ export default function AlertButtons({
             backgroundColor: "#565869",
           }}
           elevationAndroid={5}
-          color="$red11Light"
+          color="$red10Dark"
           onPress={handleCancelButton}
         >
           Cancelar
