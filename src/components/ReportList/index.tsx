@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView } from 'tamagui';
 import { Report } from '../../pages/ReportsScreen';
-import { ReportListItem } from '..';
+import ReportListItem from '../ReportListItem';
 
 type props = {
   list: Report[];
