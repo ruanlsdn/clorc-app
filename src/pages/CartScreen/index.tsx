@@ -1,10 +1,10 @@
-import { ClipboardPaste, RefreshCcw } from '@tamagui/lucide-icons';
+import { useNavigation } from '@react-navigation/native';
+import { ClipboardPaste, RefreshCcw, Share2 } from '@tamagui/lucide-icons';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, XStack } from 'tamagui';
 import { AdaptedDialog, CartList, CartOrderInfo } from '../../components';
 import { useApplicationControlContext, useCartControlContext } from '../../contexts';
-import { useNavigation } from '@react-navigation/native';
 
 export default function CartScreen() {
   const { cartProducts, getTotalPriceOnCart, getTotalQuantityOnCart, removeAllProductsFromCart } =
@@ -58,6 +58,19 @@ export default function CartScreen() {
               onPress={handleRefreshButton}
             >
               <RefreshCcw color='#D9D9E3' />
+            </Button>
+            <Button
+              bc='#343541'
+              flex={1}
+              elevationAndroid={5}
+              pressStyle={{
+                opacity: 0.5,
+                borderColor: '#343541',
+                backgroundColor: '#343541',
+              }}
+              onPress={handleCreateOrderButton}
+            >
+              <Share2 color='#D9D9E3' />
             </Button>
             <Button
               bc='#343541'
