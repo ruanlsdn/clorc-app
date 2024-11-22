@@ -41,6 +41,8 @@ const useAxios = <T, X>() => {
       setData(response.data);
       setStatus(response.status);
       setError(null);
+
+      return response.data;
     } catch (error) {
       setError(error as AxiosError);
     } finally {
