@@ -7,8 +7,7 @@ import { AdaptedDialog, CartList, CartOrderInfo } from '../../components';
 import { useApplicationControlContext, useCartControlContext } from '../../contexts';
 
 export default function CartScreen() {
-  const { cartProducts, getTotalPriceOnCart, getTotalQuantityOnCart, removeAllProductsFromCart } =
-    useCartControlContext();
+  const { cartProducts, getTotalPriceOnCart, getTotalQuantityOnCart, removeAllProductsFromCart } = useCartControlContext();
   const { isOrderInfoAlertOpen, setIsOrderInfoAlertOpen } = useApplicationControlContext();
   const { goBack } = useNavigation();
 

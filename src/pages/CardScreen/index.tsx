@@ -7,6 +7,8 @@ import { useDataControlContext } from '../../contexts';
 import { useAxios } from '../../hooks';
 import { axiosCardService } from '../../services';
 import { CardProductDto, CreateCardDto } from '../../interfaces';
+import { userId } from '../../../userId';
+import { useNavigation } from '@react-navigation/native';
 
 interface UpdateCardStatusDto {
   checked: boolean;
@@ -14,6 +16,7 @@ interface UpdateCardStatusDto {
 
 export default function CardScreen() {
   const { selectedCard, setRefreshHistory, setRefreshProducts } = useDataControlContext();
+  const { goBack } = useNavigation();
   const { fetchData: fetchDataCardStatus } = useAxios<UpdateCardStatusDto, any>();
   const { fetchData: fetchDataNewCard } = useAxios<CreateCardDto, any>();
 
@@ -50,6 +53,8 @@ export default function CardScreen() {
     );
 
     setRefreshHistory((prev) => !prev);
+
+    goBack();
   };
 
   const handleConfirmButton = async () => {
@@ -66,6 +71,8 @@ export default function CardScreen() {
 
     setRefreshHistory((prev) => !prev);
     setRefreshProducts((prev) => !prev);
+
+    goBack();
   };
 
   const handleRemakeButton = async () => {
@@ -89,11 +96,13 @@ export default function CardScreen() {
         {
           clientName: selectedCard?.clientName!,
           products: products,
-          userId: 'b1c4d99f-ba57-44c7-bb0e-3d76b7792a4b',
+          userId: userId,
         },
       );
 
       setRefreshHistory((prev) => !prev);
+
+      goBack();
     }
   };
 
