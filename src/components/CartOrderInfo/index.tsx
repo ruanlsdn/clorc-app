@@ -41,8 +41,18 @@ export default function CartOrderInfo() {
 
   const handleSubmit = async () => {
     if (cartProducts.length > 0) {
-      await createOrderReport();
+      const report = await createOrderReport();
+      
       await createCard();
+
+      try {
+        await shareAsync(report);
+      } catch (error) {
+        console.error('Erro ao compartilhar:', error);
+      } finally {
+        await FileSystem.deleteAsync(report, { idempotent: true });
+      }
+
       setRefreshHistory((prev) => !prev);
     }
 
@@ -58,7 +68,7 @@ export default function CartOrderInfo() {
       to: pdfName,
     });
 
-    await shareAsync(pdfName);
+    return pdfName;
   };
 
   const createCard = async () => {

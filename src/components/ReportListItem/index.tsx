@@ -35,7 +35,13 @@ export default function ReportListItem({ item }: props) {
       to: pdfName,
     });
 
-    await shareAsync(pdfName);
+    try {
+      await shareAsync(pdfName);
+    } catch (error) {
+      console.error('Erro ao compartilhar:', error);
+    } finally {
+      await FileSystem.deleteAsync(pdfName, { idempotent: true });
+    }
   };
 
   return (
