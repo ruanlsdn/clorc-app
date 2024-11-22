@@ -25,8 +25,8 @@ export default function HistoryListItem({ item }: props) {
       <View style={styles.container}>
         <XStack space='$3' alignItems='center' justifyContent='center'>
           {item.checked === null && <AvatarIcon icon={<Clipboard color='#ffffff' />} />}
-          {item.checked && <AvatarIcon icon={<Clipboard color='#19C37D' />} />}
-          {!item.checked && <AvatarIcon icon={<Clipboard color='red10Dark' />} />}
+          {item.checked === true && <AvatarIcon icon={<Clipboard color='#19C37D' />} />}
+          {item.checked === false && <AvatarIcon icon={<Clipboard color='red10Dark' />} />}
           <YStack space='$1.5' alignItems='flex-start' justifyContent='center'>
             <Text color='#ffffff' fontWeight='bold' fontSize='$6'>
               {item.clientName.toUpperCase()}
