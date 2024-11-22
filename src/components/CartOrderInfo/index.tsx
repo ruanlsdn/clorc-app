@@ -1,60 +1,85 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { Button, Input, Label, XStack, YStack } from 'tamagui';
-import { useCartControlContext, useDataControlContext } from '../../contexts';
+import { useApplicationControlContext, useCartControlContext, useDataControlContext } from '../../contexts';
 import { useAxios } from '../../hooks';
 import { axiosCardService } from '../../services';
 import { CardProductDto, CreateCardDto, iCard } from '../../interfaces';
 import { userId } from '../../../userId';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { Calendar } from '@tamagui/lucide-icons';
+import * as Print from 'expo-print';
+import * as FileSystem from 'expo-file-system';
+import { shareAsync } from 'expo-sharing';
+import moment from 'moment';
+import { generateHtml } from '../../helpers/reports/generate-html';
+import { generateBodyHtml } from '../../helpers/reports/generate-order-report-body-html';
 
 export default function CartOrderInfo() {
   const { setRefreshHistory } = useDataControlContext();
+  const { setIsOrderInfoAlertOpen } = useApplicationControlContext();
   const { cartProducts } = useCartControlContext();
   const { fetchData } = useAxios<CreateCardDto, any>();
 
   const [name, setName] = useState('');
-  const [adress, setAdress] = useState('');
+  const [address, setAddress] = useState('');
   const [deliveryDate, setDeliveryDate] = useState(new Date());
 
   const showDatePickerInitialDate = (currentMode: any) => {
     DateTimePickerAndroid.open({
       value: deliveryDate,
-      onChange: onChangeInitialDate,
+      onChange: onChangeDeliveryDate,
       mode: currentMode,
       is24Hour: true,
     });
   };
 
-  const onChangeInitialDate = (event: any, selectedDate: any) => {
+  const onChangeDeliveryDate = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
     setDeliveryDate(currentDate);
   };
 
   const handleSubmit = async () => {
     if (cartProducts.length > 0) {
-      const products: CardProductDto[] = [];
-
-      cartProducts.forEach((product) => {
-        products.push({ productId: product.id!, productPrice: product.price!, productQuantity: product.quantity });
-      });
-
-      await fetchData(
-        {
-          axiosInstance: axiosCardService,
-          method: 'post',
-          url: '',
-        },
-        {
-          clientName: name,
-          products: products,
-          userId: userId,
-        },
-      );
-
+      await createOrderReport();
+      await createCard();
       setRefreshHistory((prev) => !prev);
     }
+
+    setIsOrderInfoAlertOpen((prev) => !prev);
+  };
+
+  const createOrderReport = async () => {
+    const response = await Print.printToFileAsync({ html: generateHtml(generateBodyHtml(name, address, deliveryDate, cartProducts)) });
+    const pdfName = `${response.uri.slice(0, response.uri.lastIndexOf('/') + 1)}pedido_${moment().toDate().toLocaleDateString('pt-br').replaceAll('/', '-')}.pdf`;
+
+    await FileSystem.moveAsync({
+      from: response.uri,
+      to: pdfName,
+    });
+
+    await shareAsync(pdfName);
+  };
+
+  const createCard = async () => {
+    const products: CardProductDto[] = [];
+
+    cartProducts.forEach((product) => {
+      products.push({ productId: product.id!, productPrice: product.price!, productQuantity: product.quantity });
+    });
+
+    await fetchData(
+      {
+        axiosInstance: axiosCardService,
+        method: 'post',
+        url: '',
+      },
+      {
+        clientName: name,
+        products: products,
+        userId: userId,
+      },
+    );
   };
 
   return (
@@ -70,7 +95,7 @@ export default function CartOrderInfo() {
           <Label disabled color='#D9D9E3'>
             Endereço de entrega:
           </Label>
-          <Input onChangeText={(text) => setAdress(text)} bc='#D9D9E3' value={adress} />
+          <Input onChangeText={(text) => setAddress(text)} bc='#D9D9E3' value={address} />
         </YStack>
         <YStack>
           <Label disabled color='#D9D9E3'>
