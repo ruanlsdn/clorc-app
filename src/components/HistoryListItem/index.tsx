@@ -28,9 +28,11 @@ export default function HistoryListItem({ item }: props) {
           {item.checked === true && <AvatarIcon icon={<Clipboard color='#19C37D' />} />}
           {item.checked === false && <AvatarIcon icon={<Clipboard color='red10Dark' />} />}
           <YStack space='$1.5' alignItems='flex-start' justifyContent='center'>
-            <Text color='#ffffff' fontWeight='bold' fontSize='$6'>
-              {item.clientName.toUpperCase()}
-            </Text>
+            {item.clientName && (
+              <Text color='#ffffff' fontWeight='bold' fontSize='$6'>
+                {item.clientName.toUpperCase()}
+              </Text>
+            )}
             <Text color='#D9D9E3' fontSize='$4'>
               {new Date(item.createdAt).toLocaleString('pt-br')}
             </Text>

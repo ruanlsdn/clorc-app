@@ -113,9 +113,11 @@ export default function CardScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.clientInfoContainer}>
-        <Text fontSize='$6' fontWeight='bold' color='#ffffff'>
-          {selectedCard?.clientName?.toUpperCase()}
-        </Text>
+        {selectedCard?.clientName && (
+          <Text fontSize='$6' fontWeight='bold' color='#ffffff'>
+            {selectedCard?.clientName?.toUpperCase()}
+          </Text>
+        )}
         <Text fontSize='$4' color='#D9D9E3'>
           {new Date(selectedCard?.createdAt!).toLocaleString('pt-br')}
         </Text>
