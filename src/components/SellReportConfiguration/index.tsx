@@ -23,7 +23,7 @@ export interface ProductMap {
 
 export default function IncreaseAmount() {
   const { setIsSellReportSettingsDialogOpen } = useApplicationControlContext();
-  const { data: cardsPerPeriod, fetchData } = useAxios<iCard, iCard[]>();
+  const { fetchData } = useAxios<iCard, iCard[]>();
   const [initialDate, setInitialDate] = useState(new Date());
   const [finalDate, setFinalDate] = useState(new Date());
 
@@ -67,10 +67,10 @@ export default function IncreaseAmount() {
   };
 
   const handleConfirmButton = async () => {
-    await fetchData({
+    const cardsPerPeriod: iCard[] = await fetchData({
       axiosInstance: axiosCardService,
       method: 'get',
-      url: `/user/${userId}/period?initialDate=${initialDate}&finalDate=${finalDate}`,
+      url: `/user/${userId}/period?initialDate=${moment(initialDate).startOf('day').toISOString()}&finalDate=${moment(finalDate).endOf('day').toISOString()}`,
     });
 
     if (cardsPerPeriod && cardsPerPeriod.length > 0) {
