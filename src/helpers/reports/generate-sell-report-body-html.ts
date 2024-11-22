@@ -17,7 +17,7 @@ function generateHeader(initialDate: Date, finalDate: Date) {
         <b style="font-size: 45px">===========================================</b>
     </div>
     <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;" >
-        <b style="font-size: 55px">DE ${initialDate.toLocaleDateString('pt-br')} ATÉ ${finalDate.toLocaleDateString(
+        <b style="font-size: 50px">DE ${initialDate.toLocaleDateString('pt-br')} ATÉ ${finalDate.toLocaleDateString(
     'pt-br',
   )}</b>
         <b style="font-size: 45px">===========================================</b>
@@ -29,13 +29,13 @@ function generateProductsTable(products: Map<string, ProductMap>) {
   let header = `
     <div style="display: flex; flex-direction: row; align-items: center; width: 100%" >
         <div style="width: 50%; display: flex; align-items: center; justify-content: center;">
-            <b style="font-size: 45px">DESCRIÇÃO</b>
+            <b style="font-size: 50px">DESCRIÇÃO</b>
         </div>
         <div style="width: 25%;  display: flex; align-items: center; justify-content: center;">
-            <b style="font-size: 45px">QTD</b>
+            <b style="font-size: 50px">QTD</b>
         </div>
         <div style="width: 25%;  display: flex; align-items: center; justify-content: flex-end;">
-            <b style="font-size: 45px">SUBTOTAL</b>
+            <b style="font-size: 50px">SUBTOTAL</b>
         </div>
     </div>
     `;
@@ -77,12 +77,13 @@ function generateSummary(products: Map<string, ProductMap>) {
         <b style="font-size: 45px">===========================================</b>
     </div>
     <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;" >
-        <b style="font-size: 45px">QUANT. ITENS</b>
-        <b style="font-size: 45px">TOTAL</b>
+        <b style="font-size: 50px">QUANT. ITENS</b>
+        <b style="font-size: 50px">TOTAL</b>
     </div>
     <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;" >
         <b style="font-size: 45px">${qtdTotal}</b>
         <b style="font-size: 45px">R$ ${total.toFixed(2)}</b>
     </div>
+    <b style="font-size: 45px">===========================================</b>
   `;
 }

@@ -45,5 +45,5 @@ function generateProductsTable(products: iProduct[]) {
           `;
   }
 
-  return header.concat(productsRow);
+  return header.concat(productsRow).concat(`<b style="font-size: 45px">===========================================</b>`);
 }
