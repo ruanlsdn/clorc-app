@@ -1,10 +1,16 @@
 import { Newspaper, Printer, Settings } from '@tamagui/lucide-icons';
+import * as FileSystem from 'expo-file-system';
+import * as Print from 'expo-print';
+import { shareAsync } from 'expo-sharing';
+import moment from 'moment';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text, XStack, YStack } from 'tamagui';
+import { useApplicationControlContext, useDataControlContext } from '../../contexts';
+import { generateHtml } from '../../helpers/reports/generate-html';
 import { Report } from '../../pages/ReportsScreen';
 import AvatarIcon from '../AvatarIcon';
-import { useApplicationControlContext } from '../../contexts';
+import { generateBodyHtml } from '../../helpers/reports/generate-stock-report-body-html';
 
 type props = {
   item: Report;
@@ -12,9 +18,24 @@ type props = {
 
 export default function ReportListItem({ item }: props) {
   const { setIsSellReportSettingsDialogOpen } = useApplicationControlContext();
+  const { products, setRefreshProducts } = useDataControlContext();
 
   const handleOnPressSettingsButton = () => {
     setIsSellReportSettingsDialogOpen(true);
+  };
+
+  const handleOnPressPrintButton = async () => {
+    setRefreshProducts(true);
+
+    const response = await Print.printToFileAsync({ html: generateHtml(generateBodyHtml(products.filter((product) => product.countable))) });
+    const pdfName = `${response.uri.slice(0, response.uri.lastIndexOf('/') + 1)}relatorio_estoque_${moment().toDate().toLocaleDateString('pt-br').replaceAll('/', '-')}.pdf`;
+
+    await FileSystem.moveAsync({
+      from: response.uri,
+      to: pdfName,
+    });
+
+    await shareAsync(pdfName);
   };
 
   return (
@@ -34,7 +55,7 @@ export default function ReportListItem({ item }: props) {
           </TouchableOpacity>
         )}
         {!item.hasOptions && (
-          <TouchableOpacity onPress={() => console.log(1)} style={styles.buttonContainer}>
+          <TouchableOpacity onPress={handleOnPressPrintButton} style={styles.buttonContainer}>
             <Printer color='#ffffff' />
           </TouchableOpacity>
         )}
