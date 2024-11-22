@@ -59,7 +59,8 @@ export default function IncreaseAmount() {
 
   const handleOnPressPeriod = (amount: number, unit: moment.unitOfTime.DurationConstructor) => {
     const newDate = moment().subtract(amount, unit);
-    setFinalDate(newDate.toDate());
+    setInitialDate(newDate.toDate());
+    setFinalDate(new Date());
   };
 
   const handleCancelButton = () => {
