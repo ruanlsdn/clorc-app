@@ -13,7 +13,7 @@ function generateHeader() {
   return `
       <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;" >
           <b style="font-size: 55px">RELATÓRIO DE ESTOQUE</b>
-          <b style="font-size: 45px">===========================================</b>
+          <b style="font-size: 45px">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</b>
       </div>
       `;
 }
@@ -45,5 +45,5 @@ function generateProductsTable(products: iProduct[]) {
           `;
   }
 
-  return header.concat(productsRow).concat(`<b style="font-size: 45px">===========================================</b>`);
+  return header.concat(productsRow).concat(`<b style="font-size: 45px">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</b>`);
 }

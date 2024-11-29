@@ -4,7 +4,7 @@ import { iProduct } from '../../interfaces';
 export function generateBodyHtml(clientName: string, address: string, deliveryDate: Date, products: iProduct[]) {
   let body = `
         ${generateHeader()}
-        ${generateClientInfo(clientName, address, deliveryDate)}
+        ${clientName || address || deliveryDate ? generateClientInfo(clientName, address, deliveryDate) : ''}
         ${generateProductsTable(products)}
         ${generateSummary(products)}
         ${generateFooter()}
@@ -17,7 +17,7 @@ function generateHeader() {
   return `
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;" >
             <b style="font-size: 55px">${'RC CHURRASCO'}</b>
-            <b style="font-size: 45px">===========================================</b>
+            <b style="font-size: 45px">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</b>
         </div>
     `;
 }
@@ -42,13 +42,17 @@ function generateClientInfo(clientName: string, address: string, deliveryDate: D
                 ? `<div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;" > <b style="font-size: 50px">ENDEREÇO: </b> <b style="font-size: 50px">${address.toUpperCase()}</b> </div>`
                 : ''
             }
-            <b style="font-size: 45px">===========================================</b>
+            <b style="font-size: 45px">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</b>
         </div>
     `;
 }
 
 function generateProductsTable(products: iProduct[]) {
   let header = `
+          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;" >
+            <b style="font-size: 55px">${'PEDIDO'}</b>
+            <b style="font-size: 45px">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</b>
+          </div>
           <div style="display: flex; flex-direction: row; align-items: center; width: 100%" >
             <div style="width: 10%; display: flex; align-items: center; justify-content: flex-start;">
                 <b style="font-size: 50px">QTD</b>
@@ -99,10 +103,10 @@ function generateSummary(products: iProduct[]) {
   }
 
   return `
-        <b style="font-size: 45px">===========================================</b>
+        <b style="font-size: 45px">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</b>
           <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;" >
             <b style="font-size: 55px">RESUMO DO PEDIDO</b>
-            <b style="font-size: 45px">===========================================</b>
+            <b style="font-size: 45px">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</b>
           </div>
           <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;" >
             <b style="font-size: 50px">QUANT. ITENS</b>
@@ -118,7 +122,7 @@ function generateSummary(products: iProduct[]) {
 function generateFooter() {
   const date = moment();
   return `
-    <b style="font-size: 45px">===========================================</b>
+    <b style="font-size: 45px">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</b>
       <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 50px">
           <b style="font-size: 55px">***ESTE NÃO É UM TICKET FISCAL***</b>
           <b style="font-size: 45px; text-align: center; margin-top: 50px">Ticket gerado em  ${date.toDate().toLocaleString('pt-br')}.</b>

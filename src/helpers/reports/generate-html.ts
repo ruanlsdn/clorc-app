@@ -7,7 +7,7 @@ export function generateHtml(body: string) {
       </head>
       <body>
         <div style="display: flex; flex-direction: column;" >
-            <b style="font-size: 45px">===========================================</b>
+            <b style="font-size: 45px">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</b>
             ${body}
         </div>
       </body>

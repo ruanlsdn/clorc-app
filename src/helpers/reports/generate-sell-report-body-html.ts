@@ -14,13 +14,13 @@ function generateHeader(initialDate: Date, finalDate: Date) {
   return `
     <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;" >
         <b style="font-size: 55px">RELATÓRIO DE VENDAS</b>
-        <b style="font-size: 45px">===========================================</b>
+        <b style="font-size: 45px">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</b>
     </div>
     <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;" >
         <b style="font-size: 50px">DE ${initialDate.toLocaleDateString('pt-br')} ATÉ ${finalDate.toLocaleDateString(
     'pt-br',
   )}</b>
-        <b style="font-size: 45px">===========================================</b>
+        <b style="font-size: 45px">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</b>
     </div>
     `;
 }
@@ -71,10 +71,10 @@ function generateSummary(products: Map<string, ProductMap>) {
   }
 
   return `
-   <b style="font-size: 45px">===========================================</b>
+   <b style="font-size: 45px">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</b>
     <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;" >
         <b style="font-size: 55px">RESUMO</b>
-        <b style="font-size: 45px">===========================================</b>
+        <b style="font-size: 45px">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</b>
     </div>
     <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;" >
         <b style="font-size: 50px">QUANT. ITENS</b>
@@ -84,6 +84,6 @@ function generateSummary(products: Map<string, ProductMap>) {
         <b style="font-size: 45px">${qtdTotal}</b>
         <b style="font-size: 45px">R$ ${total.toFixed(2)}</b>
     </div>
-    <b style="font-size: 45px">===========================================</b>
+    <b style="font-size: 45px">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</b>
   `;
 }
