@@ -3,7 +3,6 @@ import { ClipboardPaste, RefreshCcw, Share2 } from '@tamagui/lucide-icons';
 import * as FileSystem from 'expo-file-system';
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
-import moment from 'moment';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, XStack } from 'tamagui';
@@ -11,11 +10,15 @@ import { AdaptedDialog, CartList, CartOrderInfo } from '../../components';
 import { useApplicationControlContext, useCartControlContext } from '../../contexts';
 import { generateHtml } from '../../helpers/reports/generate-html';
 import { generateBodyHtml } from '../../helpers/reports/generate-order-report-body-html';
+import { useAxios } from '../../hooks';
+import { Base64ToImageDto, PdfToImageDto } from '../../interfaces';
+import { axiosReportService } from '../../services';
 
 export default function CartScreen() {
   const { cartProducts, getTotalPriceOnCart, getTotalQuantityOnCart, removeAllProductsFromCart } = useCartControlContext();
   const { isOrderInfoAlertOpen, setIsOrderInfoAlertOpen } = useApplicationControlContext();
   const { goBack } = useNavigation();
+  const { fetchData } = useAxios<PdfToImageDto, Base64ToImageDto>();
 
   const handleRefreshButton = () => {
     removeAllProductsFromCart();
@@ -23,24 +26,40 @@ export default function CartScreen() {
   };
 
   const handleShareButton = async () => {
-    const pdf = await generateOrderReport();
-    const images = await convertPdfToImage(pdf);
-  };
+    if (cartProducts.length === 0) return;
 
-  const generateOrderReport = async () => {
-    const response = await Print.printToFileAsync({ html: generateHtml(generateBodyHtml(undefined!, undefined!, undefined!, cartProducts)) });
-    const pdfName = `${response.uri.slice(0, response.uri.lastIndexOf('/') + 1)}pedido_${moment().toDate().toLocaleDateString('pt-br').replaceAll('/', '-')}.pdf`;
-
-    await FileSystem.moveAsync({
-      from: response.uri,
-      to: pdfName,
+    const { base64 } = await Print.printToFileAsync({
+      html: generateHtml(generateBodyHtml(undefined!, undefined!, undefined!, cartProducts)),
+      base64: true,
     });
 
-    return pdfName;
-  };
+    const response = await fetchData(
+      {
+        axiosInstance: axiosReportService,
+        method: 'post',
+        url: 'convert-pdf-to-image',
+      },
+      { base64: base64! },
+    );
 
-  const convertPdfToImage = async (path: string) => {
+    if (response?.base64Image) {
+      const filePath = `${FileSystem.cacheDirectory}converted-image.png`;
 
+      await FileSystem.writeAsStringAsync(filePath, response?.base64Image, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      try {
+        await shareAsync(filePath, {
+          mimeType: 'image/png',
+          dialogTitle: 'Compartilhar Imagem',
+        });
+      } catch (error) {
+        console.error('Erro ao compartilhar:', error);
+      } finally {
+        await FileSystem.deleteAsync(filePath, { idempotent: true });
+      }
+    }
   };
 
   const handleCreateOrderButton = () => {
