@@ -1,10 +1,10 @@
-import { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
-import { useEffect, useState } from "react";
+import { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
+import { useEffect, useState } from 'react';
 
 type args = {
   axiosInstance: AxiosInstance;
   url: string;
-  method: "get" | "post" | "put" | "patch" | "delete";
+  method: 'get' | 'post' | 'put' | 'patch' | 'delete';
   config?: AxiosRequestConfig;
 };
 
@@ -15,10 +15,7 @@ const useAxios = <T, X>() => {
   const [loading, setLoading] = useState(false);
   const [controller, setController] = useState<AbortController>();
 
-  const fetchData = async (
-    { axiosInstance, method, url, config }: args,
-    body?: T
-  ) => {
+  const fetchData = async ({ axiosInstance, method, url, config }: args, body?: T) => {
     try {
       setLoading(true);
 
@@ -42,7 +39,7 @@ const useAxios = <T, X>() => {
       setStatus(response.status);
       setError(null);
 
-      return response.data;
+      return response.data as X;
     } catch (error) {
       setError(error as AxiosError);
     } finally {
