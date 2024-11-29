@@ -1,6 +1,6 @@
 import { BaggageClaim, List, Plus, X } from "@tamagui/lucide-icons";
 import React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text, XStack, YStack } from "tamagui";
 import { iProduct } from "../../interfaces";
 import AvatarIcon from "../AvatarIcon";
@@ -13,7 +13,7 @@ type props = {
   item: iProduct;
 };
 
-export default function OrderItem({ item }: props) {
+export default function OrderListItem({ item }: props) {
   const { setIsIncreaseAmountAlertOpen } = useApplicationControlContext();
   const {
     setSelectedProduct,
@@ -33,18 +33,7 @@ export default function OrderItem({ item }: props) {
   };
 
   return (
-    <XStack
-      flexDirection="row"
-      alignItems="center"
-      justifyContent="space-between"
-      marginBottom="$2"
-      marginHorizontal="$2"
-      height="$8"
-      padding="$4"
-      bc="#343541"
-      elevationAndroid={5}
-      borderRadius="$5"
-    >
+    <View style={styles.container}>
       <XStack space="$3" alignItems="center" justifyContent="center">
         <AvatarIcon icon={<BaggageClaim color="#ffffff" />} />
         <YStack>
@@ -70,11 +59,24 @@ export default function OrderItem({ item }: props) {
           </TouchableOpacity>
         )}
       </XStack>
-    </XStack>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#343541',
+    borderRadius: 15,
+    marginHorizontal: 5,
+    marginBottom: 6,
+    height: 85,
+    elevation: 5,
+    padding: 20,
+  },
   buttonContainer: {
     display: "flex",
     alignItems: "center",
