@@ -2,16 +2,18 @@ import React, { createContext, useContext, useState } from 'react';
 import { iCard, iProduct } from '../interfaces';
 
 type DataControlContextProps = {
-  selectedProduct: iProduct | null;
-  setSelectedProduct: React.Dispatch<React.SetStateAction<iProduct | null>>;
   products: iProduct[];
   setProducts: React.Dispatch<React.SetStateAction<iProduct[]>>;
-  refreshProducts: boolean;
-  setRefreshProducts: React.Dispatch<React.SetStateAction<boolean>>;
-  refreshHistory: boolean;
-  setRefreshHistory: React.Dispatch<React.SetStateAction<boolean>>;
+  cards: iCard[];
+  setCards: React.Dispatch<React.SetStateAction<iCard[]>>;
+  selectedProduct: iProduct | null;
+  setSelectedProduct: React.Dispatch<React.SetStateAction<iProduct | null>>;
   selectedCard: iCard | null;
   setSelectedCard: React.Dispatch<React.SetStateAction<iCard | null>>;
+  refreshProducts: boolean;
+  setRefreshProducts: React.Dispatch<React.SetStateAction<boolean>>;
+  refreshCards: boolean;
+  setRefreshCards: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type props = {
@@ -21,25 +23,28 @@ type props = {
 const DataControlContext = createContext<DataControlContextProps>(null!);
 
 export const DataControlProvider = ({ children }: props) => {
-  const [selectedProduct, setSelectedProduct] = useState<iProduct | null>(null!);
   const [products, setProducts] = useState<iProduct[]>([]);
-  const [refreshProducts, setRefreshProducts] = useState<boolean>(null!);
-  const [refreshHistory, setRefreshHistory] = useState<boolean>(null!);
+  const [cards, setCards] = useState<iCard[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<iProduct | null>(null!);
   const [selectedCard, setSelectedCard] = useState<iCard | null>(null!);
+  const [refreshProducts, setRefreshProducts] = useState<boolean>(null!);
+  const [refreshCards, setRefreshCards] = useState<boolean>(null!);
 
   return (
     <DataControlContext.Provider
       value={{
-        selectedProduct,
-        setSelectedProduct,
         products,
         setProducts,
-        refreshProducts,
-        setRefreshProducts,
-        refreshHistory,
-        setRefreshHistory,
+        cards,
+        setCards,
+        selectedProduct,
+        setSelectedProduct,
         selectedCard,
         setSelectedCard,
+        refreshProducts,
+        setRefreshProducts,
+        refreshCards,
+        setRefreshCards,
       }}
     >
       {children}

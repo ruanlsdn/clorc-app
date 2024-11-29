@@ -16,7 +16,7 @@ import { generateHtml } from '../../helpers/reports/generate-html';
 import { generateBodyHtml } from '../../helpers/reports/generate-order-report-body-html';
 
 export default function CartOrderInfo() {
-  const { setRefreshHistory } = useDataControlContext();
+  const { setRefreshCards } = useDataControlContext();
   const { setIsOrderInfoAlertOpen } = useApplicationControlContext();
   const { cartProducts } = useCartControlContext();
   const { fetchData } = useAxios<CreateCardDto, any>();
@@ -53,7 +53,7 @@ export default function CartOrderInfo() {
         await FileSystem.deleteAsync(report, { idempotent: true });
       }
 
-      setRefreshHistory((prev) => !prev);
+      setRefreshCards((prev) => !prev);
     }
 
     setIsOrderInfoAlertOpen((prev) => !prev);

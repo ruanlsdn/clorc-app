@@ -2,23 +2,18 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useEffect } from 'react';
 import { useDataControlContext } from '../contexts';
 import { useAxios } from '../hooks';
-import { iProduct } from '../interfaces';
+import { iCard, iProduct } from '../interfaces';
 import { CardScreen, CartScreen } from '../pages';
-import { axiosProductService } from '../services';
+import { axiosCardService, axiosProductService } from '../services';
 import BottomTabNavigation from './BottomTabNavigation';
 import { userId } from '../../userId';
 
 const NativeStack = createNativeStackNavigator();
 
 export default function NativeStackNavigation() {
-  const { setProducts, refreshProducts } = useDataControlContext();
-  const {
-    data: productData,
-    status: productStatus,
-    error: productError,
-    loading: productLoading,
-    fetchData: fetchProductData,
-  } = useAxios<iProduct[], iProduct[]>();
+  const { setProducts, refreshProducts, setCards, refreshCards } = useDataControlContext();
+  const { data: productData, fetchData: fetchProductData } = useAxios<iProduct[], iProduct[]>();
+  const { data: cardsData, fetchData: fetchCardData } = useAxios<iCard[], iCard[]>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +30,22 @@ export default function NativeStackNavigation() {
   useEffect(() => {
     productData && setProducts(productData);
   }, [productData]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchCardData({
+        axiosInstance: axiosCardService,
+        method: 'get',
+        url: `user/${userId}`,
+      });
+    };
+
+    fetchData();
+  }, [refreshCards]);
+
+  useEffect(() => {
+    cardsData && setCards(cardsData);
+  }, [cardsData]);
 
   return (
     <NativeStack.Navigator screenOptions={{ headerShown: false }}>

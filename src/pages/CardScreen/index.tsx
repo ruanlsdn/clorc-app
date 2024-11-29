@@ -15,7 +15,7 @@ interface UpdateCardStatusDto {
 }
 
 export default function CardScreen() {
-  const { selectedCard, setRefreshHistory, setRefreshProducts } = useDataControlContext();
+  const { selectedCard, setRefreshCards, setRefreshProducts } = useDataControlContext();
   const { goBack } = useNavigation();
   const { fetchData: fetchDataCardStatus } = useAxios<UpdateCardStatusDto, any>();
   const { fetchData: fetchDataNewCard } = useAxios<CreateCardDto, any>();
@@ -52,7 +52,7 @@ export default function CardScreen() {
       },
     );
 
-    setRefreshHistory((prev) => !prev);
+    setRefreshCards((prev) => !prev);
 
     goBack();
   };
@@ -69,7 +69,7 @@ export default function CardScreen() {
       },
     );
 
-    setRefreshHistory((prev) => !prev);
+    setRefreshCards((prev) => !prev);
     setRefreshProducts((prev) => !prev);
 
     goBack();
@@ -100,7 +100,7 @@ export default function CardScreen() {
         },
       );
 
-      setRefreshHistory((prev) => !prev);
+      setRefreshCards((prev) => !prev);
 
       goBack();
     }
