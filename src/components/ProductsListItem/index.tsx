@@ -41,7 +41,7 @@ export default function ProductsListItem({ item }: props) {
 
   return (
     <>
-      <Accordion type='multiple' overflow='hidden' borderRadius='$5'>
+      <Accordion marginBottom='$2' type='multiple' overflow='hidden' borderRadius='$5'>
         <Accordion.Item value={item.description!}>
           <Accordion.Trigger
             flexDirection='row'
