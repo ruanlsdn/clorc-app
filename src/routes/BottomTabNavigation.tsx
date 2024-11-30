@@ -1,10 +1,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationAction, useNavigation } from '@react-navigation/native';
-import { Clipboard, History, List, Newspaper, Plus, ShoppingCart } from '@tamagui/lucide-icons';
+import { Clipboard, History, List, Newspaper, Plus, ShoppingCart, XCircle } from '@tamagui/lucide-icons';
+import { useToastController } from '@tamagui/toast';
+import { AxiosError, AxiosResponse } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Alert, AlertButtons, ButtonHeaderRight } from '../components';
 import { useApplicationControlContext, useAuthControlContext, useDataControlContext } from '../contexts';
-import { useAxios } from '../hooks';
 import { iCard, iProduct } from '../interfaces';
 import { HistoryScreen, OrderScreen, ProductsScreen, ReportsScreen } from '../pages';
 import { axiosCardService, axiosProductService } from '../services';
@@ -15,9 +16,8 @@ export default function BottomTabNavigation() {
   const { user, logout } = useAuthControlContext();
   const { setProducts, refreshProducts, setCards, refreshCards } = useDataControlContext();
   const { setIsCreateProductDialogOpen } = useApplicationControlContext();
-  const { data: productData, fetchData: fetchProductData } = useAxios<iProduct[], iProduct[]>();
-  const { data: cardsData, fetchData: fetchCardData } = useAxios<iCard[], iCard[]>();
   const navigation = useNavigation();
+  const toast = useToastController();
 
   const [action, setAction] = useState<NavigationAction>();
   const [isLogoutAlertOpen, setIsLogoutAlertOpen] = useState(false);
@@ -50,36 +50,46 @@ export default function BottomTabNavigation() {
   }, [navigation]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      await fetchProductData({
-        axiosInstance: axiosProductService,
-        method: 'get',
-        url: `/${user.id}`,
-      });
+    const getProducts = async () => {
+      try {
+        const response: AxiosResponse<iProduct[]> = await axiosProductService.get(`/${user.id}`);
+        setProducts(response.data);
+      } catch (error) {
+        const err = error as AxiosError;
+        const status = err.response?.status;
+        const title = status ? `${status} - Ocorreu um erro!` : 'Ocorreu um erro!';
+        const message = 'Não foi possível carregar a lista de produtos.';
+        toast.show(title, {
+          message: message,
+          viewportName: 'main',
+          customData: { icon: <XCircle size={25} /> },
+        });
+      }
     };
 
-    fetchData();
+    getProducts();
   }, [refreshProducts]);
 
   useEffect(() => {
-    productData && setProducts(productData);
-  }, [productData]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await fetchCardData({
-        axiosInstance: axiosCardService,
-        method: 'get',
-        url: `user/${user.id}`,
-      });
+    const getCards = async () => {
+      try {
+        const response: AxiosResponse<iCard[]> = await axiosCardService.get(`/user/${user.id}`);
+        setCards(response.data);
+      } catch (error) {
+        const err = error as AxiosError;
+        const status = err.response?.status;
+        const title = status ? `${status} - Ocorreu um erro!` : 'Ocorreu um erro!';
+        const message = 'Não foi possível carregar a lista de comandas.';
+        toast.show(title, {
+          message: message,
+          viewportName: 'main',
+          customData: { icon: <XCircle size={25} /> },
+        });
+      }
     };
 
-    fetchData();
+    getCards();
   }, [refreshCards]);
-
-  useEffect(() => {
-    cardsData && setCards(cardsData);
-  }, [cardsData]);
 
   return (
     <>
