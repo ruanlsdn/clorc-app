@@ -138,6 +138,7 @@ export default function CardScreen() {
               quantity: order.productQuantity,
             };
           })!,
+          true
         ),
       ),
     });

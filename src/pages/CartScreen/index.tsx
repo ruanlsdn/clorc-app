@@ -29,7 +29,7 @@ export default function CartScreen() {
     if (cartProducts.length === 0) return;
 
     const { base64 } = await Print.printToFileAsync({
-      html: generateHtml(generateBodyHtml(undefined!, undefined!, undefined!, cartProducts)),
+      html: generateHtml(generateBodyHtml(undefined!, undefined!, undefined!, cartProducts, false)),
       base64: true,
     });
 

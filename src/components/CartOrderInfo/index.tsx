@@ -60,7 +60,7 @@ export default function CartOrderInfo() {
   };
 
   const createOrderReport = async () => {
-    const response = await Print.printToFileAsync({ html: generateHtml(generateBodyHtml(name, address, deliveryDate, cartProducts)) });
+    const response = await Print.printToFileAsync({ html: generateHtml(generateBodyHtml(name, address, deliveryDate, cartProducts, true)) });
     const pdfName = `${response.uri.slice(0, response.uri.lastIndexOf('/') + 1)}pedido_${moment().toDate().toLocaleDateString('pt-br').replaceAll('/', '-')}.pdf`;
 
     await FileSystem.moveAsync({

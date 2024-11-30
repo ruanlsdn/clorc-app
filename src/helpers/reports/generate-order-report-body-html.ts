@@ -1,13 +1,13 @@
 import moment from 'moment';
 import { iProduct } from '../../interfaces';
 
-export function generateBodyHtml(clientName: string, address: string, deliveryDate: Date, products: iProduct[]) {
+export function generateBodyHtml(clientName: string, address: string, deliveryDate: Date, products: iProduct[], shouldGenerateFooter: boolean) {
   let body = `
         ${generateHeader()}
         ${clientName || address || deliveryDate ? generateClientInfo(clientName, address, deliveryDate) : ''}
         ${generateProductsTable(products)}
         ${generateSummary(products)}
-        ${generateFooter()}
+        ${shouldGenerateFooter ? generateFooter() : `<b style="font-size: 45px">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</b>`}
       `;
 
   return body;
