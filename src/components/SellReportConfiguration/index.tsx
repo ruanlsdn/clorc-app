@@ -67,7 +67,7 @@ export default function IncreaseAmount() {
     setIsSellReportSettingsDialogOpen(false);
   };
 
-  const handleConfirmButton = async () => {
+  const handleConfirmButton = async () => {    
     const cardsPerPeriod = await fetchData({
       axiosInstance: axiosCardService,
       method: 'get',
@@ -102,17 +102,15 @@ export default function IncreaseAmount() {
       await FileSystem.moveAsync({
         from: response.uri,
         to: pdfName,
-      });
-
+      });      
       try {
         await shareAsync(pdfName);
       } catch (error) {
         console.error('Erro ao compartilhar:', error);
       } finally {
+        setIsSellReportSettingsDialogOpen(false);
         await FileSystem.deleteAsync(pdfName, { idempotent: true });
       }
-
-      setIsSellReportSettingsDialogOpen(false);
     }
   };
 
