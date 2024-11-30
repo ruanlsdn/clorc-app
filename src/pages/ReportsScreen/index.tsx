@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { AdaptedDialog, ReportList, Searchbar, SellReportConfiguration } from '../../components';
 import { useApplicationControlContext } from '../../contexts';
@@ -17,10 +17,17 @@ export default function ReportsScreen() {
     { id: 2, title: 'Relatório de Estoque', hasOptions: false },
   ];
 
+  const [filteredReports, setFilteredReports] = useState(reports);
+
   return (
     <>
-      <Searchbar />
-      <ReportList list={reports!} />
+      <Searchbar
+        placeholder='Pesquisar relatório...'
+        list={reports}
+        searchParameter='title'
+        onFilterUpdate={setFilteredReports}
+      />
+      <ReportList list={filteredReports} />
       <AdaptedDialog
         isOpen={isSellReportSettingsDialogOpen}
         setIsOpen={setIsSellReportSettingsDialogOpen}
