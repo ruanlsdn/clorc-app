@@ -36,8 +36,9 @@ export const AuthControlProvider = ({ children }: props) => {
           await AsyncStorage.setItem('@isLoggedIn', 'true');
           await AsyncStorage.setItem('@username', username);
           await AsyncStorage.setItem('@password', password);
-          
+
           setUser(response);
+          navigation.navigate('menu' as never);
         }
       })
       .catch((error) => {

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useDataControlContext } from '../contexts';
 import { useAxios } from '../hooks';
 import { iCard, iProduct } from '../interfaces';
-import { CardScreen, CartScreen } from '../pages';
+import { CardScreen, CartScreen, LoginScreen } from '../pages';
 import { axiosCardService, axiosProductService } from '../services';
 import BottomTabNavigation from './BottomTabNavigation';
 import { userId } from '../../userId';
@@ -49,7 +49,7 @@ export default function NativeStackNavigation() {
 
   return (
     <NativeStack.Navigator screenOptions={{ headerShown: false }}>
-      {/* <NativeStack.Screen options={{headerShown: false}} name='login' component={LoginScreen}/> */}
+      <NativeStack.Screen options={{headerShown: false}} name='login' component={LoginScreen}/>
       <NativeStack.Screen name='menu' component={BottomTabNavigation} />
       <NativeStack.Screen
         options={{
