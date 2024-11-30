@@ -32,14 +32,16 @@ export const AuthControlProvider = ({ children }: props) => {
       },
       { login: username, password: password },
     )
-      .then(async (response) => {
-        if (response !== undefined) {
+      .then(async (user) => {
+        if (user !== undefined && user.active) {
           await AsyncStorage.setItem('@isLoggedIn', 'true');
           await AsyncStorage.setItem('@username', username);
           await AsyncStorage.setItem('@password', password);
 
-          setUser(response);
+          setUser(user);
           navigation.navigate('menu' as never);
+        } else {
+          console.log('Usuário inativo!')
         }
       })
       .catch((error) => {
