@@ -1,1 +1,0 @@
-export const userId = 'b1c4d99f-ba57-44c7-bb0e-3d76b7792a4b'

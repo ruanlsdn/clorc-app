@@ -1,21 +1,21 @@
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import { Calendar } from '@tamagui/lucide-icons';
+import * as FileSystem from 'expo-file-system';
+import * as Print from 'expo-print';
+import { shareAsync } from 'expo-sharing';
+import moment from 'moment';
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { Button, Input, Label, XStack, YStack } from 'tamagui';
-import { useApplicationControlContext, useCartControlContext, useDataControlContext } from '../../contexts';
-import { useAxios } from '../../hooks';
-import { axiosCardService } from '../../services';
-import { CardProductDto, CreateCardDto, iCard } from '../../interfaces';
-import { userId } from '../../../userId';
-import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-import { Calendar } from '@tamagui/lucide-icons';
-import * as Print from 'expo-print';
-import * as FileSystem from 'expo-file-system';
-import { shareAsync } from 'expo-sharing';
-import moment from 'moment';
+import { useApplicationControlContext, useAuthControlContext, useCartControlContext, useDataControlContext } from '../../contexts';
 import { generateHtml } from '../../helpers/reports/generate-html';
 import { generateBodyHtml } from '../../helpers/reports/generate-order-report-body-html';
+import { useAxios } from '../../hooks';
+import { CardProductDto, CreateCardDto } from '../../interfaces';
+import { axiosCardService } from '../../services';
 
 export default function CartOrderInfo() {
+  const { user } = useAuthControlContext();
   const { setRefreshCards } = useDataControlContext();
   const { setIsOrderInfoAlertOpen } = useApplicationControlContext();
   const { cartProducts } = useCartControlContext();
@@ -87,7 +87,7 @@ export default function CartOrderInfo() {
       {
         clientName: name,
         products: products,
-        userId: userId,
+        userId: user.id!,
       },
     );
   };

@@ -1,19 +1,18 @@
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { Calendar } from '@tamagui/lucide-icons';
+import * as FileSystem from 'expo-file-system';
+import * as Print from 'expo-print';
+import { shareAsync } from 'expo-sharing';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { Button, Label, XStack, YStack } from 'tamagui';
-import { userId } from '../../../userId';
-import { useApplicationControlContext } from '../../contexts';
+import { useApplicationControlContext, useAuthControlContext } from '../../contexts';
+import { generateHtml } from '../../helpers/reports/generate-html';
+import { generateBodyHtml } from '../../helpers/reports/generate-sell-report-body-html';
 import { useAxios } from '../../hooks';
 import { iCard } from '../../interfaces';
 import { axiosCardService } from '../../services';
-import * as Print from 'expo-print';
-import * as FileSystem from 'expo-file-system';
-import { shareAsync } from 'expo-sharing';
-import { generateHtml } from '../../helpers/reports/generate-html';
-import { generateBodyHtml } from '../../helpers/reports/generate-sell-report-body-html';
 
 export interface ProductMap {
   description?: string;
@@ -22,6 +21,7 @@ export interface ProductMap {
 }
 
 export default function IncreaseAmount() {
+  const { user } = useAuthControlContext();
   const { setIsSellReportSettingsDialogOpen } = useApplicationControlContext();
   const { fetchData } = useAxios<iCard, iCard[]>();
   const [initialDate, setInitialDate] = useState(new Date());
@@ -68,10 +68,10 @@ export default function IncreaseAmount() {
   };
 
   const handleConfirmButton = async () => {
-    const cardsPerPeriod: iCard[] = await fetchData({
+    const cardsPerPeriod = await fetchData({
       axiosInstance: axiosCardService,
       method: 'get',
-      url: `/user/${userId}/period?initialDate=${moment(initialDate).startOf('day').toISOString()}&finalDate=${moment(finalDate).endOf('day').toISOString()}`,
+      url: `/user/${user.id}/period?initialDate=${moment(initialDate).startOf('day').toISOString()}&finalDate=${moment(finalDate).endOf('day').toISOString()}`,
     });
 
     if (cardsPerPeriod && cardsPerPeriod.length > 0) {

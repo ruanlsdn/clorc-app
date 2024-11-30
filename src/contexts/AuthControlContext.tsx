@@ -6,7 +6,7 @@ import { iUser } from '../interfaces';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type AuthControlContextProps = {
-  user: any;
+  user: iUser;
   login: (username: string, password: string) => void;
   logout: () => void;
 };

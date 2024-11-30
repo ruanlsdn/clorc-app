@@ -1,26 +1,26 @@
+import { useNavigation } from '@react-navigation/native';
 import { Check, ClipboardPaste, ListRestart, X } from '@tamagui/lucide-icons';
+import * as FileSystem from 'expo-file-system';
+import * as Print from 'expo-print';
+import { shareAsync } from 'expo-sharing';
+import moment from 'moment';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, XStack } from 'tamagui';
 import { CardOrderList } from '../../components';
-import { useDataControlContext } from '../../contexts';
-import { useAxios } from '../../hooks';
-import { axiosCardService } from '../../services';
-import { CardProductDto, CreateCardDto } from '../../interfaces';
-import { userId } from '../../../userId';
-import { useNavigation } from '@react-navigation/native';
-import { shareAsync } from 'expo-sharing';
-import moment from 'moment';
+import { useAuthControlContext, useDataControlContext } from '../../contexts';
 import { generateHtml } from '../../helpers/reports/generate-html';
 import { generateBodyHtml } from '../../helpers/reports/generate-order-report-body-html';
-import * as Print from 'expo-print';
-import * as FileSystem from 'expo-file-system';
+import { useAxios } from '../../hooks';
+import { CardProductDto, CreateCardDto } from '../../interfaces';
+import { axiosCardService } from '../../services';
 
 interface UpdateCardStatusDto {
   checked: boolean;
 }
 
 export default function CardScreen() {
+  const { user } = useAuthControlContext();
   const { selectedCard, setRefreshCards, setRefreshProducts } = useDataControlContext();
   const { goBack } = useNavigation();
   const { fetchData: fetchDataCardStatus } = useAxios<UpdateCardStatusDto, any>();
@@ -102,7 +102,7 @@ export default function CardScreen() {
         {
           clientName: selectedCard?.clientName!,
           products: products,
-          userId: userId,
+          userId: user.id!,
         },
       );
 
