@@ -42,6 +42,8 @@ export default function UpsertProduct({ isUpdate }: props) {
   };
 
   const handleSubmitCreate = async () => {
+    if (description === '' || price  === '') return;
+
     await fetchData(
       {
         axiosInstance: axiosProductService,
@@ -57,6 +59,8 @@ export default function UpsertProduct({ isUpdate }: props) {
   };
 
   const handleSubmitUpdate = async () => {
+    if (description === '' || price  === '') return;
+    
     await fetchData(
       {
         axiosInstance: axiosProductService,
