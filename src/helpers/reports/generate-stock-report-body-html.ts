@@ -25,7 +25,7 @@ function generateProductsTable(products: iProduct[]) {
               <b style="font-size: 50px">DESCRIÇÃO</b>
           </div>
           <div style="width: 30%;  display: flex; align-items: center; justify-content: center;">
-              <b style="font-size: 50px">QTD</b>
+              <b style="font-size: 50px">QTD DISP.</b>
           </div>
       </div>
       `;
