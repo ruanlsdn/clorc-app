@@ -2,16 +2,22 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Clipboard, History, List, Newspaper, Plus, ShoppingCart } from '@tamagui/lucide-icons';
 import React, { useEffect, useState } from 'react';
 import { AdaptedDialog, Alert, ButtonHeaderRight, IncreaseAmount } from '../components';
-import { useApplicationControlContext, useAuthControlContext } from '../contexts';
+import { useApplicationControlContext, useAuthControlContext, useDataControlContext } from '../contexts';
 import { HistoryScreen, OrderScreen, ProductsScreen, ReportsScreen } from '../pages';
 import { NavigationAction, useNavigation } from '@react-navigation/native';
 import { XStack, AlertDialog, Button } from 'tamagui';
+import { useAxios } from '../hooks';
+import { iProduct, iCard } from '../interfaces';
+import { axiosProductService, axiosCardService } from '../services';
 
 const BottomTab = createBottomTabNavigator();
 
 export default function BottomTabNavigation() {
+  const { user, logout } = useAuthControlContext();
+  const { setProducts, refreshProducts, setCards, refreshCards } = useDataControlContext();
   const { setIsCreateProductDialogOpen } = useApplicationControlContext();
-  const { logout } = useAuthControlContext();
+  const { data: productData, fetchData: fetchProductData } = useAxios<iProduct[], iProduct[]>();
+  const { data: cardsData, fetchData: fetchCardData } = useAxios<iCard[], iCard[]>();
   const navigation = useNavigation();
 
   const [action, setAction] = useState<NavigationAction>();
@@ -78,6 +84,38 @@ export default function BottomTabNavigation() {
 
     return unsubscribe;
   }, [navigation]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchProductData({
+        axiosInstance: axiosProductService,
+        method: 'get',
+        url: `/${user.id}`,
+      });
+    };
+
+    fetchData();
+  }, [refreshProducts]);
+
+  useEffect(() => {
+    productData && setProducts(productData);
+  }, [productData]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchCardData({
+        axiosInstance: axiosCardService,
+        method: 'get',
+        url: `user/${user.id}`,
+      });
+    };
+
+    fetchData();
+  }, [refreshCards]);
+
+  useEffect(() => {
+    cardsData && setCards(cardsData);
+  }, [cardsData]);
 
   return (
     <>
