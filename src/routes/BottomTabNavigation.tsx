@@ -1,14 +1,13 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationAction, useNavigation } from '@react-navigation/native';
 import { Clipboard, History, List, Newspaper, Plus, ShoppingCart } from '@tamagui/lucide-icons';
 import React, { useEffect, useState } from 'react';
-import { AdaptedDialog, Alert, ButtonHeaderRight, IncreaseAmount } from '../components';
+import { Alert, AlertButtons, ButtonHeaderRight } from '../components';
 import { useApplicationControlContext, useAuthControlContext, useDataControlContext } from '../contexts';
-import { HistoryScreen, OrderScreen, ProductsScreen, ReportsScreen } from '../pages';
-import { NavigationAction, useNavigation } from '@react-navigation/native';
-import { XStack, AlertDialog, Button } from 'tamagui';
 import { useAxios } from '../hooks';
-import { iProduct, iCard } from '../interfaces';
-import { axiosProductService, axiosCardService } from '../services';
+import { iCard, iProduct } from '../interfaces';
+import { HistoryScreen, OrderScreen, ProductsScreen, ReportsScreen } from '../pages';
+import { axiosCardService, axiosProductService } from '../services';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -31,48 +30,13 @@ export default function BottomTabNavigation() {
     setIsCreateProductDialogOpen(true);
   };
 
-  const ButtonConfirmation = () => {
-    const handleCancelButton = () => {
-      setIsLogoutAlertOpen((prev) => !prev);
-    };
+  const handleCancelButton = () => {
+    setIsLogoutAlertOpen((prev) => !prev);
+  };
 
-    const handleConfirmButton = () => {
-      navigation.dispatch(action!);
-      logout();
-    };
-
-    return (
-      <XStack space='$3' justifyContent='center'>
-        <AlertDialog.Action bc='#565869' asChild>
-          <Button
-            pressStyle={{
-              opacity: 0.5,
-              borderColor: '#565869',
-              backgroundColor: '#565869',
-            }}
-            elevationAndroid={5}
-            color='$red10Dark'
-            onPress={handleCancelButton}
-          >
-            Cancelar
-          </Button>
-        </AlertDialog.Action>
-        <AlertDialog.Action bc='#565869' asChild>
-          <Button
-            pressStyle={{
-              opacity: 0.5,
-              borderColor: '#565869',
-              backgroundColor: '#565869',
-            }}
-            elevationAndroid={5}
-            color='#19C37D'
-            onPress={handleConfirmButton}
-          >
-            Confirmar
-          </Button>
-        </AlertDialog.Action>
-      </XStack>
-    );
+  const handleConfirmButton = () => {
+    navigation.dispatch(action!);
+    logout();
   };
 
   useEffect(() => {
@@ -172,7 +136,7 @@ export default function BottomTabNavigation() {
         setIsOpen={setIsLogoutAlertOpen}
         title='Deseja sair de sua conta?'
         description='Toque em algum dos botões abaixo para prosseguir: '
-        children={<ButtonConfirmation />}
+        children={<AlertButtons handleCancelButton={handleCancelButton} handleConfirmButton={handleConfirmButton} />}
       />
     </>
   );
