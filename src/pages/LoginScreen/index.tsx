@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Input, Label, YStack, Text } from 'tamagui';
 import { useAuthControlContext } from '../../contexts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as LocalAuthentication from 'expo-local-authentication';
 
 export default function LoginScreen() {
   const { login } = useAuthControlContext();
@@ -10,8 +12,35 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
 
   const handleSubmit = () => {
-    login(username, password);
+    if (username !== '' && password !== '') {
+      login(username, password);
+    }
   };
+
+  useEffect(() => {
+    const promise = async () => {
+      const isCompatible = await LocalAuthentication.hasHardwareAsync();
+      const isLoggedIn = JSON.parse(await AsyncStorage.getItem('@isLoggedIn'));
+      console.log('isCompatible ', isCompatible);
+      console.log('isLoggedId ', isCompatible);
+
+      if (isLoggedIn) {
+        if (isCompatible) {
+          const auth = await LocalAuthentication.authenticateAsync({
+            promptMessage: 'Autentique-se para continuar',
+            fallbackLabel: 'Use senha',
+            disableDeviceFallback: false,
+          });
+          !auth.success && login(await AsyncStorage.getItem('@username'), await AsyncStorage.getItem('@password'));
+        } else {
+          setUsername(await AsyncStorage.getItem('@username'));
+          setPassword(await AsyncStorage.getItem('@password'));
+        }
+      }
+    };
+
+    promise();
+  }, []);
 
   return (
     <View style={styles.container}>
