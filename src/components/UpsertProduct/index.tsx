@@ -24,7 +24,7 @@ export default function UpsertProduct({ isUpdate }: props) {
     if (isUpdate) {
       setDescription(selectedProduct?.description!);
       setPrice(selectedProduct?.price?.toString()!);
-      setStock(selectedProduct?.quantity?.toString()!);
+      setStock(selectedProduct?.countable ? selectedProduct?.quantity?.toString()! : '0');
     }
   }, [isUpdate]);
 
