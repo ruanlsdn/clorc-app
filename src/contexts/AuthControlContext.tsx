@@ -27,9 +27,9 @@ export const AuthControlProvider = ({ children }: props) => {
 
   async function login(username: string, password: string) {
     try {
-      const response: AxiosResponse<iUser> = await axiosAuthService.post(
+      const response = await axiosAuthService.post<iUser, AxiosResponse<iUser>, iUser>(
         '/login',
-        { login: username, password: password, cidade: true },
+        { login: username, password: password },
         { timeout: 5 * 1000 },
       );
       if (response.data !== undefined && response.data.active) {
