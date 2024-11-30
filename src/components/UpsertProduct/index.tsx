@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Keyboard, StyleSheet } from 'react-native';
 import { Button, Input, Label, XStack, YStack } from 'tamagui';
-import { useApplicationControlContext, useDataControlContext } from '../../contexts';
+import { useApplicationControlContext, useAuthControlContext, useDataControlContext } from '../../contexts';
 import { useAxios } from '../../hooks';
 import { iProduct } from '../../interfaces';
 import { axiosProductService } from '../../services';
@@ -11,6 +11,7 @@ type props = {
 };
 
 export default function UpsertProduct({ isUpdate }: props) {
+  const { user } = useAuthControlContext();
   const { setIsCreateProductDialogOpen, setIsEditProductDialogOpen } = useApplicationControlContext();
   const { selectedProduct, setRefreshProducts } = useDataControlContext();
   const { fetchData } = useAxios<iProduct, iProduct>();
@@ -53,7 +54,7 @@ export default function UpsertProduct({ isUpdate }: props) {
       {
         description,
         price: Number(price),
-        userId: '92b921e2-e479-4c50-947c-f7d98fcc5c82',
+        userId: user.id,
       },
     );
   };
