@@ -25,8 +25,8 @@ export default function ProductsScreen() {
   const handleConfirmButton = () => {
     fetchData({
       axiosInstance: axiosProductService,
-      method: 'delete',
-      url: `/${selectedProduct?.id}`,
+      method: 'patch',
+      url: `virtual-delete/${selectedProduct?.id}`,
     });
     setIsDeleteProductAlertOpen(false);
     setRefreshProducts((prev) => !prev);
