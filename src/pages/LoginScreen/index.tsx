@@ -20,7 +20,7 @@ export default function LoginScreen() {
   useEffect(() => {
     const promise = async () => {
       const isCompatible = await LocalAuthentication.hasHardwareAsync();
-      const isLoggedIn = JSON.parse(await AsyncStorage.getItem('@isLoggedIn'));
+      const isLoggedIn = JSON.parse(String(await AsyncStorage.getItem('@isLoggedIn')));
 
       if (isLoggedIn) {
         if (isCompatible) {
@@ -29,10 +29,11 @@ export default function LoginScreen() {
             fallbackLabel: 'Use senha',
             disableDeviceFallback: false,
           });
-          auth.success && login(await AsyncStorage.getItem('@username'), await AsyncStorage.getItem('@password'));
+
+          auth.success && login(String(await AsyncStorage.getItem('@username')), String(await AsyncStorage.getItem('@password')));
         } else {
-          setUsername(await AsyncStorage.getItem('@username'));
-          setPassword(await AsyncStorage.getItem('@password'));
+          setUsername(String(await AsyncStorage.getItem('@username')));
+          setPassword(String(await AsyncStorage.getItem('@password')));
         }
       }
     };
