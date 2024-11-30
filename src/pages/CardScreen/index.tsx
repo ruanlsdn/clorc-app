@@ -9,6 +9,12 @@ import { axiosCardService } from '../../services';
 import { CardProductDto, CreateCardDto } from '../../interfaces';
 import { userId } from '../../../userId';
 import { useNavigation } from '@react-navigation/native';
+import { shareAsync } from 'expo-sharing';
+import moment from 'moment';
+import { generateHtml } from '../../helpers/reports/generate-html';
+import { generateBodyHtml } from '../../helpers/reports/generate-order-report-body-html';
+import * as Print from 'expo-print';
+import * as FileSystem from 'expo-file-system';
 
 interface UpdateCardStatusDto {
   checked: boolean;
@@ -106,8 +112,44 @@ export default function CardScreen() {
     }
   };
 
-  const handleClipboardButton = () => {
-    console.log('Button clipboard');
+  const handleClipboardButton = async () => {
+    const report = await createOrderReport();
+
+    try {
+      await shareAsync(report);
+    } catch (error) {
+      console.error('Erro ao compartilhar:', error);
+    } finally {
+      await FileSystem.deleteAsync(report, { idempotent: true });
+    }
+  };
+
+  const createOrderReport = async () => {
+    const response = await Print.printToFileAsync({
+      html: generateHtml(
+        generateBodyHtml(
+          selectedCard?.clientName!,
+          undefined!,
+          moment(selectedCard?.createdAt).toDate(),
+          selectedCard?.orders!.map((order) => {
+            return {
+              description: order.product.description,
+              price: order.productPrice,
+              quantity: order.productQuantity,
+            };
+          })!,
+        ),
+      ),
+    });
+
+    const pdfName = `${response.uri.slice(0, response.uri.lastIndexOf('/') + 1)}pedido_${moment().toDate().toLocaleDateString('pt-br').replaceAll('/', '-')}.pdf`;
+
+    await FileSystem.moveAsync({
+      from: response.uri,
+      to: pdfName,
+    });
+
+    return pdfName;
   };
 
   return (
