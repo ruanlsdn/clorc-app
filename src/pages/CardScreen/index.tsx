@@ -101,6 +101,7 @@ export default function CardScreen() {
         },
         {
           clientName: selectedCard?.clientName!,
+          clientAddress: selectedCard?.clientAddress!,
           products: products,
           userId: user.id!,
         },
@@ -129,7 +130,7 @@ export default function CardScreen() {
       html: generateHtml(
         generateBodyHtml(
           selectedCard?.clientName!,
-          undefined!,
+          selectedCard?.clientAddress!,
           moment(selectedCard?.createdAt).toDate(),
           selectedCard?.orders!.map((order) => {
             return {

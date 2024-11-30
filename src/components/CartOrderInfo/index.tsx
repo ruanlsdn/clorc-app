@@ -40,6 +40,8 @@ export default function CartOrderInfo() {
   };
 
   const handleSubmit = async () => {
+    setIsOrderInfoAlertOpen((prev) => !prev);
+
     if (cartProducts.length > 0) {
       const report = await createOrderReport();
       
@@ -55,8 +57,6 @@ export default function CartOrderInfo() {
 
       setRefreshCards((prev) => !prev);
     }
-
-    setIsOrderInfoAlertOpen((prev) => !prev);
   };
 
   const createOrderReport = async () => {
@@ -86,6 +86,7 @@ export default function CartOrderInfo() {
       },
       {
         clientName: name,
+        clientAddress: address,
         products: products,
         userId: user.id!,
       },
