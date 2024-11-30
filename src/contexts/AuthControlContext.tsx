@@ -37,7 +37,7 @@ export const AuthControlProvider = ({ children }: props) => {
         await AsyncStorage.setItem('@username', username);
         await AsyncStorage.setItem('@password', password);
 
-        setUser(user);
+        setUser(response.data);
         navigation.navigate('menu' as never);
       } else {
         toast.show('Usuário inativo!', {
