@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AdaptedDialog, Alert, AlertButtons, ProductsList, Searchbar, UpsertProduct } from '../../components';
 import { useApplicationControlContext, useDataControlContext } from '../../contexts';
 import { useAxios } from '../../hooks';
@@ -31,6 +31,12 @@ export default function ProductsScreen() {
     setIsDeleteProductAlertOpen(false);
     setRefreshProducts((prev) => !prev);
   };
+
+  useEffect(() => {
+    if (products.length > 0) {
+      setFilteredProducts(products);
+    }
+  }, [products])
 
   return (
     <>
