@@ -21,8 +21,6 @@ export default function LoginScreen() {
     const promise = async () => {
       const isCompatible = await LocalAuthentication.hasHardwareAsync();
       const isLoggedIn = JSON.parse(await AsyncStorage.getItem('@isLoggedIn'));
-      console.log('isCompatible ', isCompatible);
-      console.log('isLoggedId ', isCompatible);
 
       if (isLoggedIn) {
         if (isCompatible) {
@@ -31,7 +29,7 @@ export default function LoginScreen() {
             fallbackLabel: 'Use senha',
             disableDeviceFallback: false,
           });
-          !auth.success && login(await AsyncStorage.getItem('@username'), await AsyncStorage.getItem('@password'));
+          auth.success && login(await AsyncStorage.getItem('@username'), await AsyncStorage.getItem('@password'));
         } else {
           setUsername(await AsyncStorage.getItem('@username'));
           setPassword(await AsyncStorage.getItem('@password'));
