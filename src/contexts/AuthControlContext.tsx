@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 type AuthControlContextProps = {
   user: any;
   login: (username: string, password: string) => void;
+  logout: () => void;
 };
 
 type props = {
@@ -46,11 +47,20 @@ export const AuthControlProvider = ({ children }: props) => {
       });
   }
 
+  async function logout() {
+    await AsyncStorage.setItem('@isLoggedIn', 'false');
+    await AsyncStorage.multiRemove(['@username', '@password']);
+    
+    setUser(undefined!);
+    navigation.navigate('login' as never);
+  }
+
   return (
     <AuthControlContext.Provider
       value={{
         user: user,
         login,
+        logout,
       }}
     >
       {children}
