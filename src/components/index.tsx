@@ -22,3 +22,4 @@ export { default as CardOrderListItem } from './CardOrderListItem';
 export { default as ReportList } from './ReportList';
 export { default as ReportListItem } from './ReportListItem';
 export { default as SellReportConfiguration } from './SellReportConfiguration';
+export { default as AdaptedToast } from './AdaptedToast';

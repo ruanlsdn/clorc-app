@@ -9,14 +9,18 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-community/datetimepicker": "7.2.0",
     "@react-navigation/bottom-tabs": "^6.5.11",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
     "@tamagui/config": "^1.76.0",
     "@tamagui/lucide-icons": "^1.76.0",
+    "@tamagui/toast": "^1.76.0",
     "axios": "^1.6.2",
+    "burnt": "^0.12.2",
     "expo": "~49.0.15",
+    "expo-local-authentication": "~13.4.1",
     "expo-print": "~12.4.2",
     "expo-sharing": "~11.5.0",
     "expo-status-bar": "~1.6.0",
@@ -28,9 +32,7 @@
     "react-native-svg": "13.9.0",
     "react-native-view-shot": "3.7.0",
     "react-native-webview": "13.2.2",
-    "tamagui": "^1.76.0",
-    "@react-native-async-storage/async-storage": "1.18.2",
-    "expo-local-authentication": "~13.4.1"
+    "tamagui": "^1.76.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
