@@ -22,24 +22,24 @@ export default function App() {
   }
 
   return (
-    <TamaguiProvider config={tamaguiConfig}>
+    <NavigationContainer>
       <ToastProvider>
-        <NavigationContainer>
-          <AuthControlProvider>
-            <ApplicationControlProvider>
-              <DataControlProvider>
-                <CartControlProvider>
+        <AuthControlProvider>
+          <ApplicationControlProvider>
+            <DataControlProvider>
+              <CartControlProvider>
+                <TamaguiProvider config={tamaguiConfig}>
                   <SafeAreaProvider>
                     <StatusBar style='light' />
-                    <ToastViewport name='main' alignSelf='center' marginTop={45}/>
+                    <ToastViewport name='main' alignSelf='center' marginTop={45} />
                     <NativeStackNavigation />
                   </SafeAreaProvider>
-                </CartControlProvider>
-              </DataControlProvider>
-            </ApplicationControlProvider>
-          </AuthControlProvider>
-        </NavigationContainer>
+                </TamaguiProvider>
+              </CartControlProvider>
+            </DataControlProvider>
+          </ApplicationControlProvider>
+        </AuthControlProvider>
       </ToastProvider>
-    </TamaguiProvider>
+    </NavigationContainer>
   );
 }
