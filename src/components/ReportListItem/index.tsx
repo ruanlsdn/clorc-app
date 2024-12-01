@@ -1,4 +1,4 @@
-import { Newspaper, Printer, Settings } from '@tamagui/lucide-icons';
+import { CheckCircle2, Newspaper, Printer, Settings, XCircle } from '@tamagui/lucide-icons';
 import * as FileSystem from 'expo-file-system';
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
@@ -11,6 +11,7 @@ import { generateHtml } from '../../helpers/reports/generate-html';
 import { Report } from '../../pages/ReportsScreen';
 import AvatarIcon from '../AvatarIcon';
 import { generateBodyHtml } from '../../helpers/reports/generate-stock-report-body-html';
+import { useToastController } from '@tamagui/toast';
 
 type props = {
   item: Report;
@@ -19,6 +20,7 @@ type props = {
 export default function ReportListItem({ item }: props) {
   const { setIsSellReportSettingsDialogOpen } = useApplicationControlContext();
   const { products, setRefreshProducts } = useDataControlContext();
+  const toast = useToastController();
 
   const handleOnPressSettingsButton = () => {
     setIsSellReportSettingsDialogOpen(true);
@@ -38,9 +40,18 @@ export default function ReportListItem({ item }: props) {
     try {
       await shareAsync(pdfName);
     } catch (error) {
-      console.error('Erro ao compartilhar:', error);
+      toast.show('Ocorreu um erro!', {
+        message: 'Não foi possível gerar o relatório.',
+        viewportName: 'main',
+        customData: { icon: <XCircle size={25} /> },
+      });
     } finally {
       await FileSystem.deleteAsync(pdfName, { idempotent: true });
+
+      toast.show('Relatório gerado!', {
+        viewportName: 'main',
+        customData: { icon: <CheckCircle2 size={25} /> },
+      });
     }
   };
 
