@@ -59,7 +59,7 @@ export default function CartOrderInfo() {
         toast.show('Ocorreu um erro!', {
           message: 'Não foi possível compartilhar a imagem.',
           viewportName: 'main',
-          customData: { icon: <CheckCircle2 size={25} /> },
+          customData: { icon: <XCircle size={25} /> },
         });
       } finally {
         await FileSystem.deleteAsync(report, { idempotent: true });

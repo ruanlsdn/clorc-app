@@ -1,5 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
-import { Check, ClipboardPaste, ListRestart, X } from '@tamagui/lucide-icons';
+import { Check, CheckCircle2, ClipboardPaste, ListRestart, X, XCircle } from '@tamagui/lucide-icons';
+import { useToastController } from '@tamagui/toast';
+import { AxiosError, AxiosResponse } from 'axios';
 import * as FileSystem from 'expo-file-system';
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
@@ -11,8 +13,7 @@ import { CardOrderList } from '../../components';
 import { useAuthControlContext, useDataControlContext } from '../../contexts';
 import { generateHtml } from '../../helpers/reports/generate-html';
 import { generateBodyHtml } from '../../helpers/reports/generate-order-report-body-html';
-import { useAxios } from '../../hooks';
-import { CardProductDto, CreateCardDto } from '../../interfaces';
+import { CardProductDto, CreateCardDto, iCard } from '../../interfaces';
 import { axiosCardService } from '../../services';
 
 interface UpdateCardStatusDto {
@@ -21,10 +22,9 @@ interface UpdateCardStatusDto {
 
 export default function CardScreen() {
   const { user } = useAuthControlContext();
-  const { selectedCard, setRefreshCards, setRefreshProducts } = useDataControlContext();
+  const { selectedCard, setRefreshCards } = useDataControlContext();
   const { goBack } = useNavigation();
-  const { fetchData: fetchDataCardStatus } = useAxios<UpdateCardStatusDto, any>();
-  const { fetchData: fetchDataNewCard } = useAxios<CreateCardDto, any>();
+  const toast = useToastController();
 
   const getTotalQuantityOnCard = () => {
     let quantity = 0;
@@ -46,39 +46,56 @@ export default function CardScreen() {
     return price.toFixed(2);
   };
 
-  const handleDenyButton = async () => {
-    await fetchDataCardStatus(
-      {
-        axiosInstance: axiosCardService,
-        method: 'patch',
-        url: String(selectedCard?.id),
-      },
-      {
+  const handleDenyButton = () => {
+    try {
+      axiosCardService.patch<iCard, AxiosResponse<iCard>, UpdateCardStatusDto>(`${selectedCard?.id}`, {
         checked: false,
-      },
-    );
+      });
 
-    setRefreshCards((prev) => !prev);
-
-    goBack();
+      toast.show('Venda rejeitada!', {
+        viewportName: 'main',
+        customData: { icon: <CheckCircle2 size={25} /> },
+      });
+    } catch (error) {
+      const err = error as AxiosError;
+      const status = err.response?.status;
+      const title = status ? `${status} - Ocorreu um erro!` : 'Ocorreu um erro!';
+      const message = 'Não foi possível rejeitar a venda.';
+      toast.show(title, {
+        message: message,
+        viewportName: 'main',
+        customData: { icon: <XCircle size={25} /> },
+      });
+    } finally {
+      setRefreshCards((prev) => !prev);
+      goBack();
+    }
   };
 
-  const handleConfirmButton = async () => {
-    await fetchDataCardStatus(
-      {
-        axiosInstance: axiosCardService,
-        method: 'patch',
-        url: String(selectedCard?.id),
-      },
-      {
+  const handleConfirmButton = () => {
+    try {
+      axiosCardService.patch<iCard, AxiosResponse<iCard>, UpdateCardStatusDto>(`${selectedCard?.id}`, {
         checked: true,
-      },
-    );
+      });
 
-    setRefreshCards((prev) => !prev);
-    setRefreshProducts((prev) => !prev);
-
-    goBack();
+      toast.show('Venda confirmada!', {
+        viewportName: 'main',
+        customData: { icon: <CheckCircle2 size={25} /> },
+      });
+    } catch (error) {
+      const err = error as AxiosError;
+      const status = err.response?.status;
+      const title = status ? `${status} - Ocorreu um erro!` : 'Ocorreu um erro!';
+      const message = 'Não foi possível confirmar a venda.';
+      toast.show(title, {
+        message: message,
+        viewportName: 'main',
+        customData: { icon: <XCircle size={25} /> },
+      });
+    } finally {
+      setRefreshCards((prev) => !prev);
+      goBack();
+    }
   };
 
   const handleRemakeButton = async () => {
@@ -93,23 +110,31 @@ export default function CardScreen() {
         });
       });
 
-      await fetchDataNewCard(
-        {
-          axiosInstance: axiosCardService,
-          method: 'post',
-          url: '',
-        },
-        {
+      try {
+        axiosCardService.post<iCard, AxiosResponse<iCard>, CreateCardDto>('', {
           clientName: selectedCard?.clientName!,
           clientAddress: selectedCard?.clientAddress!,
           products: products,
           userId: user.id!,
-        },
-      );
-
-      setRefreshCards((prev) => !prev);
-
-      goBack();
+        });
+        toast.show('Venda recriada!', {
+          viewportName: 'main',
+          customData: { icon: <CheckCircle2 size={25} /> },
+        });
+      } catch (error) {
+        const err = error as AxiosError;
+        const status = err.response?.status;
+        const title = status ? `${status} - Ocorreu um erro!` : 'Ocorreu um erro!';
+        const message = 'Não foi possível recriar a venda.';
+        toast.show(title, {
+          message: message,
+          viewportName: 'main',
+          customData: { icon: <XCircle size={25} /> },
+        });
+      } finally {
+        setRefreshCards((prev) => !prev);
+        goBack();
+      }
     }
   };
 
@@ -119,9 +144,18 @@ export default function CardScreen() {
     try {
       await shareAsync(report);
     } catch (error) {
-      console.error('Erro ao compartilhar:', error);
+      toast.show('Ocorreu um erro!', {
+        message: 'Não foi possível reimprimir.',
+        viewportName: 'main',
+        customData: { icon: <XCircle size={25} /> },
+      });
     } finally {
       await FileSystem.deleteAsync(report, { idempotent: true });
+
+      toast.show('Reimpressão realizada!', {
+        viewportName: 'main',
+        customData: { icon: <CheckCircle2 size={25} /> },
+      });
     }
   };
 
@@ -139,7 +173,7 @@ export default function CardScreen() {
               quantity: order.productQuantity,
             };
           })!,
-          true
+          true,
         ),
       ),
     });
