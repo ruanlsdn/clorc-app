@@ -1,5 +1,7 @@
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-import { Calendar } from '@tamagui/lucide-icons';
+import { Calendar, CheckCircle2, XCircle } from '@tamagui/lucide-icons';
+import { useToastController } from '@tamagui/toast';
+import { AxiosError, AxiosResponse } from 'axios';
 import * as FileSystem from 'expo-file-system';
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
@@ -7,11 +9,15 @@ import moment from 'moment';
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { Button, Input, Label, XStack, YStack } from 'tamagui';
-import { useApplicationControlContext, useAuthControlContext, useCartControlContext, useDataControlContext } from '../../contexts';
+import {
+  useApplicationControlContext,
+  useAuthControlContext,
+  useCartControlContext,
+  useDataControlContext,
+} from '../../contexts';
 import { generateHtml } from '../../helpers/reports/generate-html';
 import { generateBodyHtml } from '../../helpers/reports/generate-order-report-body-html';
-import { useAxios } from '../../hooks';
-import { CardProductDto, CreateCardDto } from '../../interfaces';
+import { CardProductDto, CreateCardDto, iCard } from '../../interfaces';
 import { axiosCardService } from '../../services';
 
 export default function CartOrderInfo() {
@@ -19,7 +25,7 @@ export default function CartOrderInfo() {
   const { setRefreshCards } = useDataControlContext();
   const { setIsOrderInfoAlertOpen } = useApplicationControlContext();
   const { cartProducts } = useCartControlContext();
-  const { fetchData } = useAxios<CreateCardDto, any>();
+  const toast = useToastController();
 
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
@@ -44,7 +50,7 @@ export default function CartOrderInfo() {
 
     if (cartProducts.length > 0) {
       const report = await createOrderReport();
-      
+
       await createCard();
 
       try {
@@ -78,19 +84,29 @@ export default function CartOrderInfo() {
       products.push({ productId: product.id!, productPrice: product.price!, productQuantity: product.quantity });
     });
 
-    await fetchData(
-      {
-        axiosInstance: axiosCardService,
-        method: 'post',
-        url: '',
-      },
-      {
+    try {
+      await axiosCardService.post<iCard, AxiosResponse<iCard>, CreateCardDto>('', {
         clientName: name,
         clientAddress: address,
         products: products,
         userId: user.id!,
-      },
-    );
+      });
+
+      toast.show('Pedido criado!', {
+        viewportName: 'main',
+        customData: { icon: <CheckCircle2 size={25} /> },
+      });
+    } catch (error) {
+      const err = error as AxiosError;
+      const status = err.response?.status;
+      const title = status ? `${status} - Ocorreu um erro!` : 'Ocorreu um erro!';
+      const message = 'Não foi possível criar o pedido.';
+      toast.show(title, {
+        message: message,
+        viewportName: 'main',
+        customData: { icon: <XCircle size={25} /> },
+      });
+    }
   };
 
   return (
