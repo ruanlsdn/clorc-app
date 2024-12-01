@@ -93,6 +93,7 @@ export default function CartOrderInfo() {
       });
 
       toast.show('Pedido criado!', {
+        message: 'Visualização disponível no histórico.',
         viewportName: 'main',
         customData: { icon: <CheckCircle2 size={25} /> },
       });
