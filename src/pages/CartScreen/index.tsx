@@ -1,5 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
-import { ClipboardPaste, RefreshCcw, Share2 } from '@tamagui/lucide-icons';
+import { ClipboardPaste, RefreshCcw, Share2, XCircle } from '@tamagui/lucide-icons';
+import { useToastController } from '@tamagui/toast';
+import { AxiosError, AxiosResponse } from 'axios';
 import * as FileSystem from 'expo-file-system';
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
@@ -10,7 +12,6 @@ import { AdaptedDialog, CartList, CartOrderInfo } from '../../components';
 import { useApplicationControlContext, useCartControlContext } from '../../contexts';
 import { generateHtml } from '../../helpers/reports/generate-html';
 import { generateBodyHtml } from '../../helpers/reports/generate-order-report-body-html';
-import { useAxios } from '../../hooks';
 import { Base64ToImageDto, PdfToImageDto } from '../../interfaces';
 import { axiosReportService } from '../../services';
 
@@ -18,7 +19,7 @@ export default function CartScreen() {
   const { cartProducts, getTotalPriceOnCart, getTotalQuantityOnCart, removeAllProductsFromCart } = useCartControlContext();
   const { isOrderInfoAlertOpen, setIsOrderInfoAlertOpen } = useApplicationControlContext();
   const { goBack } = useNavigation();
-  const { fetchData } = useAxios<PdfToImageDto, Base64ToImageDto>();
+  const toast = useToastController();
 
   const handleRefreshButton = () => {
     removeAllProductsFromCart();
@@ -33,32 +34,36 @@ export default function CartScreen() {
       base64: true,
     });
 
-    const response = await fetchData(
-      {
-        axiosInstance: axiosReportService,
-        method: 'post',
-        url: 'convert-pdf-to-image',
-      },
-      { base64: base64! },
-    );
+    const filePath = `${FileSystem.cacheDirectory}converted-image.png`;
 
-    if (response?.base64Image) {
-      const filePath = `${FileSystem.cacheDirectory}converted-image.png`;
+    try {
+      const response = await axiosReportService.post<Base64ToImageDto, AxiosResponse<Base64ToImageDto>, PdfToImageDto>(
+        'convert-pdf-to-image',
+        { base64: base64! },
+      );
 
-      await FileSystem.writeAsStringAsync(filePath, response?.base64Image, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
+      if (response.data.base64Image) {
+        await FileSystem.writeAsStringAsync(filePath, response.data.base64Image, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
 
-      try {
         await shareAsync(filePath, {
           mimeType: 'image/png',
           dialogTitle: 'Compartilhar Imagem',
         });
-      } catch (error) {
-        console.error('Erro ao compartilhar:', error);
-      } finally {
-        await FileSystem.deleteAsync(filePath, { idempotent: true });
       }
+    } catch (error) {
+      const err = error as AxiosError;
+      const status = err.response?.status;
+      const title = status ? `${status} - Ocorreu um erro!` : 'Ocorreu um erro!';
+      const message = 'Não foi possível compartilhar o pedido.';
+      toast.show(title, {
+        message: message,
+        viewportName: 'main',
+        customData: { icon: <XCircle size={25} /> },
+      });
+    } finally {
+      await FileSystem.deleteAsync(filePath, { idempotent: true });
     }
   };
 
