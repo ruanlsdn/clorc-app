@@ -56,9 +56,19 @@ export default function CartOrderInfo() {
       try {
         await shareAsync(report);
       } catch (error) {
-        console.error('Erro ao compartilhar:', error);
+        toast.show('Ocorreu um erro!', {
+          message: 'Não foi possível compartilhar a imagem.',
+          viewportName: 'main',
+          customData: { icon: <CheckCircle2 size={25} /> },
+        });
       } finally {
         await FileSystem.deleteAsync(report, { idempotent: true });
+
+        toast.show('Pedido criado!', {
+          message: 'Visualização disponível no histórico.',
+          viewportName: 'main',
+          customData: { icon: <CheckCircle2 size={25} /> },
+        });
       }
 
       setRefreshCards((prev) => !prev);
@@ -90,12 +100,6 @@ export default function CartOrderInfo() {
         clientAddress: address,
         products: products,
         userId: user.id!,
-      });
-
-      toast.show('Pedido criado!', {
-        message: 'Visualização disponível no histórico.',
-        viewportName: 'main',
-        customData: { icon: <CheckCircle2 size={25} /> },
       });
     } catch (error) {
       const err = error as AxiosError;
