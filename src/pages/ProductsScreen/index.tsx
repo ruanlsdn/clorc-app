@@ -1,11 +1,12 @@
+import { CheckCircle2, XCircle } from '@tamagui/lucide-icons';
+import { useToastController } from '@tamagui/toast';
+import { AxiosError } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { AdaptedDialog, Alert, AlertButtons, ProductsList, Searchbar, UpsertProduct } from '../../components';
 import { useApplicationControlContext, useDataControlContext } from '../../contexts';
-import { useAxios } from '../../hooks';
 import { axiosProductService } from '../../services';
 
 export default function ProductsScreen() {
-  const { fetchData } = useAxios();
   const { products, selectedProduct, setRefreshProducts } = useDataControlContext();
   const {
     isCreateProductDialogOpen,
@@ -15,28 +16,41 @@ export default function ProductsScreen() {
     isDeleteProductAlertOpen,
     setIsDeleteProductAlertOpen,
   } = useApplicationControlContext();
-  const [filteredProducts, setFilteredProducts] = useState(products);
+  const toast = useToastController();
 
+  const [filteredProducts, setFilteredProducts] = useState(products);
 
   const handleCancelButton = () => {
     setIsDeleteProductAlertOpen(false);
   };
 
   const handleConfirmButton = () => {
-    fetchData({
-      axiosInstance: axiosProductService,
-      method: 'patch',
-      url: `virtual-delete/${selectedProduct?.id}`,
-    });
-    setIsDeleteProductAlertOpen(false);
-    setRefreshProducts((prev) => !prev);
+    try {
+      axiosProductService.patch(`virtual-delete/${selectedProduct?.id}`);
+      setIsDeleteProductAlertOpen(false);
+      setRefreshProducts((prev) => !prev);
+      toast.show('Produto excluído!', {
+        viewportName: 'main',
+        customData: { icon: <CheckCircle2 size={25} /> },
+      });
+    } catch (error) {
+      const err = error as AxiosError;
+      const status = err.response?.status;
+      const title = status ? `${status} - Ocorreu um erro!` : 'Ocorreu um erro!';
+      const message = 'Não foi possível excluir o produto.';
+      toast.show(title, {
+        message: message,
+        viewportName: 'main',
+        customData: { icon: <XCircle size={25} /> },
+      });
+    }
   };
 
   useEffect(() => {
     if (products.length > 0) {
       setFilteredProducts(products);
     }
-  }, [products])
+  }, [products]);
 
   return (
     <>
