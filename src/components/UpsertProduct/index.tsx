@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Keyboard, StyleSheet } from 'react-native';
 import { Button, Input, Label, XStack, YStack } from 'tamagui';
 import { useApplicationControlContext, useAuthControlContext, useDataControlContext } from '../../contexts';
-import { useAxios } from '../../hooks';
 import { iProduct } from '../../interfaces';
 import { axiosProductService } from '../../services';
+import { useToastController } from '@tamagui/toast';
+import { CheckCircle2, XCircle } from '@tamagui/lucide-icons';
+import { AxiosError, AxiosResponse } from 'axios';
 
 type props = {
   isUpdate: boolean;
@@ -14,7 +16,7 @@ export default function UpsertProduct({ isUpdate }: props) {
   const { user } = useAuthControlContext();
   const { setIsCreateProductDialogOpen, setIsEditProductDialogOpen } = useApplicationControlContext();
   const { selectedProduct, setRefreshProducts } = useDataControlContext();
-  const { fetchData } = useAxios<iProduct, iProduct>();
+  const toast = useToastController();
 
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
@@ -42,38 +44,56 @@ export default function UpsertProduct({ isUpdate }: props) {
     setRefreshProducts((prev) => !prev);
   };
 
-  const handleSubmitCreate = async () => {
-    if (description === '' || price  === '') return;
+  const handleSubmitCreate = () => {
+    if (description === '' || price === '') return;
 
-    await fetchData(
-      {
-        axiosInstance: axiosProductService,
-        method: 'post',
-        url: '',
-      },
-      {
+    try {
+      axiosProductService.post<iProduct, AxiosResponse<iProduct>, iProduct>('', {
         description,
         price: Number(price),
         userId: user.id,
-      },
-    );
+      });
+      toast.show('Produto incluído!', {
+        viewportName: 'main',
+        customData: { icon: <CheckCircle2 size={25} /> },
+      });
+    } catch (error) {
+      const err = error as AxiosError;
+      const status = err.response?.status;
+      const title = status ? `${status} - Ocorreu um erro!` : 'Ocorreu um erro!';
+      const message = 'Não foi possível incluir o produto.';
+      toast.show(title, {
+        message: message,
+        viewportName: 'main',
+        customData: { icon: <XCircle size={25} /> },
+      });
+    }
   };
 
-  const handleSubmitUpdate = async () => {
-    if (description === '' || price  === '') return;
-    
-    await fetchData(
-      {
-        axiosInstance: axiosProductService,
-        method: 'patch',
-        url: `/${selectedProduct?.id}`,
-      },
-      {
+  const handleSubmitUpdate = () => {
+    if (description === '' || price === '') return;
+
+    try {
+      axiosProductService.patch<iProduct, AxiosResponse<iProduct>, iProduct>(`/${selectedProduct?.id}`, {
         description,
         price: Number(price),
         quantity: stock !== '' ? Number(stock) : 0,
-      },
-    );
+      });
+      toast.show('Produto atualizado!', {
+        viewportName: 'main',
+        customData: { icon: <CheckCircle2 size={25} /> },
+      });
+    } catch (error) {
+      const err = error as AxiosError;
+      const status = err.response?.status;
+      const title = status ? `${status} - Ocorreu um erro!` : 'Ocorreu um erro!';
+      const message = 'Não foi possível atualizar o produto.';
+      toast.show(title, {
+        message: message,
+        viewportName: 'main',
+        customData: { icon: <XCircle size={25} /> },
+      });
+    }
   };
 
   return (
