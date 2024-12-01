@@ -1,5 +1,5 @@
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-import { Calendar } from '@tamagui/lucide-icons';
+import { Calendar, CheckCircle2, XCircle } from '@tamagui/lucide-icons';
 import * as FileSystem from 'expo-file-system';
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
@@ -10,9 +10,10 @@ import { Button, Label, XStack, YStack } from 'tamagui';
 import { useApplicationControlContext, useAuthControlContext } from '../../contexts';
 import { generateHtml } from '../../helpers/reports/generate-html';
 import { generateBodyHtml } from '../../helpers/reports/generate-sell-report-body-html';
-import { useAxios } from '../../hooks';
 import { iCard } from '../../interfaces';
 import { axiosCardService } from '../../services';
+import { AxiosResponse } from 'axios';
+import { useToastController } from '@tamagui/toast';
 
 export interface ProductMap {
   description?: string;
@@ -23,7 +24,8 @@ export interface ProductMap {
 export default function IncreaseAmount() {
   const { user } = useAuthControlContext();
   const { setIsSellReportSettingsDialogOpen } = useApplicationControlContext();
-  const { fetchData } = useAxios<iCard, iCard[]>();
+  const toast = useToastController();
+
   const [initialDate, setInitialDate] = useState(new Date());
   const [finalDate, setFinalDate] = useState(new Date());
 
@@ -67,52 +69,79 @@ export default function IncreaseAmount() {
     setIsSellReportSettingsDialogOpen(false);
   };
 
-  const handleConfirmButton = async () => {    
-    const cardsPerPeriod = await fetchData({
-      axiosInstance: axiosCardService,
-      method: 'get',
-      url: `/user/${user.id}/period?initialDate=${moment(initialDate).startOf('day').toISOString()}&finalDate=${moment(finalDate).endOf('day').toISOString()}`,
-    });
+  const handleConfirmButton = async () => {
+    try {
+      const response = await axiosCardService.get<iCard[], AxiosResponse<iCard[]>>(
+        `/user/${user.id}/period?initialDate=${moment(initialDate).startOf('day').toISOString()}&finalDate=${moment(finalDate).endOf('day').toISOString()}`
+      );
 
-    if (cardsPerPeriod && cardsPerPeriod.length > 0) {
-      const productsMap = new Map<string, ProductMap>();
+      if (response.data && response.data.length > 0) {
+        const productsMap = new Map<string, ProductMap>();
 
-      for (const card of cardsPerPeriod) {
-        card.orders.forEach((order) => {
-          if (productsMap.has(order.product.id)) {
-            const current = productsMap.get(order.product.id);
-            productsMap.set(order.product.id, {
-              ...current,
-              quantity: current?.quantity! + order.productQuantity,
-              total: current?.total! + order.productQuantity * order.productPrice,
-            });
-          } else {
-            productsMap.set(order.product.id, {
-              description: order.product.description,
-              quantity: order.productQuantity,
-              total: order.productPrice * order.productQuantity,
-            });
-          }
+        for (const card of response.data) {
+          card.orders.forEach((order) => {
+            if (productsMap.has(order.product.id)) {
+              const current = productsMap.get(order.product.id);
+              productsMap.set(order.product.id, {
+                ...current,
+                quantity: current?.quantity! + order.productQuantity,
+                total: current?.total! + order.productQuantity * order.productPrice,
+              });
+            } else {
+              productsMap.set(order.product.id, {
+                description: order.product.description,
+                quantity: order.productQuantity,
+                total: order.productPrice * order.productQuantity,
+              });
+            }
+          });
+        }
+
+        generateAndShareReport(productsMap);
+      } else {
+        toast.show('Ocorreu um erro!', {
+          message: 'Nenhuma venda encontrada no período informado.',
+          viewportName: 'main',
+          customData: { icon: <XCircle size={25} /> },
         });
       }
-
-      const response = await Print.printToFileAsync({ html: generateHtml(generateBodyHtml(initialDate, finalDate, productsMap)) });
-      const pdfName = `${response.uri.slice(0, response.uri.lastIndexOf('/') + 1)}relatorio_vendas_${moment().toDate().toLocaleDateString('pt-br').replaceAll('/', '-')}.pdf`;
-
-      await FileSystem.moveAsync({
-        from: response.uri,
-        to: pdfName,
-      });      
-      try {
-        await shareAsync(pdfName);
-      } catch (error) {
-        console.error('Erro ao compartilhar:', error);
-      } finally {
-        setIsSellReportSettingsDialogOpen(false);
-        await FileSystem.deleteAsync(pdfName, { idempotent: true });
-      }
+    } catch (error) {
+      toast.show('Ocorreu um erro!', {
+        message: 'Não foi possível consultar as vendas.',
+        viewportName: 'main',
+        customData: { icon: <XCircle size={25} /> },
+      });
+    } finally {
+      setIsSellReportSettingsDialogOpen(false);
     }
   };
+
+  const generateAndShareReport = async (productsMap:  Map<string, ProductMap>) => {
+    const responseFile = await Print.printToFileAsync({ html: generateHtml(generateBodyHtml(initialDate, finalDate, productsMap)) });
+    const pdfName = `${responseFile.uri.slice(0, responseFile.uri.lastIndexOf('/') + 1)}relatorio_vendas_${moment().toDate().toLocaleDateString('pt-br').replaceAll('/', '-')}.pdf`;
+
+    await FileSystem.moveAsync({
+      from: responseFile.uri,
+      to: pdfName,
+    });
+
+    try {
+      await shareAsync(pdfName);
+    } catch (error) {
+      toast.show('Ocorreu um erro!', {
+        message: 'Não foi possível gerar o relatório.',
+        viewportName: 'main',
+        customData: { icon: <XCircle size={25} /> },
+      });
+    } finally {
+      await FileSystem.deleteAsync(pdfName, { idempotent: true });
+
+      toast.show('Relatório gerado!', {
+        viewportName: 'main',
+        customData: { icon: <CheckCircle2 size={25} /> },
+      });
+    }
+  }
 
   return (
     <>
