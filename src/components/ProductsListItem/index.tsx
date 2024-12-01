@@ -1,20 +1,21 @@
-import { ChevronDown, Pencil, ShoppingBag, Trash } from '@tamagui/lucide-icons';
+import { CheckCircle2, ChevronDown, Pencil, ShoppingBag, Trash, XCircle } from '@tamagui/lucide-icons';
+import { useToastController } from '@tamagui/toast';
+import { AxiosResponse } from 'axios';
 import React from 'react';
 import { Accordion, Button, Square, Switch, Text, XStack, YStack } from 'tamagui';
 import { useApplicationControlContext, useDataControlContext } from '../../contexts';
 import { iProduct } from '../../interfaces';
-import AvatarIcon from '../AvatarIcon';
-import { useAxios } from '../../hooks';
 import { axiosProductService } from '../../services';
+import AvatarIcon from '../AvatarIcon';
 
 type props = {
   item: iProduct;
 };
 
 export default function ProductsListItem({ item }: props) {
-  const { fetchData, status } = useAxios<iProduct, iProduct>();
   const { setIsEditProductDialogOpen, setIsDeleteProductAlertOpen } = useApplicationControlContext();
   const { setSelectedProduct, setRefreshProducts } = useDataControlContext();
+  const toast = useToastController();
 
   const handleOnPressEdit = () => {
     setSelectedProduct(item);
@@ -27,16 +28,21 @@ export default function ProductsListItem({ item }: props) {
   };
 
   const handleSwitchChange = (checked: boolean) => {
-    fetchData(
-      {
-        axiosInstance: axiosProductService,
-        method: 'patch',
-        url: `/${item.id}`,
-      },
-      { countable: checked },
-    );
-
-    setRefreshProducts((prev) => !prev);
+    try {
+      axiosProductService.patch<iProduct, AxiosResponse<iProduct>, iProduct>(`/${item.id}`, { countable: checked });
+      toast.show('Produto atualizado!', {
+        viewportName: 'main',
+        customData: { icon: <CheckCircle2 size={25} /> },
+      });
+    } catch (error) {
+      toast.show('Ocorreu um erro!', {
+        message: 'Não foi possível atualizar o produto.',
+        viewportName: 'main',
+        customData: { icon: <XCircle size={25} /> },
+      });
+    } finally {
+      setRefreshProducts((prev) => !prev);
+    }
   };
 
   return (
