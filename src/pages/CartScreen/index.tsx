@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { ClipboardPaste, RefreshCcw, Share2, XCircle } from '@tamagui/lucide-icons';
+import { CheckCircle2, ClipboardPaste, RefreshCcw, Share2, XCircle } from '@tamagui/lucide-icons';
 import { useToastController } from '@tamagui/toast';
 import { AxiosError, AxiosResponse } from 'axios';
 import * as FileSystem from 'expo-file-system';
@@ -64,6 +64,10 @@ export default function CartScreen() {
       });
     } finally {
       await FileSystem.deleteAsync(filePath, { idempotent: true });
+      toast.show('Pedido compartilhado!', {
+        viewportName: 'main',
+        customData: { icon: <CheckCircle2 size={25} /> },
+      });
     }
   };
 
