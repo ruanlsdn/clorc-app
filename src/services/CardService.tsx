@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosCardService = axios.create({
-  baseURL: 'http://10.0.2.2:3000/api/v1/card',
+  baseURL: 'https://budget-api-divine-firefly-417.fly.dev/api/v1/card',
 });
 
 export default axiosCardService;
