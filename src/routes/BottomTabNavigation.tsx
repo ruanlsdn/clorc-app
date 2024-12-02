@@ -52,6 +52,7 @@ export default function BottomTabNavigation() {
   useEffect(() => {
     const getProducts = async () => {
       try {
+        if (!user) return;
         const response: AxiosResponse<iProduct[]> = await axiosProductService.get(`/${user.id}`);
         setProducts(response.data);
       } catch (error) {
@@ -68,11 +69,12 @@ export default function BottomTabNavigation() {
     };
 
     getProducts();
-  }, [refreshProducts]);
+  }, [user, refreshProducts]);
 
   useEffect(() => {
     const getCards = async () => {
       try {
+        if (!user) return;
         const response: AxiosResponse<iCard[]> = await axiosCardService.get(`/user/${user.id}`);
         setCards(response.data);
       } catch (error) {
@@ -89,7 +91,7 @@ export default function BottomTabNavigation() {
     };
 
     getCards();
-  }, [refreshCards]);
+  }, [user, refreshCards]);
 
   return (
     <>
