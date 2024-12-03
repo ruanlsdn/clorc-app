@@ -7,6 +7,7 @@ import { axiosProductService } from '../../services';
 import { useToastController } from '@tamagui/toast';
 import { CheckCircle2, XCircle } from '@tamagui/lucide-icons';
 import { AxiosError, AxiosResponse } from 'axios';
+import { applyCurrencyMask, removeCurrencyMask } from '../../helpers/utils';
 
 type props = {
   isUpdate: boolean;
@@ -25,7 +26,7 @@ export default function UpsertProduct({ isUpdate }: props) {
   useEffect(() => {
     if (isUpdate) {
       setDescription(selectedProduct?.description!);
-      setPrice(selectedProduct?.price?.toString()!);
+      setPrice(applyCurrencyMask(String(selectedProduct?.price! * 100)));
       setStock(selectedProduct?.countable ? selectedProduct?.quantity?.toString()! : '0');
     }
   }, [isUpdate]);
@@ -50,7 +51,7 @@ export default function UpsertProduct({ isUpdate }: props) {
     try {
       axiosProductService.post<iProduct, AxiosResponse<iProduct>, iProduct>('', {
         description,
-        price: Number(price),
+        price: removeCurrencyMask(price),
         userId: user.id,
       });
       toast.show('Produto incluído!', {
@@ -76,7 +77,7 @@ export default function UpsertProduct({ isUpdate }: props) {
     try {
       axiosProductService.patch<iProduct, AxiosResponse<iProduct>, iProduct>(`/${selectedProduct?.id}`, {
         description,
-        price: Number(price),
+        price: removeCurrencyMask(price),
         quantity: stock !== '' ? Number(stock) : 0,
       });
       toast.show('Produto atualizado!', {
@@ -103,14 +104,14 @@ export default function UpsertProduct({ isUpdate }: props) {
           <Label disabled color='#D9D9E3'>
             Descrição:
           </Label>
-          <Input onChangeText={(text) => setDescription(text)} bc='#D9D9E3' value={description} />
+          <Input onChangeText={(text) => setDescription(text)} bc='#D9D9E3' value={description} maxLength={20} />
         </YStack>
         <XStack space>
           <YStack flex={1}>
             <Label disabled color='#D9D9E3'>
               Valor unitário:
             </Label>
-            <Input onChangeText={(text) => setPrice(text)} keyboardType='numeric' bc='#D9D9E3' value={price} />
+            <Input onChangeText={(text) => setPrice(applyCurrencyMask(text))} keyboardType='numeric' bc='#D9D9E3' value={price} />
           </YStack>
           {isUpdate && selectedProduct?.countable && (
             <YStack flex={1}>
