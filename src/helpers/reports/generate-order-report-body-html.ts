@@ -81,7 +81,7 @@ function generateProductsTable(products: iProduct[]) {
                     <b style="font-size: 45px">${product.description}</b>
                 </div>
                 <div style=" display: flex; width: 20%; align-items: center; justify-content: center;">
-                    <b style="font-size: 45px">${product.price?.toFixed(2)}</b>
+                    <b style="font-size: 45px">R$ ${product.price?.toFixed(2)}</b>
                 </div>
                 <div style=" display: flex; width: 25%; align-items: center; justify-content: flex-end;">
                     <b style="font-size: 45px">R$ ${(product.quantity! * product.price!).toFixed(2)}</b>
