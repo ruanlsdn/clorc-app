@@ -5,11 +5,12 @@ import {
   useApplicationControlContext,
   useCartControlContext,
 } from "../../contexts";
+import { applyAlwaysIntegerMask } from "../../helpers/utils";
 
 export default function IncreaseAmount() {
   const { setIsIncreaseAmountAlertOpen } = useApplicationControlContext();
   const { selectedProduct, upsertProductOnCart } = useCartControlContext();
-  const [quantity, setQuantity] = useState<number>();
+  const [quantity, setQuantity] = useState('');
 
   const handleCancelButton = () => {
     setIsIncreaseAmountAlertOpen(false);
@@ -20,7 +21,7 @@ export default function IncreaseAmount() {
       id: selectedProduct?.id,
       description: selectedProduct?.description,
       price: selectedProduct?.price,
-      quantity: quantity!,
+      quantity: Number(quantity),
     });
     setIsIncreaseAmountAlertOpen(false);
   };
@@ -38,7 +39,8 @@ export default function IncreaseAmount() {
           maxWidth={100}
           id="name"
           bc="#D9D9E3"
-          onChangeText={(text) => setQuantity(Number(text))}
+          onChangeText={(text) => setQuantity(applyAlwaysIntegerMask(text))}
+          value={quantity}
         />
       </View>
       <XStack space="$3" justifyContent="center">

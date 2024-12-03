@@ -7,7 +7,7 @@ import { axiosProductService } from '../../services';
 import { useToastController } from '@tamagui/toast';
 import { CheckCircle2, XCircle } from '@tamagui/lucide-icons';
 import { AxiosError, AxiosResponse } from 'axios';
-import { applyCurrencyMask, removeCurrencyMask } from '../../helpers/utils';
+import { applyAlwaysIntegerMask, applyCurrencyMask, removeCurrencyMask } from '../../helpers/utils';
 
 type props = {
   isUpdate: boolean;
@@ -118,7 +118,7 @@ export default function UpsertProduct({ isUpdate }: props) {
               <Label disabled color='#D9D9E3'>
                 Estoque:
               </Label>
-              <Input onChangeText={(text) => setStock(text)} keyboardType='numeric' bc='#D9D9E3' value={stock} />
+              <Input onChangeText={(text) => setStock(applyAlwaysIntegerMask(text))} keyboardType='numeric' bc='#D9D9E3' value={stock} />
             </YStack>
           )}
         </XStack>
