@@ -6,10 +6,14 @@ import {
   useCartControlContext,
 } from "../../contexts";
 import { applyAlwaysIntegerMask } from "../../helpers/utils";
+import { useToastController } from "@tamagui/toast";
+import { XCircle } from "@tamagui/lucide-icons";
 
 export default function IncreaseAmount() {
   const { setIsIncreaseAmountAlertOpen } = useApplicationControlContext();
   const { selectedProduct, upsertProductOnCart } = useCartControlContext();
+  const toast = useToastController();
+  
   const [quantity, setQuantity] = useState('');
 
   const handleCancelButton = () => {
@@ -17,12 +21,33 @@ export default function IncreaseAmount() {
   };
 
   const handleConfirmButton = () => {
+    if (quantity === '') {
+      toast.show('Ocorreu um erro!', {
+        message: 'Existem campos não preenchidos.',
+        viewportName: 'main',
+        customData: { icon: <XCircle size={25} /> },
+      });
+
+      return;
+    }
+
+    if (quantity === '0') {
+      toast.show('Ocorreu um erro!', {
+        message: 'Quantidade inválida.',
+        viewportName: 'main',
+        customData: { icon: <XCircle size={25} /> },
+      });
+
+      return;
+    }
+
     upsertProductOnCart({
       id: selectedProduct?.id,
       description: selectedProduct?.description,
       price: selectedProduct?.price,
       quantity: Number(quantity),
     });
+
     setIsIncreaseAmountAlertOpen(false);
   };
   return (
