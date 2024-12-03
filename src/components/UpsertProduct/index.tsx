@@ -36,17 +36,23 @@ export default function UpsertProduct({ isUpdate }: props) {
 
     if (isUpdate) {
       handleSubmitUpdate();
-      setIsEditProductDialogOpen(false);
     } else {
       handleSubmitCreate();
-      setIsCreateProductDialogOpen(false);
     }
 
     setRefreshProducts((prev) => !prev);
   };
 
   const handleSubmitCreate = () => {
-    if (description === '' || price === '') return;
+    if (description === '' || price === '') {
+      toast.show('Ocorreu um erro!', {
+        message: 'Existem campos não preenchidos.',
+        viewportName: 'main',
+        customData: { icon: <XCircle size={25} /> },
+      });
+
+      return;
+    }
 
     try {
       axiosProductService.post<iProduct, AxiosResponse<iProduct>, iProduct>('', {
@@ -54,10 +60,13 @@ export default function UpsertProduct({ isUpdate }: props) {
         price: removeCurrencyMask(price),
         userId: user.id,
       });
+
       toast.show('Produto incluído!', {
         viewportName: 'main',
         customData: { icon: <CheckCircle2 size={25} /> },
       });
+
+      setIsCreateProductDialogOpen(false);
     } catch (error) {
       const err = error as AxiosError;
       const status = err.response?.status;
@@ -72,7 +81,15 @@ export default function UpsertProduct({ isUpdate }: props) {
   };
 
   const handleSubmitUpdate = () => {
-    if (description === '' || price === '') return;
+    if (description === '' || price === '') {
+      toast.show('Ocorreu um erro!', {
+        message: 'Existem campos não preenchidos.',
+        viewportName: 'main',
+        customData: { icon: <XCircle size={25} /> },
+      });
+
+      return;
+    }
 
     try {
       axiosProductService.patch<iProduct, AxiosResponse<iProduct>, iProduct>(`/${selectedProduct?.id}`, {
@@ -80,10 +97,13 @@ export default function UpsertProduct({ isUpdate }: props) {
         price: removeCurrencyMask(price),
         quantity: stock !== '' ? Number(stock) : 0,
       });
+
       toast.show('Produto atualizado!', {
         viewportName: 'main',
         customData: { icon: <CheckCircle2 size={25} /> },
       });
+
+      setIsEditProductDialogOpen(false);
     } catch (error) {
       const err = error as AxiosError;
       const status = err.response?.status;
