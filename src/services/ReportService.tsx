@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosReportService = axios.create({
-  baseURL: 'https://budget-api-divine-firefly-417.fly.dev/api/v1/report',
+  baseURL: 'http://10.0.2.2:3000/api/v1/report',
 });
 
 export default axiosReportService;

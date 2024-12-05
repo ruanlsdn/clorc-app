@@ -9,13 +9,14 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, XStack } from 'tamagui';
 import { AdaptedDialog, CartList, CartOrderInfo } from '../../components';
-import { useApplicationControlContext, useCartControlContext } from '../../contexts';
+import { useApplicationControlContext, useAuthControlContext, useCartControlContext } from '../../contexts';
 import { generateHtml } from '../../helpers/reports/generate-html';
 import { generateBodyHtml } from '../../helpers/reports/generate-order-report-body-html';
 import { Base64ToImageDto, PdfToImageDto } from '../../interfaces';
 import { axiosReportService } from '../../services';
 
 export default function CartScreen() {
+  const { user } = useAuthControlContext();
   const { cartProducts, getTotalPriceOnCart, getTotalQuantityOnCart, removeAllProductsFromCart } = useCartControlContext();
   const { isOrderInfoAlertOpen, setIsOrderInfoAlertOpen } = useApplicationControlContext();
   const { goBack } = useNavigation();
@@ -30,7 +31,7 @@ export default function CartScreen() {
     if (cartProducts.length === 0) return;
 
     const { base64 } = await Print.printToFileAsync({
-      html: generateHtml(generateBodyHtml(undefined!, undefined!, undefined!, cartProducts, false)),
+      html: generateHtml(generateBodyHtml(user.name!, undefined!, undefined!, undefined!, cartProducts, false)),
       base64: true,
     });
 

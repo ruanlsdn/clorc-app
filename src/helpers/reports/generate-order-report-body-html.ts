@@ -1,9 +1,9 @@
 import moment from 'moment';
 import { iProduct } from '../../interfaces';
 
-export function generateBodyHtml(clientName: string, address: string, deliveryDate: Date, products: iProduct[], shouldGenerateFooter: boolean) {
+export function generateBodyHtml(username: string, clientName: string, address: string, deliveryDate: Date, products: iProduct[], shouldGenerateFooter: boolean) {
   let body = `
-        ${generateHeader()}
+        ${generateHeader(username)}
         ${clientName || address || deliveryDate ? generateClientInfo(clientName, address, deliveryDate) : ''}
         ${generateProductsTable(products)}
         ${generateSummary(products)}
@@ -13,10 +13,10 @@ export function generateBodyHtml(clientName: string, address: string, deliveryDa
   return body;
 }
 
-function generateHeader() {
+function generateHeader(username: string) {
   return `
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;" >
-            <b style="font-size: 55px">${'RC CHURRASCO'}</b>
+            <b style="font-size: 55px">${username.toUpperCase()}</b>
             <b style="font-size: 45px">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</b>
         </div>
     `;

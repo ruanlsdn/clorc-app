@@ -163,6 +163,7 @@ export default function CardScreen() {
     const response = await Print.printToFileAsync({
       html: generateHtml(
         generateBodyHtml(
+          user.name!,
           selectedCard?.clientName!,
           selectedCard?.clientAddress!,
           moment(selectedCard?.createdAt).toDate(),
