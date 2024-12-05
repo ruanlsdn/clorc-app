@@ -97,7 +97,9 @@ export default function IncreaseAmount() {
           });
         }
 
-        generateAndShareReport(productsMap);
+        const sortedMap = new Map([...productsMap.entries()].sort((a, b) => b[1].quantity! - a[1].quantity!));
+
+        generateAndShareReport(sortedMap);
       } else {
         toast.show('Ocorreu um erro!', {
           message: 'Nenhuma venda encontrada no período informado.',
