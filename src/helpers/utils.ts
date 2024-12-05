@@ -15,6 +15,5 @@ export const removeCurrencyMask = (maskedValue: string): number => {
 
 export const applyAlwaysIntegerMask = (text: string) => {
   const onlyNumbers = text.replace(/[^0-9]/g, '');
-  console.log(onlyNumbers)
   return onlyNumbers;
 };
