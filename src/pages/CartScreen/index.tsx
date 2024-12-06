@@ -11,7 +11,7 @@ import { Button, Text, XStack } from 'tamagui';
 import { AdaptedDialog, CartList, CartOrderInfo } from '../../components';
 import { useApplicationControlContext, useAuthControlContext, useCartControlContext } from '../../contexts';
 import { generateHtml } from '../../helpers/reports/generate-html';
-import { generateBodyHtml } from '../../helpers/reports/generate-order-report-body-html';
+import { generateBodyImageHtml } from '../../helpers/reports/generate-order-report-body-image-html';
 import { Base64ToImageDto, PdfToImageDto } from '../../interfaces';
 import { axiosReportService } from '../../services';
 
@@ -31,7 +31,7 @@ export default function CartScreen() {
     if (cartProducts.length === 0) return;
 
     const { base64 } = await Print.printToFileAsync({
-      html: generateHtml(generateBodyHtml(user.name!, undefined!, undefined!, undefined!, cartProducts, false)),
+      html: generateHtml(generateBodyImageHtml(user.name!, undefined!, undefined!, undefined!, cartProducts, false)),
       base64: true,
     });
 
