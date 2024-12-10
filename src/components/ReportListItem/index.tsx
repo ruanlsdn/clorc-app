@@ -29,7 +29,8 @@ export default function ReportListItem({ item }: props) {
   const handleOnPressPrintButton = async () => {
     setRefreshProducts(true);
 
-    const response = await Print.printToFileAsync({ html: generateHtml(generateBodyHtml(products.filter((product) => product.countable))) });
+    const filteredProducts = products.filter((product) => product.countable).sort((a, b) => b.quantity! - a.quantity!);
+    const response = await Print.printToFileAsync({ html: generateHtml(generateBodyHtml(filteredProducts)) });
     const pdfName = `${response.uri.slice(0, response.uri.lastIndexOf('/') + 1)}relatorio_estoque_${moment().toDate().toLocaleDateString('pt-br').replaceAll('/', '-')}.pdf`;
 
     await FileSystem.moveAsync({
