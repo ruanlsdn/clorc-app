@@ -22,7 +22,7 @@ interface UpdateCardStatusDto {
 
 export default function CardScreen() {
   const { user } = useAuthControlContext();
-  const { selectedCard, setRefreshCards } = useDataControlContext();
+  const { selectedCard, setRefreshCards, setRefreshProducts } = useDataControlContext();
   const { goBack } = useNavigation();
   const toast = useToastController();
 
@@ -94,6 +94,7 @@ export default function CardScreen() {
       });
     } finally {
       setRefreshCards((prev) => !prev);
+      setRefreshProducts((prev) => !prev);
       goBack();
     }
   };
