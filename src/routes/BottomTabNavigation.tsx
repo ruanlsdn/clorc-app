@@ -14,7 +14,7 @@ const BottomTab = createBottomTabNavigator();
 
 export default function BottomTabNavigation() {
   const { user, logout } = useAuthControlContext();
-  const { setProducts, refreshProducts, setCards, refreshCards } = useDataControlContext();
+  const { setProducts, refreshProducts, setCards, refreshCards, setLoadingProducts, setLoadingCards } = useDataControlContext();
   const { setIsCreateProductDialogOpen } = useApplicationControlContext();
   const navigation = useNavigation();
   const toast = useToastController();
@@ -53,6 +53,7 @@ export default function BottomTabNavigation() {
     const getProducts = async () => {
       try {
         if (!user) return;
+        setLoadingProducts(true);
         const response: AxiosResponse<iProduct[]> = await axiosProductService.get(`/${user.id}`);
         setProducts(response.data);
       } catch (error) {
@@ -65,6 +66,8 @@ export default function BottomTabNavigation() {
           viewportName: 'main',
           customData: { icon: <XCircle size={25} /> },
         });
+      } finally {
+        setLoadingProducts(false);
       }
     };
 
@@ -75,6 +78,7 @@ export default function BottomTabNavigation() {
     const getCards = async () => {
       try {
         if (!user) return;
+        setLoadingCards(true);
         const response: AxiosResponse<iCard[]> = await axiosCardService.get(`/user/${user.id}`);
         setCards(response.data);
       } catch (error) {
@@ -87,6 +91,8 @@ export default function BottomTabNavigation() {
           viewportName: 'main',
           customData: { icon: <XCircle size={25} /> },
         });
+      } finally {
+        setLoadingCards(false);
       }
     };
 

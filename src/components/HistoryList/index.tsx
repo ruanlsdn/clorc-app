@@ -8,6 +8,8 @@ type props = {
   list: iHistoryOrder[];
   loading?: boolean;
   hasMore?: boolean;
+  error?: boolean;
+  isInitialized?: boolean;
   onLoadMore?: () => void;
   onRefresh?: () => void;
 };
@@ -16,6 +18,8 @@ export default function HistoryList({
   list, 
   loading = false, 
   hasMore = false, 
+  error = false,
+  isInitialized = false,
   onLoadMore,
   onRefresh
 }: props) {
@@ -30,11 +34,21 @@ export default function HistoryList({
     }
   };
 
-  if (list.length === 0 && !loading) {
+  if (list.length === 0 && isInitialized && !loading && !error) {
     return (
       <View flex={1} bc='#202123' alignItems='center' justifyContent='center' paddingHorizontal='$4'>
         <Text color={'whitesmoke'} textAlign='center' marginBottom='$4'>
           Nenhum registro encontrado.
+        </Text>
+      </View>
+    );
+  }
+
+  if (error && list.length === 0) {
+    return (
+      <View flex={1} bc='#202123' alignItems='center' justifyContent='center' paddingHorizontal='$4'>
+        <Text color={'whitesmoke'} textAlign='center' marginBottom='$4'>
+          Ocorreu um erro ao carregar os registros.
         </Text>
         {onRefresh && (
           <Button

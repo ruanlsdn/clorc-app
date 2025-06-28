@@ -12,6 +12,8 @@ export default function HistoryScreen() {
     data: cards,
     loading,
     hasMore,
+    error,
+    isInitialized,
     loadMore,
     refresh,
     search,
@@ -50,6 +52,8 @@ export default function HistoryScreen() {
           list={cards}
           loading={loading}
           hasMore={hasMore}
+          error={error}
+          isInitialized={isInitialized}
           onLoadMore={loadMore}
           onRefresh={handleRefresh}
         />

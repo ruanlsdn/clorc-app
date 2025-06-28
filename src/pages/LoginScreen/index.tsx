@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, Input, Label, YStack, Text } from 'tamagui';
+import { Button, Input, Label, YStack, Text, Spinner } from 'tamagui';
 import { useAuthControlContext } from '../../contexts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as LocalAuthentication from 'expo-local-authentication';
 import { AdaptedToast } from '../../components';
 
 export default function LoginScreen() {
-  const { login } = useAuthControlContext();
+  const { login, loading } = useAuthControlContext();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -68,13 +68,26 @@ export default function LoginScreen() {
             <Label disabled color='#D9D9E3'>
               Usuário:
             </Label>
-            <Input onChangeText={(text) => setUsername(text)} bc='#D9D9E3' value={username} w={325} />
+            <Input 
+              onChangeText={(text) => setUsername(text)} 
+              bc='#D9D9E3' 
+              value={username} 
+              w={325}
+              editable={!loading}
+            />
           </YStack>
           <YStack>
             <Label disabled color='#D9D9E3'>
               Senha:
             </Label>
-            <Input secureTextEntry onChangeText={(text) => setPassword(text)} bc='#D9D9E3' value={password} w={325} />
+            <Input 
+              secureTextEntry 
+              onChangeText={(text) => setPassword(text)} 
+              bc='#D9D9E3' 
+              value={password} 
+              w={325}
+              editable={!loading}
+            />
           </YStack>
           <Button
             bc='#19C37D'
@@ -87,8 +100,16 @@ export default function LoginScreen() {
               backgroundColor: '#19C37D',
             }}
             onPress={handleSubmit}
+            disabled={loading}
           >
-            Confirmar
+            {loading ? (
+              <YStack alignItems='center' flexDirection='row' space='$2'>
+                <Spinner size='small' color='#ffffff' />
+                <Text color='#ffffff'>Autenticando...</Text>
+              </YStack>
+            ) : (
+              'Confirmar'
+            )}
           </Button>
         </YStack>
       </View>

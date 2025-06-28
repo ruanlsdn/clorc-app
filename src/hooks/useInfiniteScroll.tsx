@@ -14,6 +14,8 @@ interface UseInfiniteScrollReturn {
   data: iCard[];
   loading: boolean;
   hasMore: boolean;
+  error: boolean;
+  isInitialized: boolean;
   loadMore: () => void;
   refresh: () => void;
   search: (term: string) => void;
@@ -29,13 +31,16 @@ export const useInfiniteScroll = ({
   const [hasMore, setHasMore] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentSearch, setCurrentSearch] = useState(searchTerm);
-  const isInitialized = useRef(false);
+  const [error, setError] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const isInitializedRef = useRef(false);
   const toast = useToastController();
 
   const fetchData = useCallback(async (page: number, search: string, append: boolean = false) => {
     if (!userId) return;
     
     setLoading(true);
+    setError(false);
     
     try {
       const response: PaginatedResponse<iCard> = await getCardsPaginated(userId, page, pageSize, search);
@@ -48,8 +53,10 @@ export const useInfiniteScroll = ({
       
       setHasMore(page < response.totalPages);
       setCurrentPage(page);
+      setIsInitialized(true);
     } catch (err) {
       console.error('Erro ao buscar cards:', err);
+      setError(true);
       
       // Se for o carregamento inicial (página 1 e não append), mostra erro mais específico
       if (page === 1 && !append) {
@@ -84,6 +91,7 @@ export const useInfiniteScroll = ({
     setData([]);
     setCurrentPage(1);
     setHasMore(true);
+    setError(false);
     fetchData(1, currentSearch, false);
   }, [currentSearch, fetchData]);
 
@@ -92,24 +100,26 @@ export const useInfiniteScroll = ({
     setData([]);
     setCurrentPage(1);
     setHasMore(true);
+    setError(false);
     fetchData(1, term, false);
   }, [fetchData]);
 
   // Carregar dados iniciais
   useEffect(() => {
-    if (userId && !isInitialized.current) {
-      isInitialized.current = true;
+    if (userId && !isInitializedRef.current) {
+      isInitializedRef.current = true;
       refresh();
     }
   }, [userId, refresh]);
 
   // Atualizar quando o termo de busca mudar
   useEffect(() => {
-    if (isInitialized.current && currentSearch !== searchTerm) {
+    if (isInitializedRef.current && currentSearch !== searchTerm) {
       setCurrentSearch(searchTerm);
       setData([]);
       setCurrentPage(1);
       setHasMore(true);
+      setError(false);
       fetchData(1, searchTerm, false);
     }
   }, [searchTerm, fetchData]);
@@ -118,6 +128,8 @@ export const useInfiniteScroll = ({
     data,
     loading,
     hasMore,
+    error,
+    isInitialized,
     loadMore,
     refresh,
     search,

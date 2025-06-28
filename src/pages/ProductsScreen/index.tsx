@@ -2,12 +2,13 @@ import { CheckCircle2, XCircle } from '@tamagui/lucide-icons';
 import { useToastController } from '@tamagui/toast';
 import { AxiosError } from 'axios';
 import React, { useEffect, useState } from 'react';
-import { AdaptedDialog, Alert, AlertButtons, ProductsList, Searchbar, UpsertProduct } from '../../components';
+import { YStack } from 'tamagui';
+import { AdaptedDialog, Alert, AlertButtons, LoadingScreen, ProductsList, Searchbar, UpsertProduct } from '../../components';
 import { useApplicationControlContext, useDataControlContext } from '../../contexts';
 import { axiosProductService } from '../../services';
 
 export default function ProductsScreen() {
-  const { products, selectedProduct, setRefreshProducts } = useDataControlContext();
+  const { products, selectedProduct, setRefreshProducts, loadingProducts } = useDataControlContext();
   const {
     isCreateProductDialogOpen,
     setIsCreateProductDialogOpen,
@@ -52,8 +53,12 @@ export default function ProductsScreen() {
     }
   }, [products]);
 
+  if (loadingProducts && products.length === 0) {
+    return <LoadingScreen message="Carregando produtos..." />;
+  }
+
   return (
-    <>
+    <YStack flex={1} bc='#202123'>
       <Searchbar
         placeholder='Pesquisar produto...'
         list={products}
@@ -82,6 +87,6 @@ export default function ProductsScreen() {
         setIsOpen={setIsEditProductDialogOpen}
         children={<UpsertProduct isUpdate={true} />}
       />
-    </>
+    </YStack>
   );
 }

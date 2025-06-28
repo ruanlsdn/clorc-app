@@ -14,6 +14,10 @@ type DataControlContextProps = {
   setRefreshProducts: React.Dispatch<React.SetStateAction<boolean>>;
   refreshCards: boolean;
   setRefreshCards: React.Dispatch<React.SetStateAction<boolean>>;
+  loadingProducts: boolean;
+  setLoadingProducts: React.Dispatch<React.SetStateAction<boolean>>;
+  loadingCards: boolean;
+  setLoadingCards: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type props = {
@@ -29,6 +33,8 @@ export const DataControlProvider = ({ children }: props) => {
   const [selectedCard, setSelectedCard] = useState<iCard | null>(null!);
   const [refreshProducts, setRefreshProducts] = useState<boolean>(null!);
   const [refreshCards, setRefreshCards] = useState<boolean>(null!);
+  const [loadingProducts, setLoadingProducts] = useState<boolean>(false);
+  const [loadingCards, setLoadingCards] = useState<boolean>(false);
 
   return (
     <DataControlContext.Provider
@@ -45,6 +51,10 @@ export const DataControlProvider = ({ children }: props) => {
         setRefreshProducts,
         refreshCards,
         setRefreshCards,
+        loadingProducts,
+        setLoadingProducts,
+        loadingCards,
+        setLoadingCards,
       }}
     >
       {children}
