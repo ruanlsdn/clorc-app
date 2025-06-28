@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, IncreaseAmount, OrderList, Searchbar } from '../../components';
+import { YStack } from 'tamagui';
+import { Alert, IncreaseAmount, LoadingScreen, OrderList, Searchbar } from '../../components';
 import { useApplicationControlContext, useDataControlContext } from '../../contexts';
 
 export default function OrderScreen() {
-  const { products } = useDataControlContext();
+  const { products, loadingProducts } = useDataControlContext();
   const { isIncreaseAmountAlertOpen, setIsIncreaseAmountAlertOpen } = useApplicationControlContext();
   const [filteredProducts, setFilteredProducts] = useState(products);
 
@@ -13,8 +14,12 @@ export default function OrderScreen() {
     }
   }, [products])
 
+  if (loadingProducts && products.length === 0) {
+    return <LoadingScreen message="Carregando produtos..." />;
+  }
+
   return (
-    <>
+    <YStack flex={1} bc='#202123'>
       <Searchbar
         placeholder='Pesquisar produto...'
         list={products}
@@ -29,6 +34,6 @@ export default function OrderScreen() {
         description='Informe a quantidade desejada e confirme para inserir no carrinho: '
         children={<IncreaseAmount />}
       />
-    </>
+    </YStack>
   );
 }

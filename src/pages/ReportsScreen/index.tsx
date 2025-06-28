@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { YStack } from 'tamagui';
 import { AdaptedDialog, ReportList, Searchbar, SellReportConfiguration } from '../../components';
 import { useApplicationControlContext } from '../../contexts';
 
@@ -20,7 +21,7 @@ export default function ReportsScreen() {
   const [filteredReports, setFilteredReports] = useState(reports);
 
   return (
-    <>
+    <YStack flex={1} bc='#202123'>
       <Searchbar
         placeholder='Pesquisar relatório...'
         list={reports}
@@ -35,7 +36,7 @@ export default function ReportsScreen() {
         description='Selecione um período pré-definido ou preencha os dados e confirme para gerar o relatório: '
         children={<SellReportConfiguration />}
       />
-    </>
+    </YStack>
   );
 }
 

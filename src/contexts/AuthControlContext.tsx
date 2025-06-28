@@ -9,6 +9,7 @@ import { axiosAuthService } from '../services';
 
 type AuthControlContextProps = {
   user: iUser;
+  loading: boolean;
   login: (username: string, password: string) => void;
   logout: () => void;
 };
@@ -24,9 +25,11 @@ export const AuthControlProvider = ({ children }: props) => {
   const navigation = useNavigation();
 
   const [user, setUser] = useState<iUser>(undefined!);
+  const [loading, setLoading] = useState<boolean>(false);
 
   async function login(username: string, password: string) {
     try {
+      setLoading(true);
       const response = await axiosAuthService.post<iUser, AxiosResponse<iUser>, iUser>(
         '/login',
         { login: username, password: password },
@@ -56,6 +59,8 @@ export const AuthControlProvider = ({ children }: props) => {
         viewportName: 'main',
         customData: { icon: <XCircle size={25} /> },
       });
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -71,6 +76,7 @@ export const AuthControlProvider = ({ children }: props) => {
     <AuthControlContext.Provider
       value={{
         user: user,
+        loading,
         login,
         logout,
       }}
