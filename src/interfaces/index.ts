@@ -8,3 +8,4 @@ export { default as iCardOrder } from './card/iCardOrder';
 export { default as PdfToImageDto } from './report/pdf-to-image.dto';
 export { default as Base64ToImageDto } from './report/base64-to-image.dto';
 export { default as iUser } from './auth/iUser';
+export { PaginatedResponse } from './generic/PaginatedResponse';

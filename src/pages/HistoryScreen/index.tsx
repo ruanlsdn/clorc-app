@@ -1,26 +1,59 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { View, Text, Spinner, YStack } from 'tamagui';
 import { HistoryList, Searchbar } from '../../components';
-import { useDataControlContext } from '../../contexts';
+import { useAuthControlContext } from '../../contexts';
+import { useInfiniteScroll } from '../../hooks';
 
 export default function HistoryScreen() {
-  const { cards } = useDataControlContext();
-  const [filteredCards, setFilteredCards] = useState(cards);
+  const { user } = useAuthControlContext();
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  const {
+    data: cards,
+    loading,
+    hasMore,
+    loadMore,
+    refresh,
+    search,
+  } = useInfiniteScroll({
+    userId: user?.id || '',
+    searchTerm,
+    pageSize: 15,
+  });
 
-  useEffect(() => {
-    if (cards.length > 0) {
-      setFilteredCards(cards);
-    }
-  }, [cards])
+  const handleSearch = useCallback((term: string) => {
+    setSearchTerm(term);
+  }, []);
+
+  const handleRefresh = useCallback(() => {
+    setSearchTerm('');
+    refresh();
+  }, [refresh]);
 
   return (
-    <>
+    <YStack flex={1} bc='#202123'>
       <Searchbar
         placeholder='Pesquisar cliente...'
-        list={cards}
-        searchParameter='clientName'
-        onFilterUpdate={setFilteredCards}
+        onSearch={handleSearch}
+        loading={loading}
       />
-      <HistoryList list={filteredCards} />
-    </>
+      
+      {loading && cards.length === 0 ? (
+        <View flex={1} alignItems='center' justifyContent='center'>
+          <Spinner size='large' color='#19C37D' />
+          <Text color='#D9D9E3' marginTop='$2' fontSize='$4'>
+            Carregando registros...
+          </Text>
+        </View>
+      ) : (
+        <HistoryList 
+          list={cards}
+          loading={loading}
+          hasMore={hasMore}
+          onLoadMore={loadMore}
+          onRefresh={handleRefresh}
+        />
+      )}
+    </YStack>
   );
 }
