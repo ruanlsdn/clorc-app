@@ -1,5 +1,5 @@
 import { Search } from '@tamagui/lucide-icons';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button, Input, XStack } from 'tamagui';
 
 export type SearchbarProps = {
@@ -26,21 +26,21 @@ export default function Searchbar({
   const [text, setText] = useState('');
 
   // Função para busca local (interface antiga)
-  const handleLocalSearch = () => {
+  const handleLocalSearch = useCallback(() => {
     if (list && searchParameter && onFilterUpdate) {
       const filteredList = list.filter((item) => 
         String(item[searchParameter]).toUpperCase().includes(text.toUpperCase())
       );
       onFilterUpdate(filteredList);
     }
-  };
+  }, [list, searchParameter, onFilterUpdate, text]);
 
   // Função para busca no servidor (interface nova)
-  const handleServerSearch = () => {
+  const handleServerSearch = useCallback(() => {
     if (onSearch) {
       onSearch(text);
     }
-  };
+  }, [onSearch, text]);
 
   const handleSearchButton = () => {
     if (onSearch) {
@@ -52,15 +52,18 @@ export default function Searchbar({
     }
   };
 
-  useEffect(() => {
-    if (text === '') {
+  const handleTextChange = (newText: string) => {
+    setText(newText);
+    
+    // Se o texto estiver vazio, resetar a busca
+    if (newText === '') {
       if (onSearch) {
         onSearch('');
       } else if (list && onFilterUpdate) {
         onFilterUpdate(list);
       }
     }
-  }, [text, onSearch, list, onFilterUpdate]);
+  };
 
   return (
     <XStack padding='$4' alignItems='center' justifyContent='center' bc='#202123'>
@@ -74,7 +77,7 @@ export default function Searchbar({
         borderBottomRightRadius='$0'
         color='#ffffff'
         value={text}
-        onChangeText={(text) => setText(text)}
+        onChangeText={handleTextChange}
         editable={!loading}
       />
       <Button
