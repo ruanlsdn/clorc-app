@@ -6,7 +6,7 @@ import moment from 'moment';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text, XStack, YStack } from 'tamagui';
-import { useApplicationControlContext, useDataControlContext } from '../../contexts';
+import { useApplicationControlContext, useAuthControlContext, useDataControlContext } from '../../contexts';
 import { generateHtml } from '../../helpers/reports/generate-html';
 import { Report } from '../../pages/ReportsScreen';
 import AvatarIcon from '../AvatarIcon';
@@ -18,12 +18,19 @@ type props = {
 };
 
 export default function ReportListItem({ item }: props) {
-  const { setIsSellReportSettingsDialogOpen } = useApplicationControlContext();
+  const { 
+    setIsSellReportSettingsDialogOpen,
+    setIsMenuConfigurationDialogOpen
+  } = useApplicationControlContext();
   const { products, setRefreshProducts } = useDataControlContext();
   const toast = useToastController();
 
   const handleOnPressSettingsButton = () => {
-    setIsSellReportSettingsDialogOpen(true);
+    if (item.title === 'Cardápio') {
+      setIsMenuConfigurationDialogOpen(true);
+    } else {
+      setIsSellReportSettingsDialogOpen(true);
+    }
   };
 
   const handleOnPressPrintButton = async () => {

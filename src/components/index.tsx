@@ -15,6 +15,7 @@ export { default as HistoryList } from './HistoryList';
 export { default as HistoryListItem } from './HistoryListItem';
 export { default as IncreaseAmount } from './IncreaseAmount';
 export { default as LoadingScreen } from './LoadingScreen';
+export { default as MenuConfiguration } from './MenuConfiguration';
 export { default as OrderList } from './OrderList';
 export { default as OrderListItem } from './OrderListItem';
 export { default as ProductsList } from './ProductsList';

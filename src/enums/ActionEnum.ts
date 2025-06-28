@@ -3,3 +3,8 @@ export enum ActionEnum {
   UPDATE,
   NONE,
 }
+
+export enum MenuThemeEnum {
+  DEFAULT = 'default',
+  VIBRANT = 'vibrant'
+}
