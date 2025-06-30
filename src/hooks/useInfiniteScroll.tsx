@@ -8,6 +8,7 @@ interface UseInfiniteScrollProps {
   userId: string;
   searchTerm?: string;
   pageSize?: number;
+  refreshSignal?: any;
 }
 
 interface UseInfiniteScrollReturn {
@@ -25,6 +26,7 @@ export const useInfiniteScroll = ({
   userId,
   searchTerm = '',
   pageSize = 15,
+  refreshSignal,
 }: UseInfiniteScrollProps): UseInfiniteScrollReturn => {
   const [data, setData] = useState<iCard[]>([]);
   const [loading, setLoading] = useState(false);
@@ -123,6 +125,14 @@ export const useInfiniteScroll = ({
       fetchData(1, searchTerm, false);
     }
   }, [searchTerm, fetchData]);
+
+  // Novo: Atualizar quando refreshSignal mudar
+  useEffect(() => {
+    if (isInitializedRef.current && typeof refreshSignal !== 'undefined') {
+      refresh();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refreshSignal]);
 
   return {
     data,
