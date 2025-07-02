@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, Text, Spinner, YStack, Button } from 'tamagui';
+import { ScrollView, View, Text, Spinner, Button } from 'tamagui';
 import { RefreshCw } from '@tamagui/lucide-icons';
 import { iHistoryOrder } from '../../interfaces';
 import HistoryListItem from '../HistoryListItem';
@@ -71,39 +71,36 @@ export default function HistoryList({
       onScroll={handleScroll}
       scrollEventThrottle={16}
       showsVerticalScrollIndicator={false}
+      paddingBottom='$4'
     >
-      <YStack space='$2' paddingBottom='$4'>
-        {list?.map((item, idx) => (
-          <HistoryListItem key={`${item.id}-${idx}`} item={item} />
-        ))}
-        
-        {loading && (
-          <View 
-            alignItems='center' 
-            justifyContent='center' 
-            paddingVertical='$4'
-            paddingHorizontal='$4'
-          >
-            <Spinner size='large' color='#19C37D' />
-            <Text color='#D9D9E3' marginTop='$2' fontSize='$3'>
-              Carregando mais registros...
-            </Text>
-          </View>
-        )}
-        
-        {!hasMore && list.length > 0 && (
-          <View 
-            alignItems='center' 
-            justifyContent='center' 
-            paddingVertical='$4'
-            paddingHorizontal='$4'
-          >
-            <Text color='#D9D9E3' fontSize='$3'>
-              Todos os registros foram carregados.
-            </Text>
-          </View>
-        )}
-      </YStack>
+      {list?.map((item, idx) => (
+        <HistoryListItem key={`${item.id}-${idx}`} item={item} />
+      ))}
+      {loading && (
+        <View 
+          alignItems='center' 
+          justifyContent='center' 
+          paddingVertical='$4'
+          paddingHorizontal='$4'
+        >
+          <Spinner size='large' color='#19C37D' />
+          <Text color='#D9D9E3' marginTop='$2' fontSize='$3'>
+            Carregando mais registros...
+          </Text>
+        </View>
+      )}
+      {!hasMore && list.length > 0 && (
+        <View 
+          alignItems='center' 
+          justifyContent='center' 
+          paddingVertical='$4'
+          paddingHorizontal='$4'
+        >
+          <Text color='#D9D9E3' fontSize='$3'>
+            Todos os registros foram carregados.
+          </Text>
+        </View>
+      )}
     </ScrollView>
   );
 }
