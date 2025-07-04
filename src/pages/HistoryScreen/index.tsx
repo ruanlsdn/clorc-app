@@ -1,11 +1,12 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text, Spinner, YStack } from 'tamagui';
 import { HistoryList, Searchbar } from '../../components';
-import { useAuthControlContext } from '../../contexts';
+import { useAuthControlContext, useDataControlContext } from '../../contexts';
 import { useInfiniteScroll } from '../../hooks';
 
 export default function HistoryScreen() {
   const { user } = useAuthControlContext();
+  const { refreshCards } = useDataControlContext();
   const [searchTerm, setSearchTerm] = useState('');
   
   const {
@@ -21,6 +22,7 @@ export default function HistoryScreen() {
     userId: user?.id || '',
     searchTerm,
     pageSize: 15,
+    refreshSignal: refreshCards,
   });
 
   const handleSearch = useCallback((term: string) => {

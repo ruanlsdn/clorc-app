@@ -6,15 +6,15 @@ import { AxiosError, AxiosResponse } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Alert, AlertButtons, ButtonHeaderRight } from '../components';
 import { useApplicationControlContext, useAuthControlContext, useDataControlContext } from '../contexts';
-import { iCard, iProduct } from '../interfaces';
+import { iProduct } from '../interfaces';
 import { HistoryScreen, OrderScreen, ProductsScreen, ReportsScreen } from '../pages';
-import { axiosCardService, axiosProductService } from '../services';
+import { axiosProductService } from '../services';
 
 const BottomTab = createBottomTabNavigator();
 
 export default function BottomTabNavigation() {
   const { user, logout } = useAuthControlContext();
-  const { setProducts, refreshProducts, setCards, refreshCards, setLoadingProducts, setLoadingCards } = useDataControlContext();
+  const { setProducts, refreshProducts, setLoadingProducts } = useDataControlContext();
   const { setIsCreateProductDialogOpen } = useApplicationControlContext();
   const navigation = useNavigation();
   const toast = useToastController();
@@ -73,31 +73,6 @@ export default function BottomTabNavigation() {
 
     getProducts();
   }, [user, refreshProducts]);
-
-  useEffect(() => {
-    const getCards = async () => {
-      try {
-        if (!user) return;
-        setLoadingCards(true);
-        const response: AxiosResponse<iCard[]> = await axiosCardService.get(`/user/${user.id}`);
-        setCards(response.data);
-      } catch (error) {
-        const err = error as AxiosError;
-        const status = err.response?.status;
-        const title = status ? `${status} - Ocorreu um erro!` : 'Ocorreu um erro!';
-        const message = 'Não foi possível carregar a lista de comandas.';
-        toast.show(title, {
-          message: message,
-          viewportName: 'main',
-          customData: { icon: <XCircle size={25} /> },
-        });
-      } finally {
-        setLoadingCards(false);
-      }
-    };
-
-    getCards();
-  }, [user, refreshCards]);
 
   return (
     <>
