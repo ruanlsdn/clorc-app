@@ -1,4 +1,3 @@
-
 export function generateHtml(body: string) {
   return `
     <html>
