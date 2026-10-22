@@ -1,22 +1,20 @@
 import { CheckCircle2, XCircle } from '@tamagui/lucide-icons';
-import * as FileSystem from 'expo-file-system';
-import * as Print from 'expo-print';
+import { useToastController } from '@tamagui/toast';
 import { shareAsync } from 'expo-sharing';
-import moment from 'moment';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
+import { captureRef } from 'react-native-view-shot';
 import { Button, Label, XStack, YStack } from 'tamagui';
 import { useApplicationControlContext, useAuthControlContext, useDataControlContext } from '../../contexts';
-import { generateHtml, generateMenuHtml } from '../../helpers/reports/generate-html';
-import { generateMenuBodyHtml } from '../../helpers/reports/generate-menu-body-html';
-import { useToastController } from '@tamagui/toast';
 import { MenuThemeEnum } from '../../enums/ActionEnum';
+import PriceTableImage from '../PriceTableImage';
 
 export default function MenuConfiguration() {
   const { user } = useAuthControlContext();
   const { products } = useDataControlContext();
   const { setIsMenuConfigurationDialogOpen } = useApplicationControlContext();
   const toast = useToastController();
+  const priceTableRef = useRef<View>(null);
 
   const [footerText, setFooterText] = useState('Obrigado pela preferência!');
   const [subFooterText, setSubFooterText] = useState('Faça seu pedido pelo WhatsApp');
@@ -28,46 +26,47 @@ export default function MenuConfiguration() {
   };
 
   const handleConfirmButton = async () => {
-    let pdfName: string = '';
-    
     try {
-      const businessName = user?.name || 'Estabelecimento';
-      const response = await Print.printToFileAsync({
-        html: generateMenuHtml(generateMenuBodyHtml(products, businessName, footerText, subFooterText, observation, selectedTheme))
-      });
-      pdfName = `${response.uri.slice(0, response.uri.lastIndexOf('/') + 1)}cardapio_${moment().toDate().toLocaleDateString('pt-br').replaceAll('/', '-')}.pdf`;
+      const uri = await captureRef(priceTableRef, { format: 'png', quality: 1, result: 'tmpfile' });
 
-      await FileSystem.moveAsync({
-        from: response.uri,
-        to: pdfName,
+      await shareAsync(uri, {
+        mimeType: 'image/png',
+        dialogTitle: 'Compartilhar Tabela de Preços',
       });
 
-      await shareAsync(pdfName);
-
-      toast.show('Cardápio gerado!', {
+      toast.show('Tabela de preços gerada!', {
         viewportName: 'main',
         customData: { icon: <CheckCircle2 size={25} /> },
       });
     } catch (error) {
       toast.show('Ocorreu um erro!', {
-        message: 'Não foi possível gerar o cardápio.',
+        message: 'Não foi possível gerar a tabela de preços.',
         viewportName: 'main',
         customData: { icon: <XCircle size={25} /> },
       });
     } finally {
-      if (pdfName) {
-        await FileSystem.deleteAsync(pdfName, { idempotent: true });
-      }
       setIsMenuConfigurationDialogOpen(false);
     }
   };
 
   return (
     <View style={styles.container}>
-      <YStack space='$3'>
+      {/* Renderizada fora da tela apenas para captura da imagem */}
+      <View style={styles.offscreen} pointerEvents='none'>
+        <PriceTableImage
+          ref={priceTableRef}
+          products={products}
+          businessName={user?.name || 'Estabelecimento'}
+          footerText={footerText}
+          subFooterText={subFooterText}
+          observation={observation}
+          theme={selectedTheme}
+        />
+      </View>
+      <YStack space='$2'>
         <YStack>
           <Label color='#D9D9E3' fontSize='$4'>
-            Tema do Cardápio:
+            Tema da Tabela de Preços:
           </Label>
           <XStack space='$3'>
             <Button
@@ -144,7 +143,7 @@ export default function MenuConfiguration() {
           />
         </YStack>
 
-        <XStack space='$3' justifyContent='center' marginTop='$5'>
+        <XStack space='$3' justifyContent='center' marginTop='$3'>
           <Button
             bc='#565869'
             color='$red10Dark'
@@ -181,6 +180,11 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#202123',
     borderRadius: 15,
+  },
+  offscreen: {
+    position: 'absolute',
+    left: -10000,
+    top: 0,
   },
   input: {
     backgroundColor: '#343541',

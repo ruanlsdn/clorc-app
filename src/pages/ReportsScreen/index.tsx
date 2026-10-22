@@ -21,7 +21,7 @@ export default function ReportsScreen() {
   const reports: Report[] = [
     { id: 1, title: 'Relatório de Vendas', hasOptions: true },
     { id: 2, title: 'Relatório de Estoque', hasOptions: false },
-    { id: 3, title: 'Cardápio', hasOptions: true },
+    { id: 3, title: 'Tabela de Preços', hasOptions: true },
   ];
 
   const [filteredReports, setFilteredReports] = useState(reports);
@@ -45,12 +45,12 @@ export default function ReportsScreen() {
         children={<SellReportConfiguration />}
       />
       
-      {/* Diálogo de configuração do cardápio */}
+      {/* Diálogo de configuração da tabela de preços */}
       <AdaptedDialog
         isOpen={isMenuConfigurationDialogOpen}
         setIsOpen={setIsMenuConfigurationDialogOpen}
-        title='Configurar Cardápio'
-        description='Personalize os textos do rodapé do cardápio:'
+        title='Configurar Tabela'
+        description='Personalize os textos do rodapé da tabela de preços:'
         children={<MenuConfiguration />}
       />
     </YStack>

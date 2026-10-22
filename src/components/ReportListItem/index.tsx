@@ -26,7 +26,7 @@ export default function ReportListItem({ item }: props) {
   const toast = useToastController();
 
   const handleOnPressSettingsButton = () => {
-    if (item.title === 'Cardápio') {
+    if (item.title === 'Tabela de Preços') {
       setIsMenuConfigurationDialogOpen(true);
     } else {
       setIsSellReportSettingsDialogOpen(true);

@@ -52,6 +52,11 @@ export default function CartScreen() {
           mimeType: 'image/png',
           dialogTitle: 'Compartilhar Imagem',
         });
+
+        toast.show('Pedido compartilhado!', {
+          viewportName: 'main',
+          customData: { icon: <CheckCircle2 size={25} /> },
+        });
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -65,10 +70,6 @@ export default function CartScreen() {
       });
     } finally {
       await FileSystem.deleteAsync(filePath, { idempotent: true });
-      toast.show('Pedido compartilhado!', {
-        viewportName: 'main',
-        customData: { icon: <CheckCircle2 size={25} /> },
-      });
     }
   };
 
